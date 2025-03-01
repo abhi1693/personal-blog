@@ -26,19 +26,16 @@ export default async function og(req: NextRequest, res: NextResponse) {
     title = settings?.ogImage?.title
   }
 
-  return new ImageResponse(
-    <OpenGraphImage title={title} />,
-    {
-      width,
-      height,
-      fonts: [
-        {
-          name: 'Inter',
-          data: await font,
-          style: 'normal',
-          weight: 700,
-        },
-      ],
-    },
-  )
+  return new ImageResponse(<OpenGraphImage title={title} />, {
+    width,
+    height,
+    fonts: [
+      {
+        name: 'Inter',
+        data: await font,
+        style: 'normal',
+        weight: 700,
+      },
+    ],
+  })
 }

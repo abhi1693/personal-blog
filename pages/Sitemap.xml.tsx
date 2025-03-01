@@ -20,10 +20,8 @@ const defaultUrls: SitemapLocation[] = [
     url: '/',
     changefreq: 'daily',
     priority: 1,
-    lastmod: new Date(), // or custom date: '2023-06-12T00:00:00.000Z',
+    lastmod: new Date(),
   },
-  //   { url: '/about', priority: 0.5 },
-  //   { url: '/blog', changefreq: 'weekly', priority: 0.7 },
 ]
 
 const createSitemap = (locations: SitemapLocation[]) => {
@@ -65,8 +63,6 @@ export async function getServerSideProps({ res }) {
         lastmod: new Date(post._updatedAt),
       }
     })
-
-  // ... get more routes here
 
   // Return the default urls, combined with dynamic urls above
   const locations = [...defaultUrls, ...postUrls]

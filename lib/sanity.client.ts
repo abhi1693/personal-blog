@@ -24,7 +24,7 @@ export function getClient(preview?: { token: string }): SanityClient {
     useCdn,
     perspective: 'published',
     stega: {
-      enabled: preview?.token ? true : false,
+      enabled: !!preview?.token,
       studioUrl,
     },
   })

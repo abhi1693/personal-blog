@@ -1,13 +1,13 @@
 import Avatar from 'components/AuthorAvatar'
-import CoverImage from 'components/CoverImage'
 import Date from 'components/PostDate'
 import PostTitle from 'components/PostTitle'
+import YouTubeEmbed from 'components/YouTubeEmbed'
 import type { Post } from 'lib/sanity.queries'
 
 export default function PostHeader(
-  props: Pick<Post, 'title' | 'coverImage' | 'date' | 'author' | 'slug'>,
+  props: Pick<Post, 'title' | 'date' | 'author' | 'youtubeEmbed'>,
 ) {
-  const { title, coverImage, date, author, slug } = props
+  const { title, date, author, youtubeEmbed } = props
   return (
     <>
       <PostTitle>{title}</PostTitle>
@@ -15,7 +15,7 @@ export default function PostHeader(
         {author && <Avatar name={author.name} picture={author.picture} />}
       </div>
       <div className="mb-8 sm:mx-0 md:mb-16">
-        <CoverImage title={title} image={coverImage} priority slug={slug} />
+        <YouTubeEmbed url={youtubeEmbed.url} />
       </div>
       <div className="mx-auto max-w-2xl">
         <div className="mb-6 block md:hidden">

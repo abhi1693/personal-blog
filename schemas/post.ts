@@ -47,6 +47,22 @@ export default defineType({
       of: [{ type: 'reference', to: [{ type: categoryType.name }] }],
     }),
     defineField({
+      name: 'youtubeEmbed',
+      title: 'YouTube Embed',
+      type: 'object',
+      validation: (Rule) => Rule.required(),
+      fields: [
+        defineField({
+          name: 'url',
+          title: 'YouTube URL',
+          type: 'url',
+          description: 'Enter the full YouTube URL',
+          validation: (Rule) =>
+            Rule.required().uri({ scheme: ['http', 'https'] }),
+        }),
+      ],
+    }),
+    defineField({
       name: 'content',
       title: 'Content',
       type: 'array',
