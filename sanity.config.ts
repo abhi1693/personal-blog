@@ -22,7 +22,7 @@ import postType from 'schemas/post'
 import settingsType from 'schemas/settings'
 
 const title =
-  process.env.NEXT_PUBLIC_SANITY_PROJECT_TITLE || 'Next.js Blog with Sanity.io'
+  process.env.NEXT_PUBLIC_SANITY_PROJECT_TITLE || 'Blog | Abhimanyu Saharan'
 
 export default defineConfig({
   basePath: '/studio',
@@ -36,7 +36,7 @@ export default defineConfig({
   plugins: [
     structureTool({
       structure: settingsStructure(settingsType),
-      // `defaultDocumentNode` is responsible for adding a “Preview” tab to the document pane
+      // `defaultDocumentNode` is responsible for adding a “Preview” tab to the document pane
       defaultDocumentNode: previewDocumentNode(),
     }),
     presentationTool({
