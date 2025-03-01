@@ -3,8 +3,8 @@ import Date from 'components/PostDate'
 import PostTitle from 'components/PostTitle'
 import YouTubeEmbed from 'components/YouTubeEmbed'
 import type { Post } from 'lib/sanity.queries'
-import { useEffect, useState, useMemo } from 'react'
-import { FaTwitter, FaFacebookF, FaLinkedinIn } from 'react-icons/fa'
+import { useEffect, useMemo,useState } from 'react'
+import { FaFacebookF, FaLinkedinIn,FaTwitter } from 'react-icons/fa'
 
 function ShareOptions({
   shareUrls,
