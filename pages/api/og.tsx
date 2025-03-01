@@ -6,7 +6,6 @@ import type { NextRequest, NextResponse } from 'next/server'
 export const config = { runtime: 'edge' }
 
 import { height, OpenGraphImage, width } from 'components/OpenGraphImage'
-import * as demo from 'lib/demo.data'
 import { Settings, settingsQuery } from 'lib/sanity.queries'
 
 export default async function og(req: NextRequest, res: NextResponse) {
