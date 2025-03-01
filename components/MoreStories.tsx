@@ -17,6 +17,7 @@ export default function MoreStories({ posts }: { posts: Post[] }) {
             author={post.author}
             slug={post.slug}
             excerpt={post.excerpt}
+            youtubeEmbed={post.youtubeEmbed}
           />
         ))}
       </div>

@@ -11,6 +11,7 @@ export default function PostPreview({
   excerpt,
   author,
   slug,
+  youtubeEmbed,
 }: Omit<Post, '_id'>) {
   return (
     <div>
