@@ -1,5 +1,4 @@
 import BlogMeta from 'components/BlogMeta'
-import * as demo from 'lib/demo.data'
 import { Settings } from 'lib/sanity.queries'
 import Head from 'next/head'
 import { stegaClean, toPlainText } from 'next-sanity'
@@ -10,11 +9,11 @@ export interface IndexPageHeadProps {
 
 export default function IndexPageHead({ settings }: IndexPageHeadProps) {
   const {
-    title = demo.title,
-    description = demo.description,
+    title,
+    description,
     ogImage = {},
   } = settings
-  const ogImageTitle = ogImage?.title || demo.ogImageTitle
+  const ogImageTitle = ogImage?.title
 
   return (
     <Head>

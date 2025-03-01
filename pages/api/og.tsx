@@ -28,7 +28,7 @@ export default async function og(req: NextRequest, res: NextResponse) {
   }
 
   return new ImageResponse(
-    <OpenGraphImage title={title || demo.ogImageTitle} />,
+    <OpenGraphImage title={title} />,
     {
       width,
       height,
