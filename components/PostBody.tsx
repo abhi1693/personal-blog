@@ -9,10 +9,12 @@
  */
 import { PortableText, type PortableTextReactComponents } from 'next-sanity'
 
+import CodeBlock from './CodeBlock'
 import { SanityImage } from './SanityImage'
 
 const myPortableTextComponents: Partial<PortableTextReactComponents> = {
   types: {
+    code: CodeBlock,
     image: ({ value }) => {
       return <SanityImage {...value} />
     },

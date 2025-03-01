@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@sanity/client": "6.28.2",
+    "@sanity/code-input": "^5.1.2",
     "@sanity/icons": "3.7.0",
     "@sanity/image-url": "1.1.0",
     "@sanity/vision": "3.77.2",
@@ -34,6 +35,7 @@
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-icons": "^5.5.0",
+    "react-syntax-highlighter": "^15.6.1",
     "sanity": "3.77.2",
     "sanity-plugin-asset-source-unsplash": "3.0.3",
     "sanity-plugin-iframe-pane": "3.2.1",
@@ -44,6 +46,7 @@
     "@tailwindcss/postcss": "4.0.9",
     "@tailwindcss/typography": "0.5.16",
     "@types/react": "19.0.10",
+    "@types/react-syntax-highlighter": "^15.5.13",
     "eslint": "8.57.1",
     "eslint-config-next": "15.2.0",
     "eslint-plugin-simple-import-sort": "12.1.1",

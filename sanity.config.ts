@@ -3,6 +3,7 @@
  * This config is used to set up Sanity Studio that's mounted on the `/pages/studio/[[...index]].tsx` route
  */
 
+import { codeInput } from '@sanity/code-input'
 import { visionTool } from '@sanity/vision'
 import {
   apiVersion,
@@ -52,6 +53,7 @@ export default defineConfig({
     settingsPlugin({ type: settingsType.name }),
     // Add an image asset source for Unsplash
     unsplashImageAsset(),
+    codeInput(),
     // Vision lets you query your content with GROQ in the studio
     // https://www.sanity.io/docs/the-vision-plugin
     process.env.NODE_ENV !== 'production' &&
