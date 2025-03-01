@@ -11,38 +11,45 @@ function ShareOptions({
 }: {
   shareUrls: { x: string; facebook: string; linkedin: string }
 }) {
+  const platforms = [
+    {
+      name: 'X',
+      url: shareUrls.x,
+      icon: <FaTwitter size={24} />,
+      className: 'text-blue-500 hover:text-blue-600',
+      title: 'Share on X',
+    },
+    {
+      name: 'Facebook',
+      url: shareUrls.facebook,
+      icon: <FaFacebookF size={24} />,
+      className: 'text-blue-700 hover:text-blue-800',
+      title: 'Share on Facebook',
+    },
+    {
+      name: 'LinkedIn',
+      url: shareUrls.linkedin,
+      icon: <FaLinkedinIn size={24} />,
+      className: 'text-blue-600 hover:text-blue-700',
+      title: 'Share on LinkedIn',
+    },
+  ]
 
   return (
-    <div className="relative flex items-center">
-      <div className="flex space-x-4 items-center">
+    <div className="flex space-x-4 items-center">
+      {platforms.map((platform) => (
         <a
-          href={shareUrls.x}
+          key={platform.name}
+          href={platform.url}
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="Share on X"
-          className="text-blue-500 hover:text-blue-600"
+          aria-label={platform.title}
+          title={platform.title}
+          className={platform.className}
         >
-          <FaTwitter size={24} />
+          {platform.icon}
         </a>
-        <a
-          href={shareUrls.facebook}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Share on Facebook"
-          className="text-blue-700 hover:text-blue-800"
-        >
-          <FaFacebookF size={24} />
-        </a>
-        <a
-          href={shareUrls.linkedin}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Share on LinkedIn"
-          className="text-blue-600 hover:text-blue-700"
-        >
-          <FaLinkedinIn size={24} />
-        </a>
-      </div>
+      ))}
     </div>
   )
 }
@@ -51,24 +58,18 @@ export default function PostHeader(
   props: Pick<Post, 'title' | 'date' | 'author' | 'youtubeEmbed'>,
 ) {
   const { title, date, author, youtubeEmbed } = props
-
-  // Use state to hold the current URL (set on the client)
   const [currentUrl, setCurrentUrl] = useState('')
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      // Build a consistent URL using origin and pathname.
-      const url = process.env.VERCEL_URL
-        ? `https://${process.env.VERCEL_URL}${window.location.pathname}`
-        : window.location.href
+      const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || window.location.origin
+      const url = `${baseUrl}${window.location.pathname}`
       setCurrentUrl(url)
     }
   }, [])
 
-  // Memoize share URLs so they only update when currentUrl or title changes.
   const shareUrls = useMemo(() => {
     return {
-      // "X" is rebranding for Twitter.
       x: `https://twitter.com/intent/tweet?url=${encodeURIComponent(
         currentUrl,
       )}&text=${encodeURIComponent(title)}`,
@@ -88,17 +89,10 @@ export default function PostHeader(
         <YouTubeEmbed url={youtubeEmbed.url} />
       </div>
       <div className="mx-auto max-w-2xl">
-        {/* Desktop view: author avatar and share options side by side */}
-        <div className="mb-6 hidden md:flex items-center justify-between">
+        {/* Responsive container: on desktop, avatar and share options are side by side; on mobile, share options are centered */}
+        <div className="mb-6 flex flex-col md:flex-row md:items-center md:justify-between">
           {author && <Avatar name={author.name} picture={author.picture} />}
-          <ShareOptions shareUrls={shareUrls} />
-        </div>
-        {/* Mobile view: avatar above and share options centered below */}
-        <div className="mb-6 block md:hidden">
-          {author && <Avatar name={author.name} picture={author.picture} />}
-        </div>
-        <div className="mb-6 block md:hidden">
-          <div className="flex justify-center">
+          <div className="mt-4 mx-auto md:mt-0 md:mx-0">
             <ShareOptions shareUrls={shareUrls} />
           </div>
         </div>
