@@ -3,6 +3,7 @@ import { format, parseISO } from 'date-fns'
 import { defineField, defineType } from 'sanity'
 
 import authorType from './author'
+import categoryType from './category'
 
 /**
  * This file is the schema definition for a post.
@@ -38,6 +39,12 @@ export default defineType({
         isUnique: (value, context) => context.defaultIsUnique(value, context),
       },
       validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'categories',
+      title: 'Categories',
+      type: 'array',
+      of: [{ type: 'reference', to: [{ type: categoryType.name }] }],
     }),
     defineField({
       name: 'content',
