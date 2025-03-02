@@ -18,7 +18,7 @@ async function init(): Promise<SatoriOptions['fonts']> {
     )
   }
 
-  const fontData = await fetch(`${getProdUrl()}/Inter-Bold.woff`).then((res) =>
+  const fontData = await fetch(`/Inter-Bold.woff`).then((res) =>
     res.arrayBuffer(),
   )
 
