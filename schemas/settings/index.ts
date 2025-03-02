@@ -69,12 +69,6 @@ export default defineType({
           type: 'string',
           validation: (rule) => rule.required(),
         }),
-        defineField({
-          name: 'twitter_handle',
-          title: 'Twitter Handle',
-          type: 'string',
-          validation: (rule) => rule.required(),
-        }),
       ],
     }),
   ],

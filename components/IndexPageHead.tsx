@@ -38,7 +38,6 @@ export default function IndexPageHead({ settings }: IndexPageHeadProps) {
       <meta name="twitter:title" content={stegaClean(title)} />
       <meta name="twitter:description" content={toPlainText(description)} />
       <meta name="twitter:image" content={imageUrl} />
-      <meta name="twitter:site" content={ogImage.twitterHandle} />
     </Head>
   )
 }

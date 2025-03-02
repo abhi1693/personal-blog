@@ -68,6 +68,5 @@ export interface Settings {
   description?: any[]
   ogImage?: {
     title?: string
-    twitterHandle?: string
   }
 }
