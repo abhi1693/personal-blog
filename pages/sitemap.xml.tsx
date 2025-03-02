@@ -1,5 +1,7 @@
 import { getAllPosts, getClient } from 'lib/sanity.client'
 
+import { getProdUrl } from '../components/utils/getProdUrl'
+
 type SitemapLocation = {
   url: string
   changefreq?:
@@ -23,11 +25,7 @@ const defaultUrls: SitemapLocation[] = [
   },
 ]
 
-const BASE_URL =
-  process.env.VERCEL_PROJECT_PRODUCTION_URL ||
-  (process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : 'http://localhost:3000')
+const BASE_URL = getProdUrl()
 
 const createSitemap = (locations: SitemapLocation[]) => {
   return `<?xml version="1.0" encoding="UTF-8"?>

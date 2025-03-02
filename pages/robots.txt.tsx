@@ -1,8 +1,6 @@
-const BASE_URL =
-  process.env.VERCEL_PROJECT_PRODUCTION_URL ||
-  (process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : 'http://localhost:3000')
+import { getProdUrl } from '../components/utils/getProdUrl'
+
+const BASE_URL = getProdUrl()
 
 const robotsTxt = `User-agent: *
 Disallow: /studio

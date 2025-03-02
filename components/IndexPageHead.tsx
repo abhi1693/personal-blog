@@ -3,6 +3,8 @@ import { Settings } from 'lib/sanity.queries'
 import Head from 'next/head'
 import { stegaClean, toPlainText } from 'next-sanity'
 
+import { getProdUrl } from './utils/getProdUrl'
+
 export interface IndexPageHeadProps {
   settings: Settings
 }
@@ -22,15 +24,7 @@ export default function IndexPageHead({ settings }: IndexPageHeadProps) {
       />
       <meta
         property="og:image"
-        // Because OG images must have a absolute URL, we use the
-        // `VERCEL_PROJECT_PRODUCTION_URL` environment variable to get the deployment’s URL.
-        // More info:
-        // https://vercel.com/docs/concepts/projects/environment-variables
-        content={`${
-          process.env.VERCEL_PROJECT_PRODUCTION_URL
-            ? 'https://' + process.env.VERCEL_PROJECT_PRODUCTION_URL
-            : ''
-        }/api/og?${new URLSearchParams({ title: ogImageTitle })}`}
+        content={`${getProdUrl()}/api/og?${new URLSearchParams({ title: ogImageTitle })}`}
       />
     </Head>
   )
