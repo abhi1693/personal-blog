@@ -5,7 +5,7 @@ import { FaGithub, FaLinkedin, FaXTwitter, FaYoutube } from 'react-icons/fa6'
 
 interface NavbarProps {
   title: string
-  description: any[]
+  description: string
 }
 
 const Navbar: React.FC<NavbarProps> = ({ title, description }) => {
@@ -18,7 +18,7 @@ const Navbar: React.FC<NavbarProps> = ({ title, description }) => {
           <div>
             <span className="text-xl font-bold">{title}</span>
             <p className="text-sm text-gray-400">
-              <PortableText value={description} />
+              <span>{description}</span>
             </p>
           </div>
         </Link>

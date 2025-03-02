@@ -22,8 +22,8 @@ import { unsplashImageAsset } from 'sanity-plugin-asset-source-unsplash'
 import authorType from 'schemas/author'
 import categoryType from 'schemas/category'
 import postType from 'schemas/post'
-import settingsType from 'schemas/settings'
 import seriesType from 'schemas/series'
+import settingsType from 'schemas/settings'
 
 const title =
   process.env.NEXT_PUBLIC_SANITY_PROJECT_TITLE || 'Blog | Abhimanyu Saharan'

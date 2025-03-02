@@ -11,6 +11,7 @@ import { urlForImage } from '../../lib/sanity.image'
 interface SeriesPageProps {
   series: {
     title: string
+    description?: string
     posts: {
       _id: string
       title: string
@@ -32,9 +33,7 @@ export default function SeriesPage({ series }: SeriesPageProps) {
     <>
       <SeriesHead
         title={series.title}
-        description={
-          series.posts[0]?.excerpt || 'Explore this series on our blog.'
-        }
+        description={series.description}
         imageUrl={imageUrl}
         url={seriesUrl}
       />

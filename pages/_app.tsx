@@ -3,9 +3,11 @@ import '../tailwind.css'
 import { VisualEditing } from '@sanity/visual-editing/next-pages-router'
 import { AppProps } from 'next/app'
 import dynamic from 'next/dynamic'
+import { stegaClean, toPlainText } from 'next-sanity'
 import { useEffect, useState } from 'react'
 
 import Layout from '../components/Layout'
+import MetaHead from '../components/MetaHead'
 import { getClient, getSettings } from '../lib/sanity.client'
 import { Settings } from '../lib/sanity.queries'
 
@@ -16,10 +18,7 @@ export interface SharedPageProps {
 
 const PreviewProvider = dynamic(() => import('components/PreviewProvider'))
 
-export default function App({
-  Component,
-  pageProps,
-}: AppProps<SharedPageProps>) {
+export default function App({ Component, pageProps }: AppProps<SharedPageProps>) {
   const { draftMode, token } = pageProps
   const [settings, setSettings] = useState<Settings | null>(null)
 
@@ -32,27 +31,19 @@ export default function App({
     fetchSettings()
   }, [])
 
+  const title = settings ? stegaClean(settings.title) : ''
+  const description = settings ? toPlainText(settings.description) : ''
+
+  const content = (
+    <Layout title={title} description={description}>
+      <Component {...pageProps} />
+    </Layout>
+  )
+
   return (
     <>
-      {draftMode ? (
-        <PreviewProvider token={token}>
-          {settings ? (
-            <Layout
-              title={settings.title || ''}
-              description={settings.description?.[0] || ''}
-            >
-              <Component {...pageProps} />
-            </Layout>
-          ) : null}
-        </PreviewProvider>
-      ) : settings ? (
-        <Layout
-          title={settings.title || ''}
-          description={settings.description?.[0] || ''}
-        >
-          <Component {...pageProps} />
-        </Layout>
-      ) : null}
+      {title && description && <MetaHead title={title} description={description} />}
+      {draftMode ? <PreviewProvider token={token}>{content}</PreviewProvider> : content}
       {draftMode && <VisualEditing />}
     </>
   )
