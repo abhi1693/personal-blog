@@ -11,13 +11,9 @@ export default function PreviewPostPage(props: PostPageProps) {
   const [{ post: postPreview, morePosts }, loadingPost] = useLiveQuery<{
     post: Post
     morePosts: Post[]
-  }>(
-    { post: props.post, morePosts: props.morePosts },
-    postAndMorePostsQuery,
-    {
-      slug: props.post.slug,
-    },
-  )
+  }>({ post: props.post, morePosts: props.morePosts }, postAndMorePostsQuery, {
+    slug: props.post.slug,
+  })
   const [settings, loadingSettings] = useLiveQuery<Settings>(
     props.settings,
     settingsQuery,

@@ -14,7 +14,6 @@ type SitemapLocation = {
   lastmod?: Date
 }
 
-// Use this to manually add routes to the sitemap
 const defaultUrls: SitemapLocation[] = [
   {
     url: '/',
@@ -24,14 +23,17 @@ const defaultUrls: SitemapLocation[] = [
   },
 ]
 
+const BASE_URL = process.env.VERCEL_URL
+  ? `https://${process.env.VERCEL_URL}`
+  : 'http://localhost:3000'
+
 const createSitemap = (locations: SitemapLocation[]) => {
-  const baseUrl = process.env.NEXT_PUBLIC_URL // Make sure to configure this
   return `<?xml version="1.0" encoding="UTF-8"?>
   <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
       ${locations
         .map((location) => {
           return `<url>
-                    <loc>${baseUrl}${location.url}</loc>
+                    <loc>${BASE_URL}${location.url}</loc>
                     <priority>${location.priority}</priority>
                     ${
                       location.lastmod

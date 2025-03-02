@@ -173,10 +173,7 @@ async function queryAllRoutes(client: SanityClient): Promise<StaleRoute[]> {
   return ['/', ...slugs.map((slug) => `/posts/${slug}` as StaleRoute)]
 }
 
-async function mergeWithmorePosts(
-  client,
-  slugs: string[],
-): Promise<string[]> {
+async function mergeWithmorePosts(client, slugs: string[]): Promise<string[]> {
   const morePosts = await client.fetch(
     groq`*[_type == "post"] | order(date desc, _updatedAt desc) [0...3].slug.current`,
   )
