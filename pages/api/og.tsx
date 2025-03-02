@@ -8,7 +8,12 @@ export const config = { runtime: 'edge' }
 import { height, OpenGraphImage, width } from 'components/OpenGraphImage'
 import { Settings, settingsQuery } from 'lib/sanity.queries'
 
+import { getProdUrl } from '../../components/utils/getProdUrl'
+
 export default async function og(req: NextRequest, res: NextResponse) {
+  const font = fetch(`${getProdUrl()}/Inter-Bold.woff`).then((res) =>
+    res.arrayBuffer(),
+  )
   const { searchParams } = new URL(req.url)
 
   let title = searchParams.get('title')
@@ -26,5 +31,13 @@ export default async function og(req: NextRequest, res: NextResponse) {
   return new ImageResponse(<OpenGraphImage title={title} />, {
     width,
     height,
+    fonts: [
+      {
+        name: 'Inter',
+        data: await font,
+        style: 'normal',
+        weight: 700,
+      },
+    ],
   })
 }
