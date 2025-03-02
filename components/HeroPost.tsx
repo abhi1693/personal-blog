@@ -11,32 +11,37 @@ export default function HeroPost(
   >,
 ) {
   const { title, coverImage, date, excerpt, author, slug } = props
+
   return (
-    <section>
-      <div className="mb-8 md:mb-16">
-        <CoverImage slug={slug} title={title} image={coverImage} priority />
-      </div>
-      <div className="mb-20 md:mb-28 md:grid md:grid-cols-2 md:gap-x-16 lg:gap-x-8">
-        <div>
-          <h3 className="mb-4 text-4xl leading-tight lg:text-6xl text-balance">
-            <Link href={`/posts/${slug}`} className="hover:underline">
-              {title || 'Untitled'}
-            </Link>
-          </h3>
-          <div className="mb-4 text-lg md:mb-0">
-            <Date dateString={date} />
-          </div>
+    <section className="relative rounded-lg shadow-lg overflow-hidden">
+      {/* Cover Image */}
+      <CoverImage slug={slug} title={title} image={coverImage} priority />
+
+      {/* Content Section */}
+      <div className="bg-white p-6 md:p-8 lg:p-10 border-t">
+        <h3 className="text-2xl md:text-3xl font-bold text-gray-900 leading-tight">
+          <Link href={`/posts/${slug}`} className="hover:underline">
+            {title || 'Untitled'}
+          </Link>
+        </h3>
+
+        <div className="flex items-center justify-between text-sm md:text-base text-gray-500 mt-2">
+          <Date dateString={date} />
         </div>
-        <div>
-          {excerpt && (
-            <p className="mb-4 text-lg leading-relaxed text-pretty">
-              {excerpt}
-            </p>
-          )}
-          {author && (
+
+        {excerpt && (
+          <p className="text-sm md:text-lg mt-4 text-gray-700">{excerpt}</p>
+        )}
+
+        {/* Author Section with Better Spacing */}
+        {author && (
+          <div className="flex items-center gap-4 mt-6 border-t pt-4">
             <AuthorAvatar name={author.name} picture={author.picture} />
-          )}
-        </div>
+            <div className="text-sm md:text-base font-medium text-gray-800">
+              {author.name}
+            </div>
+          </div>
+        )}
       </div>
     </section>
   )

@@ -1,26 +1,37 @@
-import PostPreview from 'components/PostPreview'
+import CoverImage from 'components/CoverImage'
+import Date from 'components/PostDate'
 import type { Post } from 'lib/sanity.queries'
+import Link from 'next/link'
 
 export default function MorePosts({ posts }: { posts: Post[] }) {
   return (
-    <section>
-      <h2 className="mb-8 text-6xl font-bold leading-tight tracking-tighter md:text-7xl">
-        More Posts
-      </h2>
-      <div className="mb-32 grid grid-cols-1 gap-y-20 md:grid-cols-2 md:gap-x-16 md:gap-y-32 lg:gap-x-32">
-        {posts.map((post) => (
-          <PostPreview
-            key={post._id}
-            title={post.title}
-            coverImage={post.coverImage}
-            date={post.date}
-            author={post.author}
-            slug={post.slug}
-            excerpt={post.excerpt}
-            youtubeEmbed={post.youtubeEmbed}
-          />
-        ))}
-      </div>
-    </section>
+    <>
+      {posts.map((post) => (
+        <div
+          key={post.slug}
+          className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition"
+        >
+          <Link href={`/posts/${post.slug}`} className="block">
+            {/* Cover Image */}
+            <CoverImage
+              slug={post.slug}
+              title={post.title}
+              image={post.coverImage}
+            />
+
+            {/* Content */}
+            <div className="p-4">
+              <h3 className="text-lg font-semibold leading-tight">
+                {post.title}
+              </h3>
+              <p className="text-sm text-gray-500">
+                <Date dateString={post.date} />
+              </p>
+              <p className="mt-2 text-gray-700 line-clamp-2">{post.excerpt}</p>
+            </div>
+          </Link>
+        </div>
+      ))}
+    </>
   )
 }

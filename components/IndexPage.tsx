@@ -12,8 +12,12 @@ export interface IndexPageProps {
   settings: Settings
 }
 
-export default function IndexPage(props: IndexPageProps) {
-  const { preview, loading, posts, settings } = props
+export default function IndexPage({
+  preview,
+  loading,
+  posts,
+  settings,
+}: IndexPageProps) {
   const [heroPost, ...morePosts] = posts || []
 
   return (
@@ -22,17 +26,15 @@ export default function IndexPage(props: IndexPageProps) {
 
       <Layout preview={preview} loading={loading}>
         <Container>
-          {heroPost && (
-            <HeroPost
-              title={heroPost.title}
-              coverImage={heroPost.coverImage}
-              date={heroPost.date}
-              author={heroPost.author}
-              slug={heroPost.slug}
-              excerpt={heroPost.excerpt}
-            />
+          {/* Hero Post at the top */}
+          {heroPost && <HeroPost {...heroPost} />}
+
+          {/* More Posts in a Grid */}
+          {morePosts.length > 0 && (
+            <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              <MorePosts posts={morePosts} />
+            </div>
           )}
-          {morePosts.length > 0 && <MorePosts posts={morePosts} />}
         </Container>
       </Layout>
     </>
