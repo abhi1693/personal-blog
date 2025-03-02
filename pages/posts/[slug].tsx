@@ -11,10 +11,13 @@ import { Post, Settings } from 'lib/sanity.queries'
 import { GetStaticProps } from 'next'
 import type { SharedPageProps } from 'pages/_app'
 
+import { getBaseUrl } from '../../components/utils/getBaseUrl'
+
 interface PageProps extends SharedPageProps {
   post: Post
   morePosts: Post[]
   settings?: Settings
+  postUrl: string
 }
 
 interface Query {
@@ -22,15 +25,27 @@ interface Query {
 }
 
 export default function ProjectSlugRoute(props: PageProps) {
-  const { settings, post, morePosts, draftMode } = props
+  const { settings, post, morePosts, draftMode, postUrl } = props
 
   if (draftMode) {
     return (
-      <PreviewPostPage post={post} morePosts={morePosts} settings={settings} />
+      <PreviewPostPage
+        post={post}
+        morePosts={morePosts}
+        settings={settings}
+        postUrl={postUrl}
+      />
     )
   }
 
-  return <PostPage post={post} morePosts={morePosts} settings={settings} />
+  return (
+    <PostPage
+      post={post}
+      morePosts={morePosts}
+      settings={settings}
+      postUrl={postUrl}
+    />
+  )
 }
 
 export const getStaticProps: GetStaticProps<PageProps, Query> = async (ctx) => {
@@ -48,6 +63,9 @@ export const getStaticProps: GetStaticProps<PageProps, Query> = async (ctx) => {
     }
   }
 
+  const baseUrl = getBaseUrl()
+  const postUrl = `${baseUrl}/posts/${post.slug}`
+
   return {
     props: {
       post,
@@ -55,6 +73,7 @@ export const getStaticProps: GetStaticProps<PageProps, Query> = async (ctx) => {
       settings,
       draftMode,
       token: draftMode ? readToken : '',
+      postUrl,
     },
   }
 }

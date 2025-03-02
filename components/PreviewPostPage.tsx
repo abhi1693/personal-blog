@@ -26,6 +26,7 @@ export default function PreviewPostPage(props: PostPageProps) {
       post={postPreview}
       morePosts={morePosts}
       settings={settings}
+      postUrl={props.postUrl}
     />
   )
 }

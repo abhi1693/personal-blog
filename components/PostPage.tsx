@@ -15,13 +15,20 @@ export interface PostPageProps {
   post: Post
   morePosts: Post[]
   settings: Settings
+  postUrl: string
 }
 
 const NO_POSTS: Post[] = []
 
 export default function PostPage(props: PostPageProps) {
-  const { preview, loading, morePosts = NO_POSTS, post, settings } = props
-  const { title } = settings || {}
+  const {
+    preview,
+    loading,
+    morePosts = NO_POSTS,
+    post,
+    settings,
+    postUrl,
+  } = props
 
   const slug = post?.slug
 
@@ -45,6 +52,7 @@ export default function PostPage(props: PostPageProps) {
                   date={post.date}
                   author={post.author}
                   youtubeEmbed={post.youtubeEmbed}
+                  postUrl={postUrl}
                 />
                 <PostBody content={post.content} />
               </article>

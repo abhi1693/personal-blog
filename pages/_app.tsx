@@ -18,7 +18,10 @@ export interface SharedPageProps {
 
 const PreviewProvider = dynamic(() => import('components/PreviewProvider'))
 
-export default function App({ Component, pageProps }: AppProps<SharedPageProps>) {
+export default function App({
+  Component,
+  pageProps,
+}: AppProps<SharedPageProps>) {
   const { draftMode, token } = pageProps
   const [settings, setSettings] = useState<Settings | null>(null)
 
@@ -42,8 +45,14 @@ export default function App({ Component, pageProps }: AppProps<SharedPageProps>)
 
   return (
     <>
-      {title && description && <MetaHead title={title} description={description} />}
-      {draftMode ? <PreviewProvider token={token}>{content}</PreviewProvider> : content}
+      {title && description && (
+        <MetaHead title={title} description={description} />
+      )}
+      {draftMode ? (
+        <PreviewProvider token={token}>{content}</PreviewProvider>
+      ) : (
+        content
+      )}
       {draftMode && <VisualEditing />}
     </>
   )

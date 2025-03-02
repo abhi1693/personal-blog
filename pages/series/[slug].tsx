@@ -1,6 +1,5 @@
 import { GetStaticPaths, GetStaticProps } from 'next'
-import {toPlainText} from "next-sanity";
-import {useEffect, useState} from "react";
+import { toPlainText } from 'next-sanity'
 
 import Breadcrumbs from '../../components/Breadcrumbs'
 import SeriesHead from '../../components/SeriesHead'
@@ -24,19 +23,11 @@ interface SeriesPageProps {
       coverImage?: { asset: { _ref: string } }
     }[]
   }
+  seriesUrl: string
 }
 
-export default function SeriesPage({ series }: SeriesPageProps) {
+export default function SeriesPage({ series, seriesUrl }: SeriesPageProps) {
   const imageUrl = urlForImage(series.coverImage.asset._ref).url()
-  const [currentUrl, setCurrentUrl] = useState('')
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const baseUrl = getBaseUrl()
-      const url = `${baseUrl}${window.location.pathname}`
-      setCurrentUrl(url)
-    }
-  }, [])
 
   return (
     <>
@@ -44,7 +35,7 @@ export default function SeriesPage({ series }: SeriesPageProps) {
         title={series.title}
         description={toPlainText(series.description)}
         imageUrl={imageUrl}
-        url={currentUrl}
+        url={seriesUrl}
       />
 
       <div className="container mx-auto px-4 py-8">
@@ -57,7 +48,7 @@ export default function SeriesPage({ series }: SeriesPageProps) {
         <SeriesHeader
           title={series.title}
           postCount={series.posts.length}
-          shareUrl={currentUrl}
+          shareUrl={seriesUrl}
         />
         <SeriesPostGrid posts={series.posts} />
       </div>
@@ -75,5 +66,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const series = await getSeriesBySlug(params?.slug as string)
-  return { props: { series }, revalidate: 10 }
+  const baseUrl = getBaseUrl()
+  const seriesUrl = `${baseUrl}/series/${params?.slug}`
+  return { props: { series, seriesUrl }, revalidate: 10 }
 }
