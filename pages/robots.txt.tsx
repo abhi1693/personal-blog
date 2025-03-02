@@ -4,7 +4,6 @@ const BASE_URL = getProdUrl()
 
 const robotsTxt = `User-agent: *
 Disallow: /studio
-Disallow: /api
 
 Sitemap: ${BASE_URL}/sitemap.xml
 `
