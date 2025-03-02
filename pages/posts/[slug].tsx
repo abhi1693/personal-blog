@@ -4,7 +4,7 @@ import { readToken } from 'lib/sanity.api'
 import {
   getAllPostsSlugs,
   getClient,
-  getPostAndMoreStories,
+  getPostAndMorePosts,
   getSettings,
 } from 'lib/sanity.client'
 import { Post, Settings } from 'lib/sanity.queries'
@@ -39,7 +39,7 @@ export const getStaticProps: GetStaticProps<PageProps, Query> = async (ctx) => {
 
   const [settings, { post, morePosts }] = await Promise.all([
     getSettings(client),
-    getPostAndMoreStories(client, params.slug),
+    getPostAndMorePosts(client, params.slug),
   ])
 
   if (!post) {

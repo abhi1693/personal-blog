@@ -19,7 +19,7 @@ export const indexQuery = groq`
   ${postFields}
 }`
 
-export const postAndMoreStoriesQuery = groq`
+export const postAndMorePostsQuery = groq`
 {
   "post": *[_type == "post" && slug.current == $slug] | order(_updatedAt desc) [0] {
     content,

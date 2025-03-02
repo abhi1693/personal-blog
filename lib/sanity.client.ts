@@ -8,7 +8,7 @@ import {
 import {
   indexQuery,
   type Post,
-  postAndMoreStoriesQuery,
+  postAndMorePostsQuery,
   postBySlugQuery,
   postSlugsQuery,
   type Settings,
@@ -65,9 +65,9 @@ export async function getPostBySlug(
   return (await client.fetch(postBySlugQuery, { slug })) || ({} as any)
 }
 
-export async function getPostAndMoreStories(
+export async function getPostAndMorePosts(
   client: SanityClient,
   slug: string,
 ): Promise<{ post: Post; morePosts: Post[] }> {
-  return await client.fetch(postAndMoreStoriesQuery, { slug })
+  return await client.fetch(postAndMorePostsQuery, { slug })
 }

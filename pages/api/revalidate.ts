@@ -137,14 +137,14 @@ async function queryStaleRoutes(
         staleRoutes.push(`/posts/${(body.slug as any).current}`)
       }
       // Assume that the post document was deleted. Query the datetime used to sort "More stories" to determine if the post was in the list.
-      const moreStories = await client.fetch(
+      const morePosts = await client.fetch(
         groq`count(
           *[_type == "post"] | order(date desc, _updatedAt desc) [0...3] [dateTime(date) > dateTime($date)]
         )`,
         { date: body.date },
       )
       // If there's less than 3 posts with a newer date, we need to revalidate everything
-      if (moreStories < 3) {
+      if (morePosts < 3) {
         return [...new Set([...(await queryAllRoutes(client)), ...staleRoutes])]
       }
       return staleRoutes
@@ -173,14 +173,14 @@ async function queryAllRoutes(client: SanityClient): Promise<StaleRoute[]> {
   return ['/', ...slugs.map((slug) => `/posts/${slug}` as StaleRoute)]
 }
 
-async function mergeWithMoreStories(
+async function mergeWithmorePosts(
   client,
   slugs: string[],
 ): Promise<string[]> {
-  const moreStories = await client.fetch(
+  const morePosts = await client.fetch(
     groq`*[_type == "post"] | order(date desc, _updatedAt desc) [0...3].slug.current`,
   )
-  if (slugs.some((slug) => moreStories.includes(slug))) {
+  if (slugs.some((slug) => morePosts.includes(slug))) {
     const allSlugs = await _queryAllRoutes(client)
     return [...new Set([...slugs, ...allSlugs])]
   }
@@ -200,7 +200,7 @@ async function queryStaleAuthorRoutes(
   )
 
   if (slugs.length > 0) {
-    slugs = await mergeWithMoreStories(client, slugs)
+    slugs = await mergeWithmorePosts(client, slugs)
     return ['/', ...slugs.map((slug) => `/posts/${slug}`)]
   }
 
@@ -216,7 +216,7 @@ async function queryStalePostRoutes(
     { id },
   )
 
-  slugs = await mergeWithMoreStories(client, slugs)
+  slugs = await mergeWithmorePosts(client, slugs)
 
   return ['/', ...slugs.map((slug) => `/posts/${slug}`)]
 }

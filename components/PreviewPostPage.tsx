@@ -1,7 +1,7 @@
 import PostPage, { PostPageProps } from 'components/PostPage'
 import {
   type Post,
-  postAndMoreStoriesQuery,
+  postAndMorePostsQuery,
   Settings,
   settingsQuery,
 } from 'lib/sanity.queries'
@@ -13,7 +13,7 @@ export default function PreviewPostPage(props: PostPageProps) {
     morePosts: Post[]
   }>(
     { post: props.post, morePosts: props.morePosts },
-    postAndMoreStoriesQuery,
+    postAndMorePostsQuery,
     {
       slug: props.post.slug,
     },
