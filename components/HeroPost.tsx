@@ -37,9 +37,6 @@ export default function HeroPost(
         {author && (
           <div className="flex items-center gap-4 mt-6 border-t pt-4">
             <AuthorAvatar name={author.name} picture={author.picture} />
-            <div className="text-sm md:text-base font-medium text-gray-800">
-              {author.name}
-            </div>
           </div>
         )}
       </div>
