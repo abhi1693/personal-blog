@@ -9,9 +9,6 @@ import { height, OpenGraphImage, width } from 'components/OpenGraphImage'
 import { Settings, settingsQuery } from 'lib/sanity.queries'
 
 export default async function og(req: NextRequest, res: NextResponse) {
-  const font = fetch(new URL('public/Inter-Bold.woff', import.meta.url)).then(
-    (res) => res.arrayBuffer(),
-  )
   const { searchParams } = new URL(req.url)
 
   let title = searchParams.get('title')
@@ -29,13 +26,5 @@ export default async function og(req: NextRequest, res: NextResponse) {
   return new ImageResponse(<OpenGraphImage title={title} />, {
     width,
     height,
-    fonts: [
-      {
-        name: 'Inter',
-        data: await font,
-        style: 'normal',
-        weight: 700,
-      },
-    ],
   })
 }
