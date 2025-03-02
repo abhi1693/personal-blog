@@ -5,6 +5,7 @@ import type { Settings } from 'lib/sanity.queries'
 import satori, { type SatoriOptions } from 'satori'
 import styled from 'styled-components'
 import useSWR from 'swr/immutable'
+import {getProdUrl} from "../../components/utils/getProdUrl";
 
 async function init(): Promise<SatoriOptions['fonts']> {
   if (!globalThis?.Intl?.Segmenter) {
@@ -17,9 +18,7 @@ async function init(): Promise<SatoriOptions['fonts']> {
     )
   }
 
-  const fontData = await fetch(
-    new URL('public/Inter-Bold.woff', import.meta.url),
-  ).then((res) => res.arrayBuffer())
+  const fontData = await fetch(`${getProdUrl()}/Inter-Bold.woff`).then((res) => res.arrayBuffer())
 
   return [{ name: 'Inter', data: fontData, style: 'normal', weight: 700 }]
 }
