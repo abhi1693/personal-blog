@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import { ReactNode } from 'react'
 
-import { getProdUrl } from './utils/getProdUrl'
+import { getBaseUrl } from './utils/getBaseUrl'
 
 interface MetaHeadProps {
   title: string
@@ -15,8 +15,8 @@ interface MetaHeadProps {
 export default function MetaHead({
   title,
   description,
-  imageUrl = `${getProdUrl()}/api/og?${new URLSearchParams({ title: title })}`,
-  url = getProdUrl(),
+  imageUrl = `${getBaseUrl()}/api/og?${new URLSearchParams({ title: title })}`,
+  url = getBaseUrl(),
   keywords = [],
   children,
 }: MetaHeadProps) {

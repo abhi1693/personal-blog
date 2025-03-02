@@ -3,7 +3,7 @@ import { Post, Settings } from 'lib/sanity.queries'
 
 import MetaHead from './MetaHead'
 import PostSchemaMarkup from './PostSchemaMarkup'
-import { getProdUrl } from './utils/getProdUrl'
+import { getBaseUrl } from './utils/getBaseUrl'
 
 export interface PostPageHeadProps {
   settings: Settings
@@ -16,7 +16,7 @@ export default function PostPageHead({ settings, post }: PostPageHeadProps) {
     .height(627)
     .fit('fill')
     .url()
-  const postUrl = `${getProdUrl()}/posts/${post.slug}`
+  const postUrl = `${getBaseUrl()}/posts/${post.slug}`
 
   return (
     <MetaHead

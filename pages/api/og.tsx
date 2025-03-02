@@ -8,10 +8,10 @@ export const config = { runtime: 'edge' }
 import { height, OpenGraphImage, width } from 'components/OpenGraphImage'
 import { Settings, settingsQuery } from 'lib/sanity.queries'
 
-import { getProdUrl } from '../../components/utils/getProdUrl'
+import { getBaseUrl } from '../../components/utils/getBaseUrl'
 
 export default async function og(req: NextRequest, res: NextResponse) {
-  const font = fetch(`${getProdUrl()}/Inter-Bold.woff`).then((res) =>
+  const font = fetch(`${getBaseUrl()}/Inter-Bold.woff`).then((res) =>
     res.arrayBuffer(),
   )
   const { searchParams } = new URL(req.url)

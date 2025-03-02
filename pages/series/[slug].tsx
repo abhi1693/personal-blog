@@ -6,7 +6,7 @@ import Breadcrumbs from '../../components/Breadcrumbs'
 import SeriesHead from '../../components/SeriesHead'
 import SeriesHeader from '../../components/SeriesHeader'
 import SeriesPostGrid from '../../components/SeriesPostGrid'
-import { getProdUrl } from '../../components/utils/getProdUrl'
+import { getBaseUrl } from '../../components/utils/getBaseUrl'
 import { getAllSeries, getSeriesBySlug } from '../../lib/sanity.client'
 import { urlForImage } from '../../lib/sanity.image'
 
@@ -32,7 +32,7 @@ export default function SeriesPage({ series }: SeriesPageProps) {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const baseUrl = getProdUrl()
+      const baseUrl = getBaseUrl()
       const url = `${baseUrl}${window.location.pathname}`
       setCurrentUrl(url)
     }

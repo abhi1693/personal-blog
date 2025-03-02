@@ -1,4 +1,4 @@
-export const getProdUrl = (): string => {
+export const getBaseUrl = (): string => {
   const prodUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
   const vercelUrl = process.env.VERCEL_URL
 

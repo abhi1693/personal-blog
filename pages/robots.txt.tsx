@@ -1,6 +1,6 @@
-import { getProdUrl } from '../components/utils/getProdUrl'
+import { getBaseUrl } from '../components/utils/getBaseUrl'
 
-const BASE_URL = getProdUrl()
+const BASE_URL = getBaseUrl()
 
 const robotsTxt = `User-agent: *
 Disallow: /studio

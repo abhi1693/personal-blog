@@ -5,7 +5,7 @@ import type { Settings } from 'lib/sanity.queries'
 import satori, { type SatoriOptions } from 'satori'
 import styled from 'styled-components'
 import useSWR from 'swr/immutable'
-import { getProdUrl } from '../../components/utils/getProdUrl'
+import { getBaseUrl } from '../../components/utils/getBaseUrl'
 
 async function init(): Promise<SatoriOptions['fonts']> {
   if (!globalThis?.Intl?.Segmenter) {

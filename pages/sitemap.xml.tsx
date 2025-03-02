@@ -1,6 +1,6 @@
 import { getAllPosts, getClient } from 'lib/sanity.client'
 
-import { getProdUrl } from '../components/utils/getProdUrl'
+import { getBaseUrl } from '../components/utils/getBaseUrl'
 
 type SitemapLocation = {
   url: string
@@ -25,7 +25,7 @@ const defaultUrls: SitemapLocation[] = [
   },
 ]
 
-const BASE_URL = getProdUrl()
+const BASE_URL = getBaseUrl()
 
 const createSitemap = (locations: SitemapLocation[]) => {
   return `<?xml version="1.0" encoding="UTF-8"?>
