@@ -17,7 +17,7 @@ export default function PostPageHead({ settings, post }: PostPageHeadProps) {
   )
   const description = post.excerpt || 'Read the latest blog post.'
   const imageUrl = post.coverImage?.asset?._ref
-    ? urlForImage(post.coverImage).width(1200).height(627).fit('crop').url()
+    ? urlForImage(post.coverImage).width(1200).height(627).fit('fill').url()
     : `${getProdUrl()}/api/og?${new URLSearchParams({ title: settings.ogImage.title })}`
   const postUrl = `${getProdUrl()}/posts/${post.slug}`
 
