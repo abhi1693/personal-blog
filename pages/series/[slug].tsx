@@ -1,5 +1,6 @@
 import { GetStaticPaths, GetStaticProps } from 'next'
 import {toPlainText} from "next-sanity";
+import {useEffect, useState} from "react";
 
 import Breadcrumbs from '../../components/Breadcrumbs'
 import SeriesHead from '../../components/SeriesHead'
@@ -26,8 +27,16 @@ interface SeriesPageProps {
 }
 
 export default function SeriesPage({ series }: SeriesPageProps) {
-  const seriesUrl = typeof window !== 'undefined' ? window.location.href : ''
   const imageUrl = urlForImage(series.coverImage.asset._ref).url()
+  const [currentUrl, setCurrentUrl] = useState('')
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const baseUrl = getProdUrl()
+      const url = `${baseUrl}${window.location.pathname}`
+      setCurrentUrl(url)
+    }
+  }, [])
 
   return (
     <>
@@ -35,7 +44,7 @@ export default function SeriesPage({ series }: SeriesPageProps) {
         title={series.title}
         description={toPlainText(series.description)}
         imageUrl={imageUrl}
-        url={seriesUrl}
+        url={currentUrl}
       />
 
       <div className="container mx-auto px-4 py-8">
@@ -48,7 +57,7 @@ export default function SeriesPage({ series }: SeriesPageProps) {
         <SeriesHeader
           title={series.title}
           postCount={series.posts.length}
-          shareUrl={seriesUrl}
+          shareUrl={currentUrl}
         />
         <SeriesPostGrid posts={series.posts} />
       </div>
