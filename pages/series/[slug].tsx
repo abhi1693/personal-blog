@@ -1,4 +1,5 @@
 import { GetStaticPaths, GetStaticProps } from 'next'
+import {toPlainText} from "next-sanity";
 
 import Breadcrumbs from '../../components/Breadcrumbs'
 import SeriesHead from '../../components/SeriesHead'
@@ -11,7 +12,8 @@ import { urlForImage } from '../../lib/sanity.image'
 interface SeriesPageProps {
   series: {
     title: string
-    description?: string
+    description: any[]
+    coverImage: { asset: { _ref: string } }
     posts: {
       _id: string
       title: string
@@ -25,15 +27,13 @@ interface SeriesPageProps {
 
 export default function SeriesPage({ series }: SeriesPageProps) {
   const seriesUrl = typeof window !== 'undefined' ? window.location.href : ''
-  const imageUrl = series.posts[0]?.coverImage?.asset?._ref
-    ? urlForImage(series.posts[0].coverImage.asset._ref).url()
-    : `${getProdUrl()}/api/og?${new URLSearchParams({ title: series.title })}`
+  const imageUrl = urlForImage(series.coverImage.asset._ref).url()
 
   return (
     <>
       <SeriesHead
         title={series.title}
-        description={series.description}
+        description={toPlainText(series.description)}
         imageUrl={imageUrl}
         url={seriesUrl}
       />
