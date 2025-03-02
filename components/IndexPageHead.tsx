@@ -26,6 +26,10 @@ export default function IndexPageHead({ settings }: IndexPageHeadProps) {
         property="og:image"
         content={`${getProdUrl()}/api/og?${new URLSearchParams({ title: ogImageTitle })}`}
       />
+      <meta property="og:site_name" content={stegaClean(title)} />
+      <meta property="og:title" content={stegaClean(title)} />
+      <meta property="og:description" content={toPlainText(description)} />
+      <meta property="og:url" content={getProdUrl()} />
     </Head>
   )
 }
