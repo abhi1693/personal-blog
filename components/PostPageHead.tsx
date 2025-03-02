@@ -29,6 +29,9 @@ export default function PostPageHead({ settings, post }: PostPageHeadProps) {
       <PostSchemaMarkup post={post} />
 
       <meta property="description" content={description} />
+      {post?.keywords && (
+        <meta property="keywords" content={post.keywords?.join(', ')} />
+      )}
 
       {/* Open Graph Metadata */}
       <meta property="og:site_name" content={settings.title} />

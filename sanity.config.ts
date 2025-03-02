@@ -3,6 +3,7 @@
  * This config is used to set up Sanity Studio that's mounted on the `/pages/studio/[[...index]].tsx` route
  */
 
+import { schemaMarkup } from '@operationnation/sanity-plugin-schema-markup'
 import { codeInput } from '@sanity/code-input'
 import { visionTool } from '@sanity/vision'
 import {
@@ -22,7 +23,6 @@ import authorType from 'schemas/author'
 import categoryType from 'schemas/category'
 import postType from 'schemas/post'
 import settingsType from 'schemas/settings'
-import { schemaMarkup } from '@operationnation/sanity-plugin-schema-markup'
 
 const title =
   process.env.NEXT_PUBLIC_SANITY_PROJECT_TITLE || 'Blog | Abhimanyu Saharan'

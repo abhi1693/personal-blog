@@ -10,6 +10,7 @@ const postFields = groq`
   "slug": slug.current,
   "author": author->{name, picture},
   youtubeEmbed,
+  keywords
 `
 
 export const settingsQuery = groq`*[_type == "settings"][0]`
@@ -61,6 +62,7 @@ export interface Post {
   slug?: string
   content?: any
   youtubeEmbed: YouTubeEmbed
+  keywords?: string[]
 }
 
 export interface Settings {

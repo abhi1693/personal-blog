@@ -135,6 +135,16 @@ export default defineType({
       type: 'reference',
       to: [{ type: authorType.name }],
     }),
+    defineField({
+      name: 'keywords',
+      title: 'Keywords',
+      type: 'array',
+      description: 'SEO keywords to help search engine optimization',
+      of: [{ type: 'string' }],
+      options: {
+        layout: 'tags',
+      },
+    }),
   ],
   preview: {
     select: {
