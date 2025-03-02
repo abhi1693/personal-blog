@@ -59,11 +59,11 @@ export default defineConfig({
     process.env.NODE_ENV !== 'production' &&
       visionTool({ defaultApiVersion: apiVersion }),
   ],
-  releases:{
-    enabled: false
+  releases: {
+    enabled: false,
   },
   scheduledPublishing: {
     enabled: true,
     inputDateTimeFormat: 'dd/MM/yyyy h:mm a',
-  }
+  },
 })

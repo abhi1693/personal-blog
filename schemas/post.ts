@@ -74,6 +74,15 @@ export default defineType({
           title: 'Code Blocks',
           options: {
             languageAlternatives: [
+              { title: 'Bash', value: 'bash', mode: 'sh' },
+              { title: 'Diff', value: 'diff' },
+              { title: 'Django', value: 'django' },
+              { title: 'Dockerfile', value: 'dockerfile' },
+              { title: 'HTTP', value: 'http' },
+              { title: 'JSON', value: 'json' },
+              { title: 'Markdown', value: 'markdown' },
+              { title: 'Plaintext', value: 'plaintext' },
+              { title: 'Python', value: 'python' },
               { title: 'Shell', value: 'shell', mode: 'sh' },
             ],
             withFilename: false,
