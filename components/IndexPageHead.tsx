@@ -4,6 +4,7 @@ import Head from 'next/head'
 import { stegaClean, toPlainText } from 'next-sanity'
 
 import { getProdUrl } from './utils/getProdUrl'
+import WebsiteSchemaMarkup from './WebsiteSchemaMarkup'
 
 export interface IndexPageHeadProps {
   settings: Settings
@@ -18,6 +19,7 @@ export default function IndexPageHead({ settings }: IndexPageHeadProps) {
     <Head>
       <title>{stegaClean(title)}</title>
       <BlogMeta />
+      <WebsiteSchemaMarkup settings={settings} />
 
       {/* Meta Description */}
       <meta

@@ -4,6 +4,7 @@ import { Post, Settings } from 'lib/sanity.queries'
 import Head from 'next/head'
 import { stegaClean } from 'next-sanity'
 
+import PostSchemaMarkup from './PostSchemaMarkup'
 import { getProdUrl } from './utils/getProdUrl'
 
 export interface PostPageHeadProps {
@@ -25,6 +26,7 @@ export default function PostPageHead({ settings, post }: PostPageHeadProps) {
     <Head>
       <title>{title}</title>
       <BlogMeta />
+      <PostSchemaMarkup post={post} />
 
       <meta property="description" content={description} />
 

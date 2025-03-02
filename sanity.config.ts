@@ -22,6 +22,7 @@ import authorType from 'schemas/author'
 import categoryType from 'schemas/category'
 import postType from 'schemas/post'
 import settingsType from 'schemas/settings'
+import { schemaMarkup } from '@operationnation/sanity-plugin-schema-markup'
 
 const title =
   process.env.NEXT_PUBLIC_SANITY_PROJECT_TITLE || 'Blog | Abhimanyu Saharan'
@@ -54,6 +55,7 @@ export default defineConfig({
     // Add an image asset source for Unsplash
     unsplashImageAsset(),
     codeInput(),
+    schemaMarkup(),
     // Vision lets you query your content with GROQ in the studio
     // https://www.sanity.io/docs/the-vision-plugin
     process.env.NODE_ENV !== 'production' &&
