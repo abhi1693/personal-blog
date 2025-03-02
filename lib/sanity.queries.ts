@@ -20,6 +20,38 @@ export const indexQuery = groq`
   ${postFields}
 }`
 
+export const allSeriesQuery = groq`
+*[_type == "series"]{
+  _id,
+  title,
+  "slug": slug.current,
+  description,
+  coverImage
+}
+`
+
+// Get all series slugs for dynamic paths
+export const allSeriesSlugsQuery = groq`
+*[_type == "series" && defined(slug.current)][].slug.current
+`
+
+// Get a single series by slug with related posts
+export const seriesBySlugQuery = groq`
+*[_type == "series" && slug.current == $slug][0]{
+  title,
+  description,
+  coverImage,
+  "posts": *[_type == "post" && references(^._id)]{
+    _id,
+    title,
+    "slug": slug.current,
+    coverImage,
+    excerpt,
+    date
+  }
+}
+`
+
 export const postAndMorePostsQuery = groq`
 {
   "post": *[_type == "post" && slug.current == $slug] | order(_updatedAt desc) [0] {

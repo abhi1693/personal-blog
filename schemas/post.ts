@@ -4,6 +4,7 @@ import { defineField, defineType } from 'sanity'
 
 import authorType from './author'
 import categoryType from './category'
+import seriesType from './series'
 
 /**
  * This file is the schema definition for a post.
@@ -45,6 +46,13 @@ export default defineType({
       title: 'Categories',
       type: 'array',
       of: [{ type: 'reference', to: [{ type: categoryType.name }] }],
+    }),
+    defineField({
+      name: 'series',
+      title: 'Series',
+      type: 'reference',
+      to: [{ type: seriesType.name }],
+      description: 'Optionally assign this post to a series',
     }),
     defineField({
       name: 'youtubeEmbed',

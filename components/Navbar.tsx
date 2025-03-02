@@ -28,6 +28,9 @@ const Navbar: React.FC<NavbarProps> = ({ title, description }) => {
           <Link href="/" className="hover:text-gray-300 transition">
             Home
           </Link>
+          <Link href="/series" className="hover:text-gray-300 transition">
+            Series
+          </Link>
         </div>
 
         {/* Social Links */}

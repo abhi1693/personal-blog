@@ -6,11 +6,14 @@ import {
   useCdn,
 } from 'lib/sanity.api'
 import {
+  allSeriesQuery,
+  allSeriesSlugsQuery,
   indexQuery,
   type Post,
   postAndMorePostsQuery,
   postBySlugQuery,
   postSlugsQuery,
+  seriesBySlugQuery,
   type Settings,
   settingsQuery,
 } from 'lib/sanity.queries'
@@ -48,6 +51,23 @@ export async function getSettings(client: SanityClient): Promise<Settings> {
   return (await client.fetch(settingsQuery)) || {}
 }
 
+// Fetch all series
+export async function getAllSeries() {
+  const client = getClient()
+  return await client.fetch(allSeriesQuery)
+}
+
+// Fetch all series slugs for dynamic routes
+export async function getAllSeriesSlugs() {
+  const client = getClient()
+  return await client.fetch(allSeriesSlugsQuery)
+}
+
+// Fetch a single series by slug with posts
+export async function getSeriesBySlug(slug: string) {
+  const client = getClient()
+  return await client.fetch(seriesBySlugQuery, { slug })
+}
 export async function getAllPosts(client: SanityClient): Promise<Post[]> {
   return (await client.fetch(indexQuery)) || []
 }
