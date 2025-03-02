@@ -61,11 +61,19 @@ export default defineType({
       components: {
         input: OpenGraphInput as any,
       },
+      validation: (rule) => rule.required(),
       fields: [
         defineField({
           name: 'title',
           title: 'Title',
           type: 'string',
+          validation: (rule) => rule.required(),
+        }),
+        defineField({
+          name: 'twitter_handle',
+          title: 'Twitter Handle',
+          type: 'string',
+          validation: (rule) => rule.required(),
         }),
       ],
     }),
