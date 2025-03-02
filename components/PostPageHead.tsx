@@ -26,7 +26,10 @@ export default function PostPageHead({ settings, post }: PostPageHeadProps) {
       <title>{title}</title>
       <BlogMeta />
 
+      <meta property="description" content={description} />
+
       {/* Open Graph Metadata */}
+      <meta property="og:site_name" content={settings.title} />
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
       <meta property="og:image" content={imageUrl} />
@@ -38,6 +41,7 @@ export default function PostPageHead({ settings, post }: PostPageHeadProps) {
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={imageUrl} />
+      <meta name="twitter:site" content={settings.ogImage.twitterHandle} />
     </Head>
   )
 }
