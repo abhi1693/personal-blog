@@ -27,7 +27,9 @@ export default function IndexPageHead({ settings }: IndexPageHeadProps) {
         // More info:
         // https://vercel.com/docs/concepts/projects/environment-variables
         content={`${
-          process.env.VERCEL_PROJECT_PRODUCTION_URL ? 'https://' + process.env.VERCEL_PROJECT_PRODUCTION_URL : ''
+          process.env.VERCEL_PROJECT_PRODUCTION_URL
+            ? 'https://' + process.env.VERCEL_PROJECT_PRODUCTION_URL
+            : ''
         }/api/og?${new URLSearchParams({ title: ogImageTitle })}`}
       />
     </Head>
