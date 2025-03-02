@@ -2,6 +2,7 @@ import { GetStaticPaths,GetStaticProps } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 
+import ShareOptions from '../../components/ShareOptions'
 import { getAllSeries,getSeriesBySlug } from '../../lib/sanity.client'
 import { urlForImage } from '../../lib/sanity.image'
 
@@ -20,12 +21,25 @@ interface SeriesPageProps {
 }
 
 export default function SeriesPage({ series }: SeriesPageProps) {
+  const seriesUrl = typeof window !== 'undefined' ? window.location.href : ''
+
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6 text-center">
-        {series.title} ({series.posts.length}{' '}
-        {series.posts.length === 1 ? 'Post' : 'Posts'})
-      </h1>
+      {/* Breadcrumb Navigation */}
+      <div className="text-sm text-gray-500 mb-2">
+        <Link href="/series" className="hover:underline">
+          Series
+        </Link>
+        <span> / {series.title}</span>
+      </div>
+
+      <div className="flex items-center justify-between mb-4">
+        <h1 className="text-2xl font-bold">
+          {series.title} ({series.posts.length}{' '}
+          {series.posts.length === 1 ? 'Post' : 'Posts'})
+        </h1>
+        <ShareOptions url={seriesUrl} title={series.title} />
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {series.posts.map((post) => (
