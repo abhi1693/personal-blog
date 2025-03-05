@@ -89,9 +89,5 @@ export async function getPostAndMorePosts(
   client: SanityClient,
   slug: string,
 ): Promise<{ post: Post; morePosts: Post[] }> {
-  return await client.fetch(
-    postAndMorePostsQuery,
-    { slug },
-    { cache: 'force-cache' },
-  )
+  return await client.fetch(postAndMorePostsQuery, { slug })
 }
