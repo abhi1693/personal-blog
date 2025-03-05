@@ -21,6 +21,7 @@ export default function HeroPost(
         image={coverImage}
         priority
         alt={title}
+        prefetch
       />
 
       {/* Content Section */}

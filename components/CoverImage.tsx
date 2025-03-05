@@ -1,45 +1,60 @@
-import cn from 'classnames'
 import { urlForImage } from 'lib/sanity.image'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
 
 interface CoverImageProps {
   title: string
   slug?: string
+  alt: string
   image: any
   priority?: boolean
+  prefetch?: boolean
 }
 
-export default function CoverImage(props: CoverImageProps) {
-  const { title, slug, image: source, priority } = props
-  const image = source?.asset?._ref ? (
-    <div
-      className={cn('shadow-small', {
-        'transition-shadow duration-200 hover:shadow-medium': slug,
-      })}
-    >
+export default function CoverImage({
+  title,
+  slug,
+  image: source,
+  priority = false,
+  alt,
+  prefetch = false,
+}: CoverImageProps) {
+  // Ensure image URL is consistent across SSR and CSR
+  const [imageUrl, setImageUrl] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (source?.asset?._ref) {
+      setImageUrl(urlForImage(source).height(1000).width(2000).url())
+    }
+  }, [source])
+
+  if (!imageUrl) {
+    return <div style={{ paddingTop: '50%', backgroundColor: '#ddd' }} />
+  }
+
+  const imageElement = (
+    <div className="shadow-small">
       <Image
         className="h-auto w-full"
         width={2000}
         height={1000}
-        alt=""
-        src={urlForImage(source).height(1000).width(2000).url()}
+        alt={alt}
+        src={imageUrl}
         sizes="100vw"
         priority={priority}
       />
     </div>
-  ) : (
-    <div style={{ paddingTop: '50%', backgroundColor: '#ddd' }} />
   )
 
   return (
     <div className="sm:mx-0">
       {slug ? (
-        <Link href={`/posts/${slug}`} aria-label={title}>
-          {image}
+        <Link href={`/posts/${slug}`} aria-label={title} prefetch={prefetch}>
+          {imageElement}
         </Link>
       ) : (
-        image
+        imageElement
       )}
     </div>
   )
