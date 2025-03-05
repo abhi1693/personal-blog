@@ -13,45 +13,33 @@ export default function HeroPost(
   const { title, coverImage, date, excerpt, author, slug } = props
 
   return (
-    <section className="relative rounded-lg shadow-lg overflow-hidden">
-      {/* Cover Image */}
-      <CoverImage
-        slug={slug}
-        title={title}
-        image={coverImage}
-        priority
-        alt={title}
-        prefetch
-        loading={'eager'}
-      />
+    <Link href={`/posts/${slug}`} prefetch={false} className="block">
+      <section className="relative rounded-lg shadow-lg overflow-hidden transition-transform hover:scale-[1.02] cursor-pointer">
+        {/* Cover Image */}
+        <CoverImage image={coverImage} priority alt={title} loading="eager" />
 
-      {/* Content Section */}
-      <div className="bg-white p-6 md:p-8 lg:p-10 border-t">
-        <h3 className="text-2xl md:text-3xl font-bold text-gray-900 leading-tight">
-          <Link
-            href={`/posts/${slug}`}
-            className="hover:underline"
-            prefetch={false}
-          >
+        {/* Content Section */}
+        <div className="bg-white p-6 md:p-8 lg:p-10 border-t">
+          <h3 className="text-2xl md:text-3xl font-bold text-gray-900 leading-tight">
             {title || 'Untitled'}
-          </Link>
-        </h3>
+          </h3>
 
-        <div className="flex items-center justify-between text-sm md:text-base text-gray-500 mt-2">
-          <Date dateString={date} />
-        </div>
-
-        {excerpt && (
-          <p className="text-sm md:text-lg mt-4 text-gray-700">{excerpt}</p>
-        )}
-
-        {/* Author Section with Better Spacing */}
-        {author && (
-          <div className="flex items-center gap-4 mt-6 border-t pt-4">
-            <AuthorAvatar name={author.name} picture={author.picture} />
+          <div className="flex items-center justify-between text-sm md:text-base text-gray-500 mt-2">
+            <Date dateString={date} />
           </div>
-        )}
-      </div>
-    </section>
+
+          {excerpt && (
+            <p className="text-sm md:text-lg mt-4 text-gray-700">{excerpt}</p>
+          )}
+
+          {/* Author Section with Better Spacing */}
+          {author && (
+            <div className="flex items-center gap-4 mt-6 border-t pt-4">
+              <AuthorAvatar name={author.name} picture={author.picture} />
+            </div>
+          )}
+        </div>
+      </section>
+    </Link>
   )
 }

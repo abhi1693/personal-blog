@@ -1,24 +1,17 @@
 import { urlForImage } from 'lib/sanity.image'
 import Image from 'next/image'
-import Link from 'next/link'
 
 interface CoverImageProps {
-  title: string
-  slug?: string
   alt: string
   image: any
   priority?: boolean
-  prefetch?: boolean
   loading?: 'eager' | 'lazy'
 }
 
 export default function CoverImage({
-  title,
-  slug,
   image: source,
   priority = false,
   alt,
-  prefetch = false,
   loading = 'lazy',
 }: CoverImageProps) {
   if (!source?.asset?._ref) {
@@ -39,7 +32,7 @@ export default function CoverImage({
     .url()
 
   // Reusable Image Component
-  const imageElement = (
+  return (
     <div className="relative w-full" style={{ aspectRatio: '2 / 1' }}>
       <Image
         className="absolute top-0 left-0 w-full h-full"
@@ -54,13 +47,5 @@ export default function CoverImage({
         blurDataURL={priority ? blurUrl : undefined}
       />
     </div>
-  )
-
-  return slug ? (
-    <Link href={`/posts/${slug}`} aria-label={title} prefetch={prefetch}>
-      {imageElement}
-    </Link>
-  ) : (
-    imageElement
   )
 }

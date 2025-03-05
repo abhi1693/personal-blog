@@ -13,12 +13,7 @@ export default function MorePosts({ posts }: { posts: Post[] }) {
         >
           <Link href={`/posts/${post.slug}`} className="block" prefetch={false}>
             {/* Cover Image */}
-            <CoverImage
-              slug={post.slug}
-              title={post.title}
-              image={post.coverImage}
-              alt={post.title}
-            />
+            <CoverImage image={post.coverImage} alt={post.title} />
 
             {/* Content */}
             <div className="p-4">
