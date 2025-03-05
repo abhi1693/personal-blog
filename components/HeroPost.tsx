@@ -22,6 +22,7 @@ export default function HeroPost(
         priority
         alt={title}
         prefetch
+        loading={'eager'}
       />
 
       {/* Content Section */}
