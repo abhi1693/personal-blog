@@ -1,6 +1,7 @@
 import type { YouTubeEmbed as YouTubeEmbedType } from 'lib/sanity.queries'
 
 const extractVideoId = (url: string): string | null => {
+  if (!url) return null
   const regex =
     /(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
   const match = url.match(regex)
@@ -8,6 +9,8 @@ const extractVideoId = (url: string): string | null => {
 }
 
 const YouTubeEmbed: React.FC<YouTubeEmbedType> = ({ url }) => {
+  if (!url) return null
+
   const videoId = extractVideoId(url)
   if (!videoId) return null
 

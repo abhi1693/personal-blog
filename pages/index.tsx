@@ -1,10 +1,14 @@
 import IndexPage from 'components/IndexPage'
-import PreviewIndexPage from 'components/PreviewIndexPage'
 import { readToken } from 'lib/sanity.api'
 import { getAllPosts, getClient, getSettings } from 'lib/sanity.client'
 import { Post, Settings } from 'lib/sanity.queries'
 import { GetStaticProps } from 'next'
+import dynamic from 'next/dynamic'
 import type { SharedPageProps } from 'pages/_app'
+
+const PreviewIndexPage = dynamic(() => import('components/PreviewIndexPage'), {
+  ssr: false,
+})
 
 interface PageProps extends SharedPageProps {
   posts: Post[]

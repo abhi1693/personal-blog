@@ -1,13 +1,17 @@
 import Container from 'components/BlogContainer'
 import Layout from 'components/BlogLayout'
 import MorePosts from 'components/MorePosts'
-import PostBody from 'components/PostBody'
-import PostHeader from 'components/PostHeader'
 import PostPageHead from 'components/PostPageHead'
 import PostTitle from 'components/PostTitle'
 import SectionSeparator from 'components/SectionSeparator'
 import type { Post, Settings } from 'lib/sanity.queries'
+import dynamic from 'next/dynamic'
 import Error from 'next/error'
+
+const PostHeader = dynamic(() => import('components/PostHeader'), {
+  ssr: false,
+})
+const PostBody = dynamic(() => import('components/PostBody'), { ssr: false })
 
 export interface PostPageProps {
   preview?: boolean

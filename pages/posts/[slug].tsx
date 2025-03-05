@@ -52,29 +52,28 @@ export const getStaticProps: GetStaticProps<PageProps, Query> = async (ctx) => {
   const { draftMode = false, params = {} } = ctx
   const client = getClient(draftMode ? { token: readToken } : undefined)
 
-  const [settings, { post, morePosts }] = await Promise.all([
+  const [settings, postData] = await Promise.all([
     getSettings(client),
     getPostAndMorePosts(client, params.slug),
   ])
 
-  if (!post) {
-    return {
-      notFound: true,
-    }
+  if (!postData?.post) {
+    return { notFound: true }
   }
 
   const baseUrl = getBaseUrl()
-  const postUrl = `${baseUrl}/posts/${post.slug}`
+  const postUrl = `${baseUrl}/posts/${postData.post.slug}`
 
   return {
     props: {
-      post,
-      morePosts,
+      post: postData.post,
+      morePosts: postData.morePosts || [],
       settings,
       draftMode,
       token: draftMode ? readToken : '',
       postUrl,
     },
+    revalidate: 60,
   }
 }
 

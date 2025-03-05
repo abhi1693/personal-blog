@@ -2,8 +2,10 @@ import Container from 'components/BlogContainer'
 import Layout from 'components/BlogLayout'
 import HeroPost from 'components/HeroPost'
 import IndexPageHead from 'components/IndexPageHead'
-import MorePosts from 'components/MorePosts'
 import type { Post, Settings } from 'lib/sanity.queries'
+import dynamic from 'next/dynamic'
+
+const MorePosts = dynamic(() => import('components/MorePosts'), { ssr: false })
 
 export interface IndexPageProps {
   preview?: boolean

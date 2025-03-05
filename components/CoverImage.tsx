@@ -10,6 +10,7 @@ interface CoverImageProps {
   image: any
   priority?: boolean
   prefetch?: boolean
+  loading?: 'eager' | 'lazy'
 }
 
 export default function CoverImage({
@@ -19,13 +20,16 @@ export default function CoverImage({
   priority = false,
   alt,
   prefetch = false,
+  loading = 'lazy',
 }: CoverImageProps) {
   // Ensure image URL is consistent across SSR and CSR
   const [imageUrl, setImageUrl] = useState<string | null>(null)
 
   useEffect(() => {
     if (source?.asset?._ref) {
-      setImageUrl(urlForImage(source).height(1000).width(2000).url())
+      setImageUrl(
+        urlForImage(source).format('webp').height(1000).width(2000).url(),
+      )
     }
   }, [source])
 
@@ -43,6 +47,8 @@ export default function CoverImage({
         src={imageUrl}
         sizes="100vw"
         priority={priority}
+        placeholder={priority ? 'blur' : 'empty'}
+        loading={loading}
       />
     </div>
   )
