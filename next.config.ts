@@ -5,6 +5,7 @@ const config: NextConfig = {
     remotePatterns: [
       { hostname: 'cdn.sanity.io' },
       { hostname: 'picsum.photos' },
+      { hostname: 'img.youtube.com' },
     ],
   },
   typescript: {

@@ -5,13 +5,10 @@ import PostPageHead from 'components/PostPageHead'
 import PostTitle from 'components/PostTitle'
 import SectionSeparator from 'components/SectionSeparator'
 import type { Post, Settings } from 'lib/sanity.queries'
-import dynamic from 'next/dynamic'
 import Error from 'next/error'
 
-const PostHeader = dynamic(() => import('components/PostHeader'), {
-  ssr: false,
-})
-const PostBody = dynamic(() => import('components/PostBody'), { ssr: false })
+import PostBody from './PostBody'
+import PostHeader from './PostHeader'
 
 export interface PostPageProps {
   preview?: boolean
@@ -57,6 +54,7 @@ export default function PostPage(props: PostPageProps) {
                   author={post.author}
                   youtubeEmbed={post.youtubeEmbed}
                   postUrl={postUrl}
+                  coverImage={post.coverImage}
                 />
                 <PostBody content={post.content} />
               </article>

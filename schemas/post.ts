@@ -142,6 +142,7 @@ export default defineType({
       title: 'Author',
       type: 'reference',
       to: [{ type: authorType.name }],
+      validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'keywords',

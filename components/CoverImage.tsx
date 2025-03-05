@@ -45,6 +45,7 @@ export default function CoverImage({
         placeholder={priority ? 'blur' : 'empty'}
         loading={loading}
         blurDataURL={priority ? blurUrl : undefined}
+        fetchPriority={priority ? 'high' : 'low'}
       />
     </div>
   )
