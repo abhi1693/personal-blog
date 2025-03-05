@@ -28,7 +28,11 @@ export default function HeroPost(
       {/* Content Section */}
       <div className="bg-white p-6 md:p-8 lg:p-10 border-t">
         <h3 className="text-2xl md:text-3xl font-bold text-gray-900 leading-tight">
-          <Link href={`/posts/${slug}`} className="hover:underline">
+          <Link
+            href={`/posts/${slug}`}
+            className="hover:underline"
+            prefetch={false}
+          >
             {title || 'Untitled'}
           </Link>
         </h3>

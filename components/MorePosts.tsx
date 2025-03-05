@@ -11,7 +11,7 @@ export default function MorePosts({ posts }: { posts: Post[] }) {
           key={post.slug}
           className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition"
         >
-          <Link href={`/posts/${post.slug}`} className="block">
+          <Link href={`/posts/${post.slug}`} className="block" prefetch={false}>
             {/* Cover Image */}
             <CoverImage
               slug={post.slug}

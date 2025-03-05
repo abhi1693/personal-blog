@@ -25,7 +25,11 @@ export default function PostPreview({
         />
       </div>
       <h3 className="mb-3 text-3xl leading-snug text-balance">
-        <Link href={`/posts/${slug}`} className="hover:underline">
+        <Link
+          href={`/posts/${slug}`}
+          className="hover:underline"
+          prefetch={false}
+        >
           {title}
         </Link>
       </h3>

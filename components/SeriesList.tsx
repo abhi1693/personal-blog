@@ -18,7 +18,12 @@ export default function SeriesList({ series }: { series: Series[] }) {
       <h1 className="text-3xl font-bold mb-6 text-center">All Series</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {series.map((s) => (
-          <Link key={s._id} href={`/series/${s.slug}`} className="block group">
+          <Link
+            key={s._id}
+            href={`/series/${s.slug}`}
+            className="block group"
+            prefetch={false}
+          >
             <div className="bg-white shadow-lg rounded-lg overflow-hidden border border-gray-200 transition transform hover:scale-105 hover:shadow-xl">
               {/* Image Section with Gradient Overlay */}
               <div className="relative">

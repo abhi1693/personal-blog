@@ -11,7 +11,11 @@ export default function Breadcrumbs({ links }: BreadcrumbsProps) {
         {links.map((link, index) => (
           <li key={index} className="flex items-center">
             {link.href ? (
-              <Link href={link.href} className="hover:underline">
+              <Link
+                href={link.href}
+                className="hover:underline"
+                prefetch={false}
+              >
                 {link.label}
               </Link>
             ) : (

@@ -22,6 +22,7 @@ export default function SeriesPostGrid({ posts }: SeriesPostGridProps) {
           key={post._id}
           href={`/posts/${post.slug}`}
           className="block group"
+          prefetch={false}
         >
           <div className="bg-white shadow-lg rounded-lg overflow-hidden border border-gray-200 transition transform hover:scale-105 hover:shadow-xl">
             {post.coverImage?.asset?._ref && (
