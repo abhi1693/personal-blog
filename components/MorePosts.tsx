@@ -17,6 +17,7 @@ export default function MorePosts({ posts }: { posts: Post[] }) {
               slug={post.slug}
               title={post.title}
               image={post.coverImage}
+              alt={post.title}
             />
 
             {/* Content */}

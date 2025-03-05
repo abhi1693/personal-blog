@@ -15,7 +15,13 @@ export default function HeroPost(
   return (
     <section className="relative rounded-lg shadow-lg overflow-hidden">
       {/* Cover Image */}
-      <CoverImage slug={slug} title={title} image={coverImage} priority />
+      <CoverImage
+        slug={slug}
+        title={title}
+        image={coverImage}
+        priority
+        alt={title}
+      />
 
       {/* Content Section */}
       <div className="bg-white p-6 md:p-8 lg:p-10 border-t">

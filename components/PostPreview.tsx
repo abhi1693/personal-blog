@@ -21,6 +21,7 @@ export default function PostPreview({
           title={title}
           image={coverImage}
           priority={false}
+          alt={title}
         />
       </div>
       <h3 className="mb-3 text-3xl leading-snug text-balance">
