@@ -6,8 +6,13 @@ import SeriesHead from '../../components/SeriesHead'
 import SeriesHeader from '../../components/SeriesHeader'
 import SeriesPostGrid from '../../components/SeriesPostGrid'
 import { getBaseUrl } from '../../components/utils/getBaseUrl'
-import { getAllSeries, getSeriesBySlug } from '../../lib/sanity.client'
+import {
+  getAllSeries,
+  getSeriesBySlug,
+  getSettings,
+} from '../../lib/sanity.client'
 import { urlForImage } from '../../lib/sanity.image'
+import { Settings } from '../../lib/sanity.queries'
 
 interface SeriesPageProps {
   series: {
@@ -24,9 +29,14 @@ interface SeriesPageProps {
     }[]
   }
   seriesUrl: string
+  settings: Settings
 }
 
-export default function SeriesPage({ series, seriesUrl }: SeriesPageProps) {
+export default function SeriesPage({
+  series,
+  seriesUrl,
+  settings,
+}: SeriesPageProps) {
   const imageUrl = urlForImage(series.coverImage.asset._ref).url()
 
   return (
@@ -36,6 +46,7 @@ export default function SeriesPage({ series, seriesUrl }: SeriesPageProps) {
         description={toPlainText(series.description)}
         imageUrl={imageUrl}
         url={seriesUrl}
+        settings={settings}
       />
 
       <div className="container mx-auto px-4 py-8">
@@ -67,6 +78,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const series = await getSeriesBySlug(params?.slug as string)
   const baseUrl = getBaseUrl()
+  const settings = await getSettings()
   const seriesUrl = `${baseUrl}/series/${params?.slug}`
-  return { props: { series, seriesUrl }, revalidate: 10 }
+  return { props: { series, seriesUrl, settings }, revalidate: 10 }
 }

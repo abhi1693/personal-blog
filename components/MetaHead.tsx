@@ -5,6 +5,7 @@ import { getBaseUrl } from './utils/getBaseUrl'
 
 interface MetaHeadProps {
   title: string
+  site_name: string
   description: string
   imageUrl?: string
   url?: string
@@ -14,12 +15,17 @@ interface MetaHeadProps {
 
 export default function MetaHead({
   title,
+  site_name,
   description,
-  imageUrl = `${getBaseUrl()}/api/og?${new URLSearchParams({ title: title })}`,
+  imageUrl,
   url = getBaseUrl(),
   keywords = [],
   children,
 }: MetaHeadProps) {
+  if (!imageUrl) {
+    imageUrl = `${getBaseUrl()}/api/og?${new URLSearchParams({ title: title })}`
+  }
+
   return (
     <Head>
       <title>{title}</title>
@@ -55,11 +61,13 @@ export default function MetaHead({
       )}
 
       {/* Open Graph Meta Tags */}
-      <meta property="og:site_name" content={title} />
+      <meta property="og:site_name" content={site_name} />
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
       <meta property="og:image" content={imageUrl} />
       <meta property="og:url" content={url} />
+      <meta property="og:type" content="website" />
+      <meta property="og:logo" content="/favicon/favicon.ico" />
 
       {/* Twitter Meta Tags */}
       <meta name="twitter:card" content="summary_large_image" />

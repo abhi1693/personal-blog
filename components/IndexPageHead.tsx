@@ -17,6 +17,7 @@ export default function IndexPageHead({ settings }: IndexPageHeadProps) {
   return (
     <MetaHead
       title={stegaClean(title)}
+      site_name={stegaClean(settings.title)}
       description={toPlainText(description)}
       imageUrl={imageUrl}
     >

@@ -1,5 +1,6 @@
 import { urlForImage } from 'lib/sanity.image'
 import { Post, Settings } from 'lib/sanity.queries'
+import { stegaClean } from 'next-sanity'
 
 import MetaHead from './MetaHead'
 import PostSchemaMarkup from './PostSchemaMarkup'
@@ -21,6 +22,7 @@ export default function PostPageHead({ settings, post }: PostPageHeadProps) {
   return (
     <MetaHead
       title={post.title}
+      site_name={stegaClean(settings.title)}
       description={post.excerpt}
       imageUrl={imageUrl}
       url={postUrl}
