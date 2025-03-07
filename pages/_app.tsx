@@ -6,6 +6,7 @@ import dynamic from 'next/dynamic'
 import { stegaClean, toPlainText } from 'next-sanity'
 import { useEffect, useState } from 'react'
 
+import AnalyticsClient from '../components/AnalyticsClient'
 import Layout from '../components/Layout'
 import MetaHead from '../components/MetaHead'
 import { getClient, getSettings } from '../lib/sanity.client'
@@ -40,13 +41,14 @@ export default function App({
   const content = (
     <Layout title={title} description={description}>
       <Component {...pageProps} />
+      <AnalyticsClient />
     </Layout>
   )
 
   return (
     <>
       {title && description && (
-        <MetaHead title={title} description={description} />
+        <MetaHead title={title} description={description} site_name={title} />
       )}
       {draftMode ? (
         <PreviewProvider token={token}>{content}</PreviewProvider>

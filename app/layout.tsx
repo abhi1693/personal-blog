@@ -1,7 +1,5 @@
 import '../tailwind.css'
 
-import AnalyticsClient from 'components/AnalyticsClient'
-
 export default function RootLayout({
   children,
 }: {
@@ -10,7 +8,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>{children}</body>
-      <AnalyticsClient />
     </html>
   )
 }
