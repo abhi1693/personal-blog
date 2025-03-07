@@ -58,7 +58,6 @@ export default defineType({
       name: 'youtubeEmbed',
       title: 'YouTube Embed',
       type: 'object',
-      validation: (Rule) => Rule.required(),
       fields: [
         defineField({
           name: 'url',
@@ -130,6 +129,7 @@ export default defineType({
       options: {
         hotspot: true,
       },
+      validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'date',

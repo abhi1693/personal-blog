@@ -93,7 +93,7 @@ export interface Post {
   author?: Author
   slug?: string
   content?: any
-  youtubeEmbed: YouTubeEmbed
+  youtubeEmbed?: YouTubeEmbed
   keywords?: string[]
 }
 
