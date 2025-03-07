@@ -20,7 +20,7 @@ export default function AnalyticsClient() {
 
   return (
     <>
-      <Analytics beforeSend={handleAnalyticsBeforeSend} />
+      <Analytics />
       <SpeedInsights beforeSend={handleSpeedInsightsBeforeSend} />
     </>
   )
