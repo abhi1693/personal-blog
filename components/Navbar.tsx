@@ -14,7 +14,13 @@ const Navbar: React.FC<NavbarProps> = ({ title, description }) => {
       <div className="container mx-auto flex justify-between items-center">
         {/* Logo and Title */}
         <Link href="/" className="flex items-center gap-2" prefetch={false}>
-          <Image src="/favicon/logo.png" alt="Logo" width={40} height={40} />
+          <Image
+            src="/favicon/logo.png"
+            alt="Logo"
+            width={40}
+            height={40}
+            priority
+          />
           <div>
             <span className="text-xl font-bold">{title}</span>
             <p className="text-sm text-gray-400">

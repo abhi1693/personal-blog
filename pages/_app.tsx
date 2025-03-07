@@ -6,7 +6,6 @@ import dynamic from 'next/dynamic'
 import { stegaClean, toPlainText } from 'next-sanity'
 import { useEffect, useState } from 'react'
 
-import AnalyticsClient from '../components/AnalyticsClient'
 import Layout from '../components/Layout'
 import MetaHead from '../components/MetaHead'
 import { getClient, getSettings } from '../lib/sanity.client'
@@ -17,6 +16,10 @@ export interface SharedPageProps {
   token: string
 }
 
+const AnalyticsClient = dynamic(() => import('../components/AnalyticsClient'), {
+  ssr: false,
+  loading: () => null,
+})
 const PreviewProvider = dynamic(() => import('components/PreviewProvider'))
 
 export default function App({
