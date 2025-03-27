@@ -1,6 +1,6 @@
 import { fetchSanityLive } from '@/sanity/lib/fetch'
 import { groq } from 'next-sanity'
-import { BLOG_DIR } from '@/lib/env'
+import { BASE_URL, BLOG_DIR } from '@/lib/env'
 import resolveUrl from '@/lib/resolveUrl'
 import { Feed } from 'feed'
 import { escapeHTML, toHTML } from '@portabletext/to-html'
@@ -48,7 +48,7 @@ export async function GET() {
 		link: url,
 		id: url,
 		copyright,
-		favicon: process.env.NEXT_PUBLIC_BASE_URL + '/favicon.ico',
+		favicon: BASE_URL + '/favicon.ico',
 		language: DEFAULT_LANG,
 		generator: 'https://sanitypress.dev',
 	})

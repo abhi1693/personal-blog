@@ -1,8 +1,9 @@
 import { getSite } from '@/sanity/lib/queries'
 import { ImageResponse } from 'next/og'
 import type { NextRequest } from 'next/server'
+import { BASE_URL } from '@/lib/env'
 
-const domain = process.env.NEXT_PUBLIC_BASE_URL?.replace(/https?:\/\//, '')
+const domain = BASE_URL?.replace(/https?:\/\//, '')
 
 const color = '#13141b'
 
