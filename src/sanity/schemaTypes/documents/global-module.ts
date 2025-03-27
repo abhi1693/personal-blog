@@ -14,7 +14,7 @@ export default defineType({
 			type: 'string',
 			description:
 				'URL path to add modules. Set to "*" for all pages. A trailing slash "/" excludes the parent path.',
-			placeholder: 'e.g. *, blog/, foo/bar/, etc.',
+			placeholder: 'e.g. *, posts/, foo/bar/, etc.',
 			validation: (Rule) => Rule.regex(/^(\*|[a-z0-9-_/]+\/?)$/),
 		}),
 		defineField({
@@ -25,7 +25,7 @@ export default defineType({
 			of: [
 				defineArrayMember({
 					type: 'string',
-					placeholder: 'e.g. blog/, foo/bar/, etc.',
+					placeholder: 'e.g. posts/, foo/bar/, etc.',
 					validation: (Rule) => Rule.required(),
 				}),
 			],

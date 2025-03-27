@@ -13,7 +13,7 @@ export default defineType({
 		defineField({
 			name: 'source',
 			description: 'Redirect from',
-			placeholder: 'e.g. /old-path, /old-blog/:slug',
+			placeholder: 'e.g. /old-path, /old-posts/:slug',
 			type: 'string',
 			validation: (Rule) => Rule.required().regex(regex),
 		}),

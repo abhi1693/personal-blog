@@ -18,7 +18,7 @@ export default function Paginated({
 	function scrollToList() {
 		if (typeof window !== 'undefined')
 			document
-				.querySelector('#blog-list')
+				.querySelector('#posts-list')
 				?.scrollIntoView({ behavior: 'smooth' })
 	}
 

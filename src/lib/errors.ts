@@ -1,3 +1,5 @@
+import { BLOG_DIR } from '@/lib/env'
+
 export default {
 	missingSiteSettings:
 		'Missing Site settings: 🫠 Your website might be having an identity crisis...\n\n' +
@@ -11,7 +13,8 @@ export default {
 
 	missingBlogTemplate:
 		'Missing blog template: 👻 Oof, your blog posts are ghosting...\n\n' +
-		'Solution: Add a new Global module document in your Sanity Studio with the path "blog/".\n' +
+		`Solution: Add a new Global module document in your Sanity Studio with the path "${BLOG_DIR}/".
+` +
 		'Also add the Blog post content module to display blog post content.\n\n' +
 		'💁‍♂️ https://sanitypress.dev/docs/errors#missing-blog-template',
 }

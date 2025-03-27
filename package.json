@@ -2,10 +2,9 @@
   "name": "personal-blog",
   "version": "0.1.0",
   "description": "An impressive Sanity.io starter template with Next.js 15 and Tailwind 4",
-  "author": "nuotsu <mitchell@nuotsu.dev> (https://nuotsu.dev)",
-  "license": "ISC",
+  "author": "Abhimanyu Saharan <desk.abhimanyu@gmail.com> (https://blog.abhimanyu-saharan.com)",
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
     "build": "npm run manifest && next build",
     "start": "next start",
     "lint": "next lint",

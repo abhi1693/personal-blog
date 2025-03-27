@@ -31,21 +31,11 @@ declare global {
 		interface PageBase extends SanityDocument {
 			title?: string
 			metadata: Metadata
-			readonly language?: string
 		}
 
 		interface Page extends PageBase {
 			readonly _type: 'page'
 			modules?: Module[]
-		}
-
-		interface Translation {
-			slug: string
-			translations?: {
-				slug: string
-				slugBlogAlt?: string
-				language: string
-			}[]
 		}
 
 		interface GlobalModule extends SanityDocument {
@@ -129,7 +119,6 @@ declare global {
 
 		interface Code {
 			readonly _type: 'code'
-			language: string
 			code: string
 			filename?: string
 			highlightedLines?: number[]

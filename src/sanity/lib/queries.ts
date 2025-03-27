@@ -111,13 +111,6 @@ export const GLOBAL_MODULE_PATH_QUERY = groq`
 	)
 `
 
-export const TRANSLATIONS_QUERY = groq`
-	'translations': *[_type == 'translation.metadata' && references(^._id)].translations[].value->{
-		'slug': metadata.slug.current,
-		language
-	}
-`
-
 export async function getSite() {
 	const site = await fetchSanityLive<Sanity.Site>({
 		query: groq`
@@ -135,27 +128,4 @@ export async function getSite() {
 	if (!site) throw new Error(errors.missingSiteSettings)
 
 	return site
-}
-
-export async function getTranslations() {
-	return await fetchSanityLive<Sanity.Translation[]>({
-		query: groq`*[_type in ['page', 'blog.post'] && defined(language)]{
-			'slug': '/' + select(
-				_type == 'blog.post' => '${BLOG_DIR}/' + metadata.slug.current,
-				metadata.slug.current != 'index' => metadata.slug.current,
-				''
-			),
-			'translations': *[_type == 'translation.metadata' && references(^._id)].translations[].value->{
-				'slug': '/' + select(
-					_type == 'blog.post' => '${BLOG_DIR}/' + language + '/' + metadata.slug.current,
-					metadata.slug.current != 'index' => language + '/' + metadata.slug.current,
-					language
-				),
-				_type == 'blog.post' => {
-					'slugBlogAlt': '/' + language + '/${BLOG_DIR}/' + metadata.slug.current
-				},
-				language
-			}
-		}`,
-	})
 }

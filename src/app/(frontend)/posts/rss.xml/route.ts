@@ -5,7 +5,6 @@ import resolveUrl from '@/lib/resolveUrl'
 import { Feed } from 'feed'
 import { escapeHTML, toHTML } from '@portabletext/to-html'
 import { urlFor } from '@/sanity/lib/image'
-import { DEFAULT_LANG } from '@/lib/i18n'
 
 export async function GET() {
 	const { blog, posts, copyright } = await fetchSanityLive<{
@@ -27,7 +26,6 @@ export async function GET() {
 				authors[]->,
 				metadata,
 				'image': metadata.image.asset->url,
-				language,
 			},
 			'copyright': pt::text(*[_type == 'site'][0].copyright)
 		}`,
@@ -49,12 +47,11 @@ export async function GET() {
 		id: url,
 		copyright,
 		favicon: BASE_URL + '/favicon.ico',
-		language: DEFAULT_LANG,
 		generator: 'https://sanitypress.dev',
 	})
 
 	posts.map((post) => {
-		const url = resolveUrl(post, { language: post.language })
+		const url = resolveUrl(post)
 
 		return feed.addItem({
 			title: escapeHTML(post.metadata.title),

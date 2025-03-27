@@ -5,4 +5,4 @@ export const vercelPreview = process.env.VERCEL_ENV === 'preview'
 
 export const BASE_URL = baseUrl()
 
-export const BLOG_DIR = 'blog'
+export const BLOG_DIR = 'posts'

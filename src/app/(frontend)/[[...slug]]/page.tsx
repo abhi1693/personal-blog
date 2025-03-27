@@ -7,9 +7,7 @@ import { fetchSanityLive } from '@/sanity/lib/fetch'
 import {
 	MODULES_QUERY,
 	GLOBAL_MODULE_PATH_QUERY,
-	TRANSLATIONS_QUERY,
 } from '@/sanity/lib/queries'
-import { languages } from '@/lib/i18n'
 import errors from '@/lib/errors'
 
 export default async function Page({ params }: Props) {
@@ -39,13 +37,12 @@ export async function generateStaticParams() {
 }
 
 async function getPage(params: Params) {
-	const { slug, lang } = processSlug(params)
+	const { slug } = processSlug(params)
 
 	const page = await fetchSanityLive<Sanity.Page>({
 		query: groq`*[
 			_type == 'page' &&
 			metadata.slug.current == $slug
-			${lang ? `&& language == '${lang}'` : ''}
 		][0]{
 			...,
 			'modules': (
@@ -64,8 +61,7 @@ async function getPage(params: Params) {
 			metadata {
 				...,
 				'ogimage': image.asset->url + '?w=1200'
-			},
-			${TRANSLATIONS_QUERY},
+			}
 		}`,
 		params: { slug },
 	})
@@ -82,27 +78,11 @@ type Props = {
 }
 
 function processSlug(params: Params) {
-	const lang =
-		params.slug && languages.includes(params.slug[0])
-			? params.slug[0]
-			: undefined
-
 	if (params.slug === undefined)
 		return {
 			slug: 'index',
-			lang,
 		}
 
 	const slug = params.slug.join('/')
-
-	if (lang) {
-		const processed = slug.replace(new RegExp(`^${lang}/?`), '')
-
-		return {
-			slug: processed === '' ? 'index' : processed,
-			lang,
-		}
-	}
-
 	return { slug }
 }
