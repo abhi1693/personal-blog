@@ -57,10 +57,4 @@ export default {
 	env: {
 		SC_DISABLE_SPEEDY: 'false',
 	},
-
-	// logging: {
-	// 	fetches: {
-	// 		fullUrl: true,
-	// 	},
-	// },
 } satisfies NextConfig
