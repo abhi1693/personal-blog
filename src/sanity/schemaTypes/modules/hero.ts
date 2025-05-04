@@ -1,6 +1,6 @@
-import { defineField, defineType } from 'sanity'
-import { TfiLayoutCtaCenter } from 'react-icons/tfi'
 import { reputationBlock } from '../misc/reputation'
+import { TfiLayoutCtaCenter } from 'react-icons/tfi'
+import { defineField, defineType } from 'sanity'
 import { alignItems, textAlign } from 'sanitypress-utils'
 import { getBlockText } from 'sanitypress-utils'
 

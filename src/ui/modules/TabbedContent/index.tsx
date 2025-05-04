@@ -1,10 +1,10 @@
-import Pretitle from '@/ui/Pretitle'
-import { PortableText } from 'next-sanity'
 import TabList from './TabList'
 import Wrapper from './Wrapper'
-import CTAList from '@/ui/CTAList'
-import Asset from '@/ui/modules/Asset'
 import { cn } from '@/lib/utils'
+import CTAList from '@/ui/CTAList'
+import Pretitle from '@/ui/Pretitle'
+import Asset from '@/ui/modules/Asset'
+import { PortableText } from 'next-sanity'
 
 export default function TabbedContent({
 	pretitle,

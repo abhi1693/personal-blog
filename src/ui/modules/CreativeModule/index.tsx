@@ -1,15 +1,15 @@
-import moduleProps from '@/lib/moduleProps'
-import { PortableText, stegaClean } from 'next-sanity'
 import CTAsSubModule, { type CTAsSubModuleType } from './CTAsSubModule'
 import CustomHTMLSubmodule, {
 	type CustomHTMLSubmoduleType,
 } from './CustomHTMLSubmodule'
-import Icon, { getPixels } from '@/ui/Icon'
 import ImageSubModule, { type ImageSubModuleType } from './ImageSubModule'
 import RichtextSubModule, {
 	type RichtextSubModuleType,
 } from './RichtextSubModule'
+import moduleProps from '@/lib/moduleProps'
 import { cn } from '@/lib/utils'
+import Icon, { getPixels } from '@/ui/Icon'
+import { PortableText, stegaClean } from 'next-sanity'
 
 export default function CreativeModule({
 	intro,

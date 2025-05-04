@@ -11,6 +11,7 @@ export default function Icon({
 	const px = getPixels(icon.size)
 
 	return icon.ic0n ? (
+		// eslint-disable-next-line @next/next/no-img-element
 		<img
 			src={`https://ic0n.dev/${stegaClean(icon.ic0n)}`}
 			width={px}

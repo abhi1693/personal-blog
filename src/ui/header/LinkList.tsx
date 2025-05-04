@@ -1,7 +1,7 @@
 import InteractiveDetails from './InteractiveDetails'
-import { CgChevronRight } from 'react-icons/cg'
-import CTA from '@/ui/CTA'
 import { cn } from '@/lib/utils'
+import CTA from '@/ui/CTA'
+import { CgChevronRight } from 'react-icons/cg'
 
 export default function LinkList({
 	link,

@@ -1,5 +1,5 @@
-import { defineArrayMember, defineField, defineType } from 'sanity'
 import { VscListOrdered } from 'react-icons/vsc'
+import { defineArrayMember, defineField, defineType } from 'sanity'
 import { getBlockText } from 'sanitypress-utils'
 
 export default defineType({

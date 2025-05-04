@@ -1,6 +1,6 @@
-import { defineField, defineType } from 'sanity'
-import { PiFlowArrow } from 'react-icons/pi'
 import resolveSlug from '@/sanity/lib/resolveSlug'
+import { PiFlowArrow } from 'react-icons/pi'
+import { defineField, defineType } from 'sanity'
 
 const regex = /^(\/|https?:\/\/)/
 
@@ -39,6 +39,7 @@ export default defineType({
 						<a
 							href="https://nextjs.org/docs/app/api-reference/next-config-js/redirects"
 							target="_blank"
+							rel={'noreferrer'}
 						>
 							Next.js redirects documentation
 						</a>

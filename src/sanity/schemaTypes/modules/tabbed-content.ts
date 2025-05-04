@@ -1,5 +1,5 @@
-import { defineArrayMember, defineField, defineType } from 'sanity'
 import { PiTabs } from 'react-icons/pi'
+import { defineArrayMember, defineField, defineType } from 'sanity'
 import { getBlockText } from 'sanitypress-utils'
 
 export default defineType({

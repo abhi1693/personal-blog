@@ -1,11 +1,11 @@
 'use client'
 
-import { useEffect, useState, type ComponentProps } from 'react'
-import { redirect, usePathname } from 'next/navigation'
-import { DEFAULT_LANG, supportedLanguages } from '@/lib/i18n'
 import { setLangCookie } from './actions'
-import { VscGlobe, VscLoading } from 'react-icons/vsc'
+import { DEFAULT_LANG, supportedLanguages } from '@/lib/i18n'
 import { cn } from '@/lib/utils'
+import { redirect, usePathname } from 'next/navigation'
+import { useEffect, useState, type ComponentProps } from 'react'
+import { VscGlobe, VscLoading } from 'react-icons/vsc'
 
 export default function Switcher({
 	translations: T,

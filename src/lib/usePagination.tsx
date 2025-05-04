@@ -44,6 +44,7 @@ export function usePagination<T extends unknown>({
 		prev = 'Prev',
 		next = 'Next',
 		hidePage,
+		// eslint-disable-next-line typescript/no-empty-function
 		onClick = () => {},
 		...props
 	}: PaginationProps) => {

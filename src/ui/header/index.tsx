@@ -1,12 +1,12 @@
-import { getSite } from '@/sanity/lib/queries'
-import Wrapper from './Wrapper'
-import Link from 'next/link'
-import { Img } from '@/ui/Img'
-import Navigation from './Navigation'
-import CTAList from '@/ui/CTAList'
-import Toggle from './Toggle'
-import { cn } from '@/lib/utils'
 import css from './Header.module.css'
+import Navigation from './Navigation'
+import Toggle from './Toggle'
+import Wrapper from './Wrapper'
+import { cn } from '@/lib/utils'
+import { getSite } from '@/sanity/lib/queries'
+import CTAList from '@/ui/CTAList'
+import { Img } from '@/ui/Img'
+import Link from 'next/link'
 
 export default async function Header() {
 	const { title, logo, ctas } = await getSite()

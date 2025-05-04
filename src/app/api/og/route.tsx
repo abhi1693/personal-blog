@@ -1,7 +1,7 @@
+import { BASE_URL } from '@/lib/env'
 import { getSite } from '@/sanity/lib/queries'
 import { ImageResponse } from 'next/og'
 import type { NextRequest } from 'next/server'
-import { BASE_URL } from '@/lib/env'
 
 const domain = BASE_URL?.replace(/https?:\/\//, '')
 
@@ -49,7 +49,9 @@ export async function GET(request: NextRequest) {
 						fontSize: '2rem',
 					}}
 				>
+					{/* eslint-disable-next-line @next/next/no-img-element */}
 					<img
+						alt=""
 						style={{
 							width: '2rem',
 							height: '2rem',

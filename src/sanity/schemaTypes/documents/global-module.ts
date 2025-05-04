@@ -1,7 +1,7 @@
-import { defineArrayMember, defineField, defineType } from 'sanity'
-import { VscSymbolField, VscSymbolVariable } from 'react-icons/vsc'
 import modules from '../fragments/modules'
 import { count } from '@/lib/utils'
+import { VscSymbolField, VscSymbolVariable } from 'react-icons/vsc'
+import { defineArrayMember, defineField, defineType } from 'sanity'
 
 export default defineType({
 	name: 'global-module',

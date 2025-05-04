@@ -1,10 +1,10 @@
-import { PortableText } from 'next-sanity'
-import Pretitle from '@/ui/Pretitle'
-import CTAList from '@/ui/CTAList'
 import Asset from './Asset'
 import CustomHTML from './CustomHTML'
-import Reputation from '@/ui/Reputation'
 import { cn } from '@/lib/utils'
+import CTAList from '@/ui/CTAList'
+import Pretitle from '@/ui/Pretitle'
+import Reputation from '@/ui/Reputation'
+import { PortableText } from 'next-sanity'
 
 export default function HeroSplit({
 	pretitle,

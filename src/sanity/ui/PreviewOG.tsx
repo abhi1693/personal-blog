@@ -1,8 +1,9 @@
 'use client'
 
-import { useState } from 'react'
 import { BASE_URL } from '@/lib/env'
 import { Box, Button, Flex, Popover, Spinner } from '@sanity/ui'
+import Image from 'next/image'
+import { useState } from 'react'
 import { VscEye, VscEyeClosed } from 'react-icons/vsc'
 
 export default function PreviewOG({ title }: { title?: string }) {
@@ -23,7 +24,7 @@ export default function PreviewOG({ title }: { title?: string }) {
 						<Spinner muted />
 					</Flex>
 
-					<img
+					<Image
 						style={{
 							gridArea: '1 / 1 / -1 / -1',
 							position: 'relative',
@@ -32,6 +33,7 @@ export default function PreviewOG({ title }: { title?: string }) {
 							height: 'auto',
 						}}
 						src={url}
+						alt=""
 						width={1200}
 						height={630}
 					/>

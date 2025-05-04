@@ -1,6 +1,6 @@
+import { VscSymbolMisc } from 'react-icons/vsc'
 import { defineField, defineType } from 'sanity'
 import { getBlockText } from 'sanitypress-utils'
-import { VscSymbolMisc } from 'react-icons/vsc'
 
 export default defineType({
 	name: 'logo-list',

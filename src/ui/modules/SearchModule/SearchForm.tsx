@@ -1,12 +1,12 @@
 'use client'
 
-import { useQuery, searchStore, handleSearch, type SearchScope } from './store'
-import { cn, debounce, count } from '@/lib/utils'
-import { VscSearch } from 'react-icons/vsc'
-import Loading from '@/ui/Loading'
-import resolveUrl from '@/lib/resolveUrl'
-import SearchGoogle from './SearchGoogle'
 import css from './SearchForm.module.css'
+import SearchGoogle from './SearchGoogle'
+import { useQuery, searchStore, handleSearch, type SearchScope } from './store'
+import resolveUrl from '@/lib/resolveUrl'
+import { cn, debounce, count } from '@/lib/utils'
+import Loading from '@/ui/Loading'
+import { VscSearch } from 'react-icons/vsc'
 
 /**
  * @note Remember to wrap this component in a Suspense
@@ -69,7 +69,7 @@ export default function SearchForm({
 								<p className="text-ink/50 text-center text-sm">
 									<span className="line-clamp-1">
 										{count(results, 'result')} found for{' '}
-										<output>"{query}"</output>
+										<output>&#34;{query}&#34;</output>
 									</span>
 								</p>
 

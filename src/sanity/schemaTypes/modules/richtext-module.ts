@@ -1,6 +1,6 @@
-import { defineArrayMember, defineField, defineType } from 'sanity'
-import { VscSymbolKeyword } from 'react-icons/vsc'
 import { imageBlock, admonition } from '../fragments'
+import { VscSymbolKeyword } from 'react-icons/vsc'
+import { defineArrayMember, defineField, defineType } from 'sanity'
 import { getBlockText } from 'sanitypress-utils'
 
 export default defineType({

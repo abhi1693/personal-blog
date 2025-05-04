@@ -1,6 +1,6 @@
-import { Octokit } from 'octokit'
 import { stegaClean } from 'next-sanity'
 import { unstable_cache } from 'next/cache'
+import { Octokit } from 'octokit'
 
 const octokit = new Octokit({
 	auth: process.env.NEXT_PUBLIC_GITHUB_TOKEN!,

@@ -1,8 +1,8 @@
 'use client'
 
+import { cn } from '@/lib/utils'
 import { useState, type ComponentProps } from 'react'
 import { VscCheck, VscCopy } from 'react-icons/vsc'
-import { cn } from '@/lib/utils'
 
 export default function ClickToCopy({
 	value,

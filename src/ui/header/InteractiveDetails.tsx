@@ -1,14 +1,17 @@
 'use client'
 
+import css from './InteractiveDetails.module.css'
+import { cn } from '@/lib/utils'
+import { usePathname } from 'next/navigation'
 import { useEffect, useState, type ComponentProps } from 'react'
 import { isMobile } from 'react-device-detect'
-import { usePathname } from 'next/navigation'
-import { cn } from '@/lib/utils'
-import css from './InteractiveDetails.module.css'
 
 /**
  * @param safeAreaOnHover - Adds a safe area around the details element to prevent it from closing when the mouse leaves the element
  * @param closeAfterNavigate - Closes the details element after a navigation event
+ * @param delay - Delay in milliseconds before opening the details element
+ * @param className - Additional class names to apply to the details element
+ * @param props - Additional props to pass to the details element
  */
 export default function InteractiveDetails({
 	safeAreaOnHover,
@@ -44,7 +47,7 @@ export default function InteractiveDetails({
 	const pathname = usePathname()
 	useEffect(() => {
 		if (closeAfterNavigate) setOpen(false)
-	}, [pathname])
+	}, [closeAfterNavigate, pathname])
 
 	return (
 		<details

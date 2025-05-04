@@ -1,11 +1,11 @@
-import moduleProps from '@/lib/moduleProps'
-import { ResponsiveImg } from '@/ui/Img'
-import { PortableText, stegaClean } from 'next-sanity'
-import CTAList from '@/ui/CTAList'
-import Pretitle from '@/ui/Pretitle'
 import CustomHTML from './CustomHTML'
-import Reputation from '@/ui/Reputation'
+import moduleProps from '@/lib/moduleProps'
 import { cn } from '@/lib/utils'
+import CTAList from '@/ui/CTAList'
+import { ResponsiveImg } from '@/ui/Img'
+import Pretitle from '@/ui/Pretitle'
+import Reputation from '@/ui/Reputation'
+import { PortableText, stegaClean } from 'next-sanity'
 
 export default function Hero({
 	pretitle,

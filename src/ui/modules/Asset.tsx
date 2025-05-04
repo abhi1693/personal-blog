@@ -1,6 +1,6 @@
-import { ResponsiveImg } from '@/ui/Img'
-import Code from './RichtextModule/Code'
 import CustomHTML from './CustomHTML'
+import Code from './RichtextModule/Code'
+import { ResponsiveImg } from '@/ui/Img'
 
 type AssetType = Sanity.Img | Sanity.Code | Sanity.CustomHTML
 

@@ -1,6 +1,7 @@
+import Image from 'next/image'
+import { VscSymbolMisc } from 'react-icons/vsc'
 import { defineField, defineType } from 'sanity'
 import { getPreset, TextInputWithPresets, type Preset } from 'sanitypress-utils'
-import { VscSymbolMisc } from 'react-icons/vsc'
 
 const ic0nPresets: Preset[] =
 	'ai,bi,bs,cg,ci,di,fa,fa6,fc,fi,gi,go,gr,hi,hi2,im,io,io5,lia,lu,md,pi,ri,rx,si,sl,tb,tfi,ti,vsc,wi'
@@ -34,7 +35,11 @@ export default defineType({
 			description: (
 				<span>
 					Courtesy of{' '}
-					<a href="https://react-icons.github.io/react-icons/" target="_blank">
+					<a
+						href="https://react-icons.github.io/react-icons/"
+						target="_blank"
+						rel={'noreferrer'}
+					>
 						react-icons
 					</a>
 				</span>
@@ -73,7 +78,17 @@ export default defineType({
 		prepare: ({ image, ic0n, size }) => ({
 			title: ic0n,
 			subtitle: size,
-			media: ic0n ? <img src={`https://ic0n.dev/${ic0n}`} /> : image,
+			media: ic0n ? (
+				<Image
+					src={`https://ic0n.dev/${ic0n}`}
+					alt=""
+					width={32}
+					height={32}
+					unoptimized
+				/>
+			) : (
+				image
+			),
 		}),
 	},
 })

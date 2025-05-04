@@ -1,17 +1,17 @@
 'use client'
 
-// import { useDraftModeEnvironment } from 'next-sanity/hooks'
+import { createDataAttribute, stegaClean } from 'next-sanity'
+import { useDraftModeEnvironment } from 'next-sanity/hooks'
 import { usePathname } from 'next/navigation'
 import { VscSymbolField, VscBeakerStop } from 'react-icons/vsc'
-import { createDataAttribute, stegaClean } from 'next-sanity'
 
 export default function DraftModeControls({
 	globalModules,
 }: {
 	globalModules?: Sanity.GlobalModule[]
 }) {
-	// const environment = useDraftModeEnvironment()
-	// if (!['live', 'unknown'].includes(environment)) return null
+	const environment = useDraftModeEnvironment()
+	if (!['live', 'unknown'].includes(environment)) return null
 
 	const pathname = usePathname()
 
@@ -55,6 +55,7 @@ export default function DraftModeControls({
 				<hr className="my-1" />
 
 				<li>
+					{/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
 					<a
 						className="inline-flex items-center gap-1 py-0.5 hover:underline"
 						href="/api/draft-mode/disable"

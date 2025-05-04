@@ -1,7 +1,7 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
 import { usePathname } from 'next/navigation'
+import { useEffect, useRef } from 'react'
 
 export default function Wrapper({
 	className,

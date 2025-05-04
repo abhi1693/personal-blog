@@ -1,5 +1,5 @@
-import { defineField, defineType } from 'sanity'
 import { GoPerson } from 'react-icons/go'
+import { defineField, defineType } from 'sanity'
 import { getBlockText } from 'sanitypress-utils'
 
 export default defineType({

@@ -1,7 +1,7 @@
-import { getSite } from '@/sanity/lib/queries'
-import CTA from '@/ui/CTA'
 import LinkList from './LinkList'
 import { cn } from '@/lib/utils'
+import { getSite } from '@/sanity/lib/queries'
+import CTA from '@/ui/CTA'
 
 export default async function Menu() {
 	const { headerMenu } = await getSite()

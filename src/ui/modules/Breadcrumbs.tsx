@@ -1,6 +1,6 @@
-import { Fragment } from 'react'
 import CTA from '@/ui/CTA'
 import { stegaClean } from 'next-sanity'
+import { Fragment } from 'react'
 
 export default async function Breadcrumbs({
 	crumbs,

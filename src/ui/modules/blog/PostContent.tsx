@@ -1,12 +1,12 @@
-import moduleProps from '@/lib/moduleProps'
-import Date from '@/ui/Date'
-import Categories from './Categories'
 import Authors from './Authors'
-import ReadTime from './ReadTime'
-import TableOfContents from '@/ui/modules/RichtextModule/TableOfContents'
-import Content from '@/ui/modules/RichtextModule/Content'
-import { cn } from '@/lib/utils'
+import Categories from './Categories'
 import css from './PostContent.module.css'
+import ReadTime from './ReadTime'
+import moduleProps from '@/lib/moduleProps'
+import { cn } from '@/lib/utils'
+import Date from '@/ui/Date'
+import Content from '@/ui/modules/RichtextModule/Content'
+import TableOfContents from '@/ui/modules/RichtextModule/TableOfContents'
 
 export default function PostContent({
 	post,

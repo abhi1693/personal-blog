@@ -1,7 +1,8 @@
 import { fetchSanityLive } from './fetch'
-import { groq } from 'next-sanity'
-import errors from '@/lib/errors'
 import { BLOG_DIR } from '@/lib/env'
+import errors from '@/lib/errors'
+import { groq } from 'next-sanity'
+
 export const LINK_QUERY = groq`
 	...,
 	internal->{

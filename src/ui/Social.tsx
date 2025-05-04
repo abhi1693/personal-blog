@@ -1,6 +1,7 @@
-import { getSite } from '@/sanity/lib/queries'
 import CTA from './CTA'
 import { cn } from '@/lib/utils'
+import { getSite } from '@/sanity/lib/queries'
+import type { ComponentProps } from 'react'
 import {
 	FaBluesky,
 	FaFacebookF,
@@ -12,7 +13,6 @@ import {
 	FaYoutube,
 } from 'react-icons/fa6'
 import { IoIosLink } from 'react-icons/io'
-import type { ComponentProps } from 'react'
 
 export default async function Social({ className }: ComponentProps<'div'>) {
 	const { social } = await getSite()

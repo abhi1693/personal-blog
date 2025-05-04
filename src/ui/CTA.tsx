@@ -1,7 +1,7 @@
+import resolveUrl from '@/lib/resolveUrl'
 import { cn } from '@/lib/utils'
 import { stegaClean } from 'next-sanity'
 import Link from 'next/link'
-import resolveUrl from '@/lib/resolveUrl'
 import type { ComponentProps } from 'react'
 
 export default function CTA({
@@ -32,6 +32,7 @@ export default function CTA({
 		)
 
 	if (link?.type === 'external' && link.external)
+		// eslint-disable-next-line jsx-a11y/anchor-has-content
 		return <a href={stegaClean(link.external)} {...props} />
 
 	return <div {...(props as ComponentProps<'div'>)} />

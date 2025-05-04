@@ -1,5 +1,5 @@
-import { twMerge } from 'tailwind-merge'
 import { clsx, type ClassValue } from 'clsx'
+import { twMerge } from 'tailwind-merge'
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs))
@@ -45,16 +45,16 @@ export function slug(str: string) {
 }
 
 export const baseUrl = (): string => {
-  const prodUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
-  const vercelUrl = process.env.VERCEL_URL
+	const prodUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
+	const vercelUrl = process.env.VERCEL_URL
 
-  if (prodUrl) {
-    return `https://${prodUrl}`
-  }
+	if (prodUrl) {
+		return `https://${prodUrl}`
+	}
 
-  if (vercelUrl) {
-    return `https://${vercelUrl}`
-  }
+	if (vercelUrl) {
+		return `https://${vercelUrl}`
+	}
 
-  return 'http://localhost:3000' // Local fallback
+	return 'http://localhost:3000' // Local fallback
 }

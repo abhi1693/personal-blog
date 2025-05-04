@@ -1,9 +1,9 @@
-import { preload } from 'react-dom'
-import { getImageDimensions } from '@sanity/asset-utils'
 import { urlFor } from '@/sanity/lib/image'
-import NextImage, { getImageProps, type ImageProps } from 'next/image'
+import { getImageDimensions } from '@sanity/asset-utils'
 import { stegaClean } from 'next-sanity'
+import NextImage, { getImageProps, type ImageProps } from 'next/image'
 import type { ComponentProps } from 'react'
+import { preload } from 'react-dom'
 
 type ImgProps = { alt?: string } & Omit<ImageProps, 'src' | 'alt'>
 

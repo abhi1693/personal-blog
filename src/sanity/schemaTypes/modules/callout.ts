@@ -1,6 +1,6 @@
-import { defineField, defineType } from 'sanity'
-import { VscInspect } from 'react-icons/vsc'
 import { reputationBlock } from '../misc/reputation'
+import { VscInspect } from 'react-icons/vsc'
+import { defineField, defineType } from 'sanity'
 import { getBlockText } from 'sanitypress-utils'
 
 export default defineType({

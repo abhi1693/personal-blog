@@ -1,6 +1,6 @@
-import { defineArrayMember, defineField, defineType } from 'sanity'
-import { VscEdit } from 'react-icons/vsc'
 import { imageBlock, admonition } from '../fragments'
+import { VscEdit } from 'react-icons/vsc'
+import { defineArrayMember, defineField, defineType } from 'sanity'
 
 export default defineType({
 	name: 'blog.post',

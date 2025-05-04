@@ -1,5 +1,5 @@
-import { defineField, defineType } from 'sanity'
 import modules from '../fragments/modules'
+import { BLOG_DIR } from '@/lib/env'
 import {
 	VscHome,
 	VscQuestion,
@@ -8,7 +8,7 @@ import {
 	VscEdit,
 	VscMortarBoard,
 } from 'react-icons/vsc'
-import { BLOG_DIR } from '@/lib/env'
+import { defineField, defineType } from 'sanity'
 
 export default defineType({
 	name: 'page',

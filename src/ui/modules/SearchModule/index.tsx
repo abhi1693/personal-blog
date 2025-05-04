@@ -1,10 +1,10 @@
+import SearchForm from './SearchForm'
+import type { SearchScope } from './store'
+import moduleProps from '@/lib/moduleProps'
+import CTAList from '@/ui/CTAList'
 import Pretitle from '@/ui/Pretitle'
 import { PortableText, stegaClean } from 'next-sanity'
 import { Suspense } from 'react'
-import SearchForm from './SearchForm'
-import type { SearchScope } from './store'
-import CTAList from '@/ui/CTAList'
-import moduleProps from '@/lib/moduleProps'
 
 export default function SearchModule({
 	pretitle,

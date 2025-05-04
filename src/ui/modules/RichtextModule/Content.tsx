@@ -1,11 +1,10 @@
-import { PortableText } from 'next-sanity'
-import AnchoredHeading from './AnchoredHeading'
-import { cn } from '@/lib/utils'
-
-import Image from './Image'
-import Code from './Code'
 import Admonition from './Admonition'
+import AnchoredHeading from './AnchoredHeading'
+import Code from './Code'
+import Image from './Image'
+import { cn } from '@/lib/utils'
 import CustomHTML from '@/ui/modules/CustomHTML'
+import { PortableText } from 'next-sanity'
 
 export default function Content({
 	value,

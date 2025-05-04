@@ -1,8 +1,8 @@
+import { cn } from '@/lib/utils'
+import { Img } from '@/ui/Img'
 import Pretitle from '@/ui/Pretitle'
 import { PortableText, stegaClean } from 'next-sanity'
-import { Img } from '@/ui/Img'
 import { VscSurroundWith } from 'react-icons/vsc'
-import { cn } from '@/lib/utils'
 
 export default function TestimonialList({
 	pretitle,
@@ -75,6 +75,7 @@ export default function TestimonialList({
 																href={testimonial.source}
 																target="_blank"
 																title="Source"
+																rel="noreferrer"
 															>
 																<VscSurroundWith />
 															</a>

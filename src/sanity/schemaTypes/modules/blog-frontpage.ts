@@ -1,5 +1,5 @@
-import { defineField, defineType } from 'sanity'
 import { ImNewspaper } from 'react-icons/im'
+import { defineField, defineType } from 'sanity'
 
 export default defineType({
 	name: 'blog-frontpage',

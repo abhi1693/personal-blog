@@ -1,7 +1,7 @@
 'use client'
 
-import { ComponentProps, useEffect, useRef, useState } from 'react'
 import moduleProps from '@/lib/moduleProps'
+import { ComponentProps, useEffect, useRef, useState } from 'react'
 
 /**
  * @description If the code includes a <script> tag, ensure the script is re-run on each render

@@ -1,7 +1,8 @@
-import { defineArrayMember, defineField, defineType } from 'sanity'
-import { TfiLayoutGrid2Thumb } from 'react-icons/tfi'
-import { getBlockText } from 'sanitypress-utils'
 import { count } from '@/lib/utils'
+import Image from 'next/image'
+import { TfiLayoutGrid2Thumb } from 'react-icons/tfi'
+import { defineArrayMember, defineField, defineType } from 'sanity'
+import { getBlockText } from 'sanitypress-utils'
 
 export default defineType({
 	name: 'flag-list',
@@ -46,7 +47,16 @@ export default defineType({
 						},
 						prepare: ({ content, image, ic0n }) => ({
 							title: getBlockText(content),
-							media: ic0n ? <img src={`https://ic0n.dev/${ic0n}`} /> : image,
+							media: ic0n ? (
+								<Image
+									src={`https://ic0n.dev/${ic0n}`}
+									alt=""
+									width={32}
+									height={32}
+								/>
+							) : (
+								image
+							),
 						}),
 					},
 				}),

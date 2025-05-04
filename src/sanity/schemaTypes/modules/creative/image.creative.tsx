@@ -1,5 +1,5 @@
-import { defineArrayMember, defineField } from 'sanity'
 import { IoIosImage } from 'react-icons/io'
+import { defineArrayMember, defineField } from 'sanity'
 import { TextInputWithPresets } from 'sanitypress-utils'
 
 export default defineArrayMember({

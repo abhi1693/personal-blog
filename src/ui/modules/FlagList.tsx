@@ -1,7 +1,7 @@
+import { cn } from '@/lib/utils'
+import Icon, { getPixels } from '@/ui/Icon'
 import Pretitle from '@/ui/Pretitle'
 import { PortableText, stegaClean } from 'next-sanity'
-import Icon, { getPixels } from '@/ui/Icon'
-import { cn } from '@/lib/utils'
 
 export default function FlagList({
 	pretitle,

@@ -1,6 +1,6 @@
+import { Img } from '@/ui/Img'
 import { PortableText } from 'next-sanity'
 import { VscQuote, VscSurroundWith } from 'react-icons/vsc'
-import { Img } from '@/ui/Img'
 
 export default function TestimonialFeatured({
 	testimonial,
@@ -32,6 +32,7 @@ export default function TestimonialFeatured({
 										href={testimonial.source}
 										target="_blank"
 										title="Source"
+										rel="noreferrer"
 									>
 										<VscSurroundWith />
 									</a>

@@ -1,9 +1,9 @@
-import { codeToHtml, splitLines, bundledThemes } from 'shiki'
-import ClickToCopy from '@/ui/ClickToCopy'
 import css from './Code.module.css'
 import { cn } from '@/lib/utils'
+import ClickToCopy from '@/ui/ClickToCopy'
 import { stegaClean } from 'next-sanity'
 import type { ComponentProps } from 'react'
+import { codeToHtml, splitLines, bundledThemes } from 'shiki'
 
 export default async function Code({
 	value,
@@ -33,7 +33,7 @@ export default async function Code({
 
 	const [path, filename] = value.filename?.includes('/')
 		? value.filename.split(/(.*)\/(.*)$/).filter(Boolean)
-		: [, value.filename]
+		: [undefined, value.filename]
 
 	return (
 		<article

@@ -1,6 +1,6 @@
-import { defineField, defineType } from 'sanity'
-import { VscLink } from 'react-icons/vsc'
 import resolveSlug from '@/sanity/lib/resolveSlug'
+import { VscLink } from 'react-icons/vsc'
+import { defineField, defineType } from 'sanity'
 
 export default defineType({
 	name: 'link',

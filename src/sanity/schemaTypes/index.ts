@@ -1,14 +1,10 @@
-import { type SchemaTypeDefinition } from 'sanity'
-
-// documents
-import site from './documents/site'
-import page from './documents/page'
-import globalModule from './documents/global-module'
-import blogPost from './documents/blog.post'
 import blogCategory from './documents/blog.category'
+import blogPost from './documents/blog.post'
+import globalModule from './documents/global-module'
 import navigation from './documents/navigation'
+import page from './documents/page'
 import redirect from './documents/redirect'
-
+import site from './documents/site'
 // miscellaneous
 import announcement from './misc/announcement'
 import logo from './misc/logo'
@@ -16,16 +12,6 @@ import person from './misc/person'
 import pricing from './misc/pricing'
 import reputation from './misc/reputation'
 import testimonial from './misc/testimonial'
-
-// objects
-import cta from './objects/cta'
-import icon from './objects/icon'
-import img from './objects/img'
-import link from './objects/link'
-import linkList from './objects/link.list'
-import metadata from './objects/metadata'
-import moduleOptions from './objects/module-options'
-
 // modules
 import accordionList from './modules/accordion-list'
 import blogFrontpage from './modules/blog-frontpage'
@@ -49,8 +35,17 @@ import searchModule from './modules/search-module'
 import statList from './modules/stat-list'
 import stepList from './modules/step-list'
 import tabbedContent from './modules/tabbed-content'
-import testimonialFeatured from './modules/testimonial.featured'
 import testimonialList from './modules/testimonial-list'
+import testimonialFeatured from './modules/testimonial.featured'
+// objects
+import cta from './objects/cta'
+import icon from './objects/icon'
+import img from './objects/img'
+import link from './objects/link'
+import linkList from './objects/link.list'
+import metadata from './objects/metadata'
+import moduleOptions from './objects/module-options'
+import { type SchemaTypeDefinition } from 'sanity'
 
 export const schemaTypes: SchemaTypeDefinition[] = [
 	// documents

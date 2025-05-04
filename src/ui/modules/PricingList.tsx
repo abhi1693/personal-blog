@@ -1,8 +1,8 @@
 import moduleProps from '@/lib/moduleProps'
+import { cn, formatCurrency } from '@/lib/utils'
+import CTAList from '@/ui/CTAList'
 import Pretitle from '@/ui/Pretitle'
 import { PortableText } from 'next-sanity'
-import CTAList from '@/ui/CTAList'
-import { cn, formatCurrency } from '@/lib/utils'
 
 export default function PricingList({
 	pretitle,

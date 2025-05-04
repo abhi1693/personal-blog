@@ -1,10 +1,10 @@
+import CustomHTML from './CustomHTML'
+import Code from './RichtextModule/Code'
+import Image from './RichtextModule/Image'
 import moduleProps from '@/lib/moduleProps'
+import { cn } from '@/lib/utils'
 import Pretitle from '@/ui/Pretitle'
 import { PortableText } from 'next-sanity'
-import Image from './RichtextModule/Image'
-import Code from './RichtextModule/Code'
-import CustomHTML from './CustomHTML'
-import { cn } from '@/lib/utils'
 
 export default function AccordionList({
 	pretitle,

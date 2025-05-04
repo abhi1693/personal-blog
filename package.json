@@ -8,6 +8,7 @@
     "build": "npm run manifest && next build",
     "start": "next start",
     "lint": "next lint",
+    "format": "prettier --write src/",
     "manifest": "sanity manifest extract --path public/admin/static",
     "typecheck": "tsc --noEmit"
   },
@@ -43,11 +44,17 @@
     "zustand": "^5.0.3"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.3.1",
+    "@eslint/js": "^9.26.0",
+    "@next/eslint-plugin-next": "^15.3.1",
     "@sanity/eslint-config-studio": "^5.0.2",
+    "@trivago/prettier-plugin-sort-imports": "^5.2.2",
     "@types/node": "^22.15.3",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
     "eslint": "^9.25.1",
+    "eslint-config-next": "^15.3.1",
+    "eslint-config-prettier": "^10.1.2",
     "postcss": "^8.5.3",
     "prettier": "^3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.11",

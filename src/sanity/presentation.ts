@@ -1,8 +1,8 @@
 'use client'
 
-import { defineLocations, presentationTool } from 'sanity/presentation'
-import { groq } from 'next-sanity'
 import { BLOG_DIR } from '@/lib/env'
+import { groq } from 'next-sanity'
+import { defineLocations, presentationTool } from 'sanity/presentation'
 
 export const presentation = presentationTool({
 	name: 'editor',

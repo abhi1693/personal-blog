@@ -1,7 +1,7 @@
+import { fetchSanityLive } from '@/sanity/lib/fetch'
+import { groq } from 'next-sanity'
 import { useQueryState } from 'nuqs'
 import { create } from 'zustand'
-import { groq } from 'next-sanity'
-import { fetchSanityLive } from '@/sanity/lib/fetch'
 
 export type SearchScope = 'all' | 'pages' | 'path' | 'blog posts' | undefined
 

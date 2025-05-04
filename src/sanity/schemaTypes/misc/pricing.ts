@@ -1,5 +1,5 @@
-import { defineField, defineType } from 'sanity'
 import { LuDollarSign } from 'react-icons/lu'
+import { defineField, defineType } from 'sanity'
 
 export default defineType({
 	name: 'pricing',

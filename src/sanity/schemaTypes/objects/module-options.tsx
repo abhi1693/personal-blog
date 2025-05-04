@@ -1,9 +1,9 @@
 'use client'
 
-import { useState } from 'react'
-import { defineField, defineType } from 'sanity'
 import { Box, Button, Flex, Text, TextInput } from '@sanity/ui'
+import { useState } from 'react'
 import { VscCheck, VscCopy } from 'react-icons/vsc'
+import { defineField, defineType } from 'sanity'
 
 export default defineType({
 	name: 'module-options',

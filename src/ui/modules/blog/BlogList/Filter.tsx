@@ -1,10 +1,10 @@
 'use client'
 
-import { useBlogFilters } from '../store'
-import { usePageState } from '@/lib/usePagination'
 import Category from '../Category'
-import { cn } from '@/lib/utils'
+import { useBlogFilters } from '../store'
 import css from './FilterList.module.css'
+import { usePageState } from '@/lib/usePagination'
+import { cn } from '@/lib/utils'
 
 export default function Filter({
 	label,

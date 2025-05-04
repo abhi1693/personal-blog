@@ -23,7 +23,7 @@ export default function Scheduler({
 	useEffect(() => {
 		const interval = setInterval(() => setIsActive(checkActive()), 1000) // check every second
 		return () => clearInterval(interval)
-	}, [])
+	}, [checkActive])
 
 	if (!isActive) return null
 

@@ -1,6 +1,6 @@
-import moduleProps from '@/lib/moduleProps'
 import CSS from './CSS'
 import WithScript from './WithScript'
+import moduleProps from '@/lib/moduleProps'
 import { stegaClean } from 'next-sanity'
 import type { ComponentProps } from 'react'
 

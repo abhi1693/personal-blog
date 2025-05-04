@@ -1,8 +1,8 @@
-import { fetchSanityLive } from '@/sanity/lib/fetch'
-import { groq } from 'next-sanity'
-import { DEFAULT_LANG } from '@/lib/i18n'
 import { BASE_URL, BLOG_DIR } from '@/lib/env'
+import { DEFAULT_LANG } from '@/lib/i18n'
+import { fetchSanityLive } from '@/sanity/lib/fetch'
 import type { MetadataRoute } from 'next'
+import { groq } from 'next-sanity'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 	const data = await fetchSanityLive<Record<string, MetadataRoute.Sitemap>>({

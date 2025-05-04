@@ -1,5 +1,5 @@
-import { stegaClean } from 'next-sanity'
 import { dev } from './env'
+import { stegaClean } from 'next-sanity'
 
 export default function ({
 	_type,

@@ -1,5 +1,5 @@
-import { defineArrayMember, defineField } from 'sanity'
 import { VscInfo, VscLightbulb, VscReport, VscWarning } from 'react-icons/vsc'
+import { defineArrayMember, defineField } from 'sanity'
 import { getBlockText } from 'sanitypress-utils'
 
 export default defineArrayMember({

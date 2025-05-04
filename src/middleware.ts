@@ -1,10 +1,10 @@
+import { DEFAULT_LANG, langCookieName } from './lib/i18n'
+import { getTranslations } from './sanity/lib/queries'
 import {
 	NextResponse,
 	type NextRequest,
 	type MiddlewareConfig,
 } from 'next/server'
-import { getTranslations } from './sanity/lib/queries'
-import { DEFAULT_LANG, langCookieName } from './lib/i18n'
 
 export default async function (request: NextRequest) {
 	const { pathname } = request.nextUrl

@@ -1,7 +1,7 @@
 'use client'
 
-import { tabbedContentStore } from './store'
 import TabbedContent from '.'
+import { tabbedContentStore } from './store'
 import { cn } from '@/lib/utils'
 
 export default function TabList({

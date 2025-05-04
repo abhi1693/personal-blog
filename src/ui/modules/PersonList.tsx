@@ -1,7 +1,7 @@
+import { cn } from '@/lib/utils'
+import { Img } from '@/ui/Img'
 import Pretitle from '@/ui/Pretitle'
 import { PortableText, stegaClean } from 'next-sanity'
-import { Img } from '@/ui/Img'
-import { cn } from '@/lib/utils'
 
 export default function PersonList({
 	pretitle,

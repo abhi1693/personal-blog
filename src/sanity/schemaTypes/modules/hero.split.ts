@@ -1,6 +1,6 @@
-import { defineArrayMember, defineField, defineType } from 'sanity'
-import { TfiLayoutMediaLeft } from 'react-icons/tfi'
 import { reputationBlock } from '../misc/reputation'
+import { TfiLayoutMediaLeft } from 'react-icons/tfi'
+import { defineArrayMember, defineField, defineType } from 'sanity'
 import { getBlockText } from 'sanitypress-utils'
 
 export default defineType({

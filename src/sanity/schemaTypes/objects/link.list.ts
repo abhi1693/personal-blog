@@ -1,6 +1,6 @@
-import { defineField, defineType } from 'sanity'
-import { VscFolderOpened } from 'react-icons/vsc'
 import { count } from '@/lib/utils'
+import { VscFolderOpened } from 'react-icons/vsc'
+import { defineField, defineType } from 'sanity'
 
 export default defineType({
 	name: 'link.list',

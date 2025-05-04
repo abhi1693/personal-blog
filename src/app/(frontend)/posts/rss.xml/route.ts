@@ -1,11 +1,11 @@
-import { fetchSanityLive } from '@/sanity/lib/fetch'
-import { groq } from 'next-sanity'
 import { BASE_URL, BLOG_DIR } from '@/lib/env'
-import resolveUrl from '@/lib/resolveUrl'
-import { Feed } from 'feed'
-import { escapeHTML, toHTML } from '@portabletext/to-html'
-import { urlFor } from '@/sanity/lib/image'
 import { DEFAULT_LANG } from '@/lib/i18n'
+import resolveUrl from '@/lib/resolveUrl'
+import { fetchSanityLive } from '@/sanity/lib/fetch'
+import { urlFor } from '@/sanity/lib/image'
+import { escapeHTML, toHTML } from '@portabletext/to-html'
+import { Feed } from 'feed'
+import { groq } from 'next-sanity'
 
 export async function GET() {
 	const { blog, posts, copyright } = await fetchSanityLive<{

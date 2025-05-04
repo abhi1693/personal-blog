@@ -1,5 +1,5 @@
-import { defineArrayMember, defineField, defineType } from 'sanity'
 import { VscStarFull, VscGithub } from 'react-icons/vsc'
+import { defineArrayMember, defineField, defineType } from 'sanity'
 
 const reputation = defineType({
 	name: 'reputation',
