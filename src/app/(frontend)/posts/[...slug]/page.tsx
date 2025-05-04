@@ -34,9 +34,11 @@ export async function generateStaticParams() {
 }
 
 async function getPost(params: Params) {
-	const blogTemplateExists = await fetchSanityLive<boolean>({
-		query: groq`count(*[_type == 'global-module' && path == '${BLOG_DIR}/']) > 0`,
+	const blogTemplateCount = await fetchSanityLive<number>({
+		query: groq`count(*[_type == 'global-module' && path == '${BLOG_DIR}/'])`,
 	})
+
+	const blogTemplateExists = blogTemplateCount > 0
 
 	if (!blogTemplateExists) throw new Error(errors.missingBlogTemplate)
 
