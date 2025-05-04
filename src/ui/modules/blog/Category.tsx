@@ -1,4 +1,3 @@
-import { BLOG_DIR } from '@/lib/env'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
 
