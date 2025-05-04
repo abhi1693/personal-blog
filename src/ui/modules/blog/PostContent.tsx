@@ -2,14 +2,14 @@ import Authors from './Authors'
 import Categories from './Categories'
 import css from './PostContent.module.css'
 import ReadTime from './ReadTime'
+import { BASE_URL } from '@/lib/env'
 import moduleProps from '@/lib/moduleProps'
 import { cn } from '@/lib/utils'
 import Date from '@/ui/Date'
+import ShareButtons from '@/ui/ShareButtons'
 import YouTubeEmbed from '@/ui/YouTubeEmbed'
 import Content from '@/ui/modules/RichtextModule/Content'
 import TableOfContents from '@/ui/modules/RichtextModule/TableOfContents'
-import ShareButtons from '@/ui/ShareButtons'
-import { BASE_URL } from '@/lib/env'
 
 export default function PostContent({
 	post,
