@@ -12,6 +12,11 @@ const client = createClient({
 })
 
 export default {
+	allowedDevOrigins:[
+		'localhost',
+		'192.168.1.101',
+	],
+	productionBrowserSourceMaps: true,
 	images: {
 		dangerouslyAllowSVG: true,
 		remotePatterns: [
