@@ -8,6 +8,8 @@ import Date from '@/ui/Date'
 import YouTubeEmbed from '@/ui/YouTubeEmbed'
 import Content from '@/ui/modules/RichtextModule/Content'
 import TableOfContents from '@/ui/modules/RichtextModule/TableOfContents'
+import ShareButtons from '@/ui/ShareButtons'
+import { BASE_URL } from '@/lib/env'
 
 export default function PostContent({
 	post,
@@ -44,14 +46,16 @@ export default function PostContent({
 			<div
 				className={cn(
 					'section grid gap-8',
-					showTOC && 'lg:grid-cols-[1fr_auto]',
+					(showTOC || post.youtubeEmbed) && 'lg:grid-cols-[1fr_auto]',
 				)}
 			>
-				{showTOC && (
-					<aside className="lg:sticky-below-header mx-auto w-full max-w-lg self-start [--offset:1rem] lg:order-1 lg:w-3xs">
-						<TableOfContents headings={post.headings} />
-					</aside>
-				)}
+				<aside className="lg:sticky-below-header mx-auto w-full max-w-lg self-start [--offset:1rem] lg:order-1 lg:w-3xs">
+					{showTOC && <TableOfContents headings={post.headings} />}
+					<ShareButtons
+						url={`${BASE_URL}/posts/${post.metadata.slug.current}`}
+						title={post.metadata.title}
+					/>
+				</aside>
 
 				<div className="grid gap-8 max-w-screen-md">
 					{showYouTube && (
