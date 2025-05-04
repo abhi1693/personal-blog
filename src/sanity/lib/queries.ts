@@ -7,7 +7,6 @@ export const LINK_QUERY = groq`
 	internal->{
 		_type,
 		title,
-		parent[]->{ metadata { slug } },
 		metadata
 	}
 `
@@ -19,6 +18,16 @@ const NAVIGATION_QUERY = groq`
 		link{ ${LINK_QUERY} },
 		links[]{ ${LINK_QUERY} }
 	}
+`
+
+export const IMAGE_QUERY = groq`
+	...,
+	'lqip': @.asset->metadata.lqip
+`
+
+const ASSET_IMG_QUERY = groq`
+	...,
+	image { ${IMAGE_QUERY} }
 `
 
 export const CTA_QUERY = groq`
@@ -63,18 +72,30 @@ export const MODULES_QUERY = groq`
 		content[]{
 			...,
 			${REPUTATION_QUERY}
+		},
+		assets[]{
+			...,
+			_type == 'img' => { ${ASSET_IMG_QUERY} }
 		}
 	},
 	_type == 'hero.saas' => {
 		content[]{
 			...,
 			${REPUTATION_QUERY}
+		},
+		assets[]{
+			...,
+			_type == 'img' => { ${ASSET_IMG_QUERY} }
 		}
 	},
 	_type == 'hero.split' => {
 		content[]{
 			...,
 			${REPUTATION_QUERY}
+		},
+		assets[]{
+			...,
+			_type == 'img' => { ${ASSET_IMG_QUERY} }
 		}
 	},
 	_type == 'logo-list' => { logos[]-> },
@@ -86,6 +107,10 @@ export const MODULES_QUERY = groq`
 		}
 	},
 	_type == 'richtext-module' => {
+		content[]{
+			...,
+			_type == 'image' => { ${IMAGE_QUERY} }
+		},
 		'headings': select(
 			tableOfContents => content[style in ['h2', 'h3', 'h4', 'h5', 'h6']]{
 				style,
@@ -111,6 +136,13 @@ export const GLOBAL_MODULE_PATH_QUERY = groq`
 	)
 `
 
+export const TRANSLATIONS_QUERY = groq`
+	'translations': *[_type == 'translation.metadata' && references(^._id)].translations[].value->{
+		'slug': metadata.slug.current,
+		language
+	}
+`
+
 export async function getSite() {
 	const site = await fetchSanityLive<Sanity.Site>({
 		query: groq`
@@ -128,4 +160,27 @@ export async function getSite() {
 	if (!site) throw new Error(errors.missingSiteSettings)
 
 	return site
+}
+
+export async function getTranslations() {
+	return await fetchSanityLive<Sanity.Translation[]>({
+		query: groq`*[_type in ['page', 'blog.post'] && defined(language)]{
+			'slug': '/' + select(
+				_type == 'blog.post' => '${BLOG_DIR}/' + metadata.slug.current,
+				metadata.slug.current != 'index' => metadata.slug.current,
+				''
+			),
+			'translations': *[_type == 'translation.metadata' && references(^._id)].translations[].value->{
+				'slug': '/' + select(
+					_type == 'blog.post' => '${BLOG_DIR}/' + language + '/' + metadata.slug.current,
+					metadata.slug.current != 'index' => language + '/' + metadata.slug.current,
+					language
+				),
+				_type == 'blog.post' => {
+					'slugBlogAlt': '/' + language + '/${BLOG_DIR}/' + metadata.slug.current
+				},
+				language
+			}
+		}`,
+	})
 }

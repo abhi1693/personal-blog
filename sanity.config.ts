@@ -14,13 +14,15 @@ import {
 import { vercelWidget } from 'sanity-plugin-dashboard-widget-vercel'
 import { visionTool } from '@sanity/vision'
 import { codeInput } from '@sanity/code-input'
+import { supportedLanguages } from '@/lib/i18n'
+import { documentInternationalization } from '@sanity/document-internationalization'
 import { schemaTypes } from './src/sanity/schemaTypes'
 import resolveUrl from '@/lib/resolveUrl'
 
 const singletonTypes = ['site']
 
 export default defineConfig({
-	title: 'SanityPress',
+	title: 'Administration',
 	icon,
 	projectId,
 	dataset,
@@ -45,6 +47,10 @@ export default defineConfig({
 		}),
 		visionTool({ defaultApiVersion: apiVersion }),
 		codeInput(),
+		documentInternationalization({
+			supportedLanguages,
+			schemaTypes: ['page', 'blog.post'],
+		}),
 	],
 
 	schema: {

@@ -7,7 +7,9 @@ import { fetchSanityLive } from '@/sanity/lib/fetch'
 import {
 	MODULES_QUERY,
 	GLOBAL_MODULE_PATH_QUERY,
+	TRANSLATIONS_QUERY,
 } from '@/sanity/lib/queries'
+import { languages } from '@/lib/i18n'
 import errors from '@/lib/errors'
 
 export default async function Page({ params }: Props) {
@@ -25,9 +27,9 @@ export async function generateMetadata({ params }: Props) {
 export async function generateStaticParams() {
 	const slugs = await client.fetch<{ slug: string }[]>(
 		groq`*[
-			_type == 'page' &&
-			defined(metadata.slug.current) &&
-			!(metadata.slug.current in ['index'])
+			_type == 'page'
+			&& defined(metadata.slug.current)
+			&& !(metadata.slug.current in ['index'])
 		]{
 			'slug': metadata.slug.current
 		}`,
@@ -37,12 +39,13 @@ export async function generateStaticParams() {
 }
 
 async function getPage(params: Params) {
-	const { slug } = processSlug(params)
+	const { slug, lang } = processSlug(params)
 
 	const page = await fetchSanityLive<Sanity.Page>({
 		query: groq`*[
-			_type == 'page' &&
-			metadata.slug.current == $slug
+			_type == 'page'
+			&& metadata.slug.current == $slug
+			${lang ? `&& language == '${lang}'` : ''}
 		][0]{
 			...,
 			'modules': (
@@ -57,11 +60,11 @@ async function getPage(params: Params) {
 				// global modules (after)
 				+ *[_type == 'global-module' && path == '*'].after[]{ ${MODULES_QUERY} }
 			),
-			parent[]->{ metadata { slug } },
 			metadata {
 				...,
 				'ogimage': image.asset->url + '?w=1200'
-			}
+			},
+			${TRANSLATIONS_QUERY},
 		}`,
 		params: { slug },
 	})
@@ -78,11 +81,27 @@ type Props = {
 }
 
 function processSlug(params: Params) {
+	const lang =
+		params.slug && languages.includes(params.slug[0])
+			? params.slug[0]
+			: undefined
+
 	if (params.slug === undefined)
 		return {
 			slug: 'index',
+			lang,
 		}
 
 	const slug = params.slug.join('/')
+
+	if (lang) {
+		const processed = slug.replace(new RegExp(`^${lang}/?`), '')
+
+		return {
+			slug: processed === '' ? 'index' : processed,
+			lang,
+		}
+	}
+
 	return { slug }
 }

@@ -5,7 +5,12 @@ import { client } from '@/sanity/lib/client'
 import { fetchSanityLive } from '@/sanity/lib/fetch'
 import { groq } from 'next-sanity'
 import { BLOG_DIR } from '@/lib/env'
-import { MODULES_QUERY,  } from '@/sanity/lib/queries'
+import {
+	IMAGE_QUERY,
+	MODULES_QUERY,
+	TRANSLATIONS_QUERY,
+} from '@/sanity/lib/queries'
+import { languages, type Lang } from '@/lib/i18n'
 import errors from '@/lib/errors'
 
 export default async function Page({ params }: Props) {
@@ -35,17 +40,21 @@ async function getPost(params: Params) {
 
 	if (!blogTemplateExists) throw new Error(errors.missingBlogTemplate)
 
-	const { slug } = processSlug(params)
+	const { slug, lang } = processSlug(params)
 
 	return await fetchSanityLive<Sanity.BlogPost & { modules: Sanity.Module[] }>({
 		query: groq`*[
-			_type == 'blog.post' &&
-			metadata.slug.current == $slug
+			_type == 'blog.post'
+			&& metadata.slug.current == $slug
+			${lang ? `&& language == '${lang}'` : ''}
 		][0]{
 			...,
 			body[]{
 				...,
-				_type == 'image' => { asset-> }
+				_type == 'image' => {
+					${IMAGE_QUERY},
+					asset->
+				}
 			},
 			'readTime': length(string::split(pt::text(body), ' ')) / 200,
 			'headings': body[style in ['h2', 'h3']]{
@@ -67,7 +76,8 @@ async function getPost(params: Params) {
 				+ *[_type == 'global-module' && path == '${BLOG_DIR}/'].after[]{ ${MODULES_QUERY} }
 				// global modules (after)
 				+ *[_type == 'global-module' && path == '*'].after[]{ ${MODULES_QUERY} }
-			)
+			),
+			${TRANSLATIONS_QUERY},
 		}`,
 		params: { slug },
 	})
@@ -80,9 +90,14 @@ type Props = {
 }
 
 function processSlug(params: Params) {
+	const lang = languages.includes(params.slug[0] as Lang)
+		? params.slug[0]
+		: undefined
+
 	const slug = params.slug.join('/')
 
 	return {
-		slug
+		slug: lang ? slug.replace(new RegExp(`^${lang}/`), '') : slug,
+		lang,
 	}
 }

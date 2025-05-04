@@ -1,5 +1,8 @@
+import { cookies } from 'next/headers'
+import { DEFAULT_LANG, langCookieName } from '@/lib/i18n'
 import { fetchSanityLive } from '@/sanity/lib/fetch'
 import { groq } from 'next-sanity'
+import { IMAGE_QUERY } from '@/sanity/lib/queries'
 import { stegaClean } from 'next-sanity'
 import sortFeaturedPosts from './sortFeaturedPosts'
 import { Suspense } from 'react'
@@ -17,18 +20,25 @@ export default async function BlogFrontpage({
 	showFeaturedPostsFirst: boolean
 	itemsPerPage: number
 }>) {
+	const lang = (await cookies()).get(langCookieName)?.value ?? DEFAULT_LANG
+
 	const posts = await fetchSanityLive<Sanity.BlogPost[]>({
 		query: groq`
 			*[
 				_type == 'blog.post'
+				${!!lang ? `&& (!defined(language) || language == '${lang}')` : ''}
 			]|order(publishDate desc){
 				_type,
 				_id,
 				featured,
-				metadata,
 				categories[]->,
 				authors[]->,
-				publishDate
+				publishDate,
+				language,
+				metadata {
+					...,
+					image { ${IMAGE_QUERY} }
+				},
 			}
 		`,
 	})

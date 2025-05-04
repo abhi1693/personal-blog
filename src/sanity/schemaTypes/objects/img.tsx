@@ -22,6 +22,7 @@ export default defineType({
 			type: 'image',
 			options: {
 				hotspot: true,
+				metadata: ['lqip'],
 			},
 		}),
 		defineField({
@@ -88,10 +89,16 @@ export default defineType({
 			image: 'image',
 			responsive: 'responsive',
 			alt: 'alt',
+			loading: 'loading',
 		},
-		prepare: ({ image, responsive, alt }) => ({
+		prepare: ({ image, responsive, alt, loading = 'lazy' }) => ({
 			title: alt,
-			subtitle: responsive && count(responsive, 'responsive image'),
+			subtitle: [
+				responsive && count(responsive, 'responsive image'),
+				loading && `loading="${loading}"`,
+			]
+				.filter(Boolean)
+				.join(', '),
 			media: image,
 		}),
 	},

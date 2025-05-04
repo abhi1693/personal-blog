@@ -31,6 +31,12 @@ export default defineType({
 			type: 'metadata',
 			group: 'metadata',
 		}),
+		defineField({
+			name: 'language',
+			type: 'string',
+			readOnly: true,
+			hidden: true,
+		}),
 	],
 	preview: {
 		select: {
@@ -38,10 +44,12 @@ export default defineType({
 			slug: 'metadata.slug.current',
 			media: 'metadata.image',
 			noindex: 'metadata.noIndex',
+			language: 'language',
 		},
-		prepare: ({ title, slug, media, noindex }) => ({
+		prepare: ({ title, slug, media, noindex, language }) => ({
 			title,
 			subtitle: [
+				language && `[${language}] `,
 				slug && (slug === 'index' ? '/' : `/${slug}`),
 			]
 				.filter(Boolean)
