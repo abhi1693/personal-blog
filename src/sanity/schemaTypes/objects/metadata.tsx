@@ -9,15 +9,6 @@ export default defineType({
 	type: 'object',
 	fields: [
 		defineField({
-			name: 'slug',
-			type: 'slug',
-			description: 'URL path or permalink',
-			options: {
-				source: (doc: any) => doc.title || doc.metadata.title,
-			},
-			validation: (Rule) => Rule.required(),
-		}),
-		defineField({
 			name: 'title',
 			type: 'string',
 			validation: (Rule) => Rule.max(60).warning(),
@@ -36,6 +27,15 @@ export default defineType({
 			components: {
 				input: (props) => <CharacterCount as="textarea" max={160} {...props} />,
 			},
+		}),
+		defineField({
+			name: 'slug',
+			type: 'slug',
+			description: 'URL path or permalink',
+			options: {
+				source: (doc: any) => doc.title || doc.metadata.title,
+			},
+			validation: (Rule) => Rule.required(),
 		}),
 		defineField({
 			name: 'image',

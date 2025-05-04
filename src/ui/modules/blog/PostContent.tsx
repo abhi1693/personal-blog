@@ -5,6 +5,7 @@ import ReadTime from './ReadTime'
 import moduleProps from '@/lib/moduleProps'
 import { cn } from '@/lib/utils'
 import Date from '@/ui/Date'
+import YouTubeEmbed from '@/ui/YouTubeEmbed'
 import Content from '@/ui/modules/RichtextModule/Content'
 import TableOfContents from '@/ui/modules/RichtextModule/TableOfContents'
 
@@ -15,6 +16,7 @@ export default function PostContent({
 	if (!post) return null
 
 	const showTOC = !post.hideTableOfContents || !!post.headings?.length
+	const showYouTube = post.youtubeEmbed?.videoID
 
 	return (
 		<article {...moduleProps(props)}>
@@ -51,12 +53,16 @@ export default function PostContent({
 					</aside>
 				)}
 
-				<Content
-					value={post.body}
-					className={cn(css.body, 'grid max-w-screen-md')}
-				>
-					<hr />
-				</Content>
+				<div className="grid gap-8 max-w-screen-md">
+					{showYouTube && (
+						<YouTubeEmbed
+							videoId={post.youtubeEmbed.videoID}
+							title={post.metadata.title}
+						/>
+					)}
+
+					<Content value={post.body} className={cn(css.body)} />
+				</div>
 			</div>
 		</article>
 	)

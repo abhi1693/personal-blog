@@ -53,6 +53,11 @@ declare global {
 			modules?: Module[]
 		}
 
+		interface YouTubeEmbed {
+			videoId: string
+			title: string
+		}
+
 		interface BlogPost extends PageBase {
 			readonly _type: 'blog.post'
 			body: any
@@ -60,6 +65,7 @@ declare global {
 			headings?: { style: string; text: string }[]
 			categories: BlogCategory[]
 			authors: Person[]
+			youTubeEmbed?: YouTubeEmbed
 			featured: boolean
 			hideTableOfContents: boolean
 			publishDate: string

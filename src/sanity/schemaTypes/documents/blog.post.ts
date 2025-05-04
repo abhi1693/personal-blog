@@ -43,6 +43,19 @@ export default defineType({
 			group: 'content',
 		}),
 		defineField({
+			name: 'youtubeEmbed',
+			title: 'YouTube Embed',
+			type: 'object',
+			fields: [
+				defineField({
+					name: 'videoID',
+					title: 'YouTube Video ID',
+					type: 'string',
+				}),
+			],
+			group: 'content',
+		}),
+		defineField({
 			name: 'authors',
 			type: 'array',
 			of: [
