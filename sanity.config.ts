@@ -1,72 +1,82 @@
 'use client'
-/**
- * This config is used to set up Sanity Studio that's mounted on the `/pages/studio/[[...index]].tsx` route
- */
 
-import { schemaMarkup } from '@operationnation/sanity-plugin-schema-markup'
-import { codeInput } from '@sanity/code-input'
-import { visionTool } from '@sanity/vision'
-import {
-  apiVersion,
-  dataset,
-  DRAFT_MODE_ROUTE,
-  projectId,
-} from 'lib/sanity.api'
-import { locate } from 'plugins/locate'
-import { previewDocumentNode } from 'plugins/previewPane'
-import { settingsPlugin, settingsStructure } from 'plugins/settings'
+import pkg from './package.json'
 import { defineConfig } from 'sanity'
-import { presentationTool } from 'sanity/presentation'
-import { structureTool } from 'sanity/structure'
-import { unsplashImageAsset } from 'sanity-plugin-asset-source-unsplash'
-import authorType from 'schemas/author'
-import categoryType from 'schemas/category'
-import postType from 'schemas/post'
-import seriesType from 'schemas/series'
-import settingsType from 'schemas/settings'
+import { projectId, dataset, apiVersion } from '@/sanity/lib/env'
+import { structure } from './src/sanity/structure'
+import { presentation } from './src/sanity/presentation'
+import { icon, infoWidget } from 'sanitypress-utils'
+import {
+	dashboardTool,
+	projectInfoWidget,
+	projectUsersWidget,
+} from '@sanity/dashboard'
+import { vercelWidget } from 'sanity-plugin-dashboard-widget-vercel'
+import { visionTool } from '@sanity/vision'
+import { codeInput } from '@sanity/code-input'
+import { supportedLanguages } from '@/lib/i18n'
+import { documentInternationalization } from '@sanity/document-internationalization'
+import { schemaTypes } from './src/sanity/schemaTypes'
+import resolveUrl from '@/lib/resolveUrl'
 
-const title =
-  process.env.NEXT_PUBLIC_SANITY_PROJECT_TITLE || 'Blog | Abhimanyu Saharan'
+const singletonTypes = ['site']
 
 export default defineConfig({
-  basePath: '/studio',
-  projectId,
-  dataset,
-  title,
-  schema: {
-    // If you want more content types, you can add them to this array
-    types: [authorType, categoryType, postType, settingsType, seriesType],
-  },
-  plugins: [
-    structureTool({
-      structure: settingsStructure(settingsType),
-      // `defaultDocumentNode` is responsible for adding a “Preview” tab to the document pane
-      defaultDocumentNode: previewDocumentNode(),
-    }),
-    presentationTool({
-      locate,
-      previewUrl: {
-        previewMode: {
-          enable: DRAFT_MODE_ROUTE,
-        },
-      },
-    }),
-    // Configures the global "new document" button, and document actions, to suit the Settings document singleton
-    settingsPlugin({ type: settingsType.name }),
-    // Add an image asset source for Unsplash
-    unsplashImageAsset(),
-    codeInput(),
-    schemaMarkup(),
-    // Vision lets you query your content with GROQ in the studio
-    // https://www.sanity.io/docs/the-vision-plugin
-    process.env.NODE_ENV !== 'production' &&
-      visionTool({ defaultApiVersion: apiVersion }),
-  ],
-  releases: {
-    enabled: false,
-  },
-  scheduledPublishing: {
-    enabled: true,
-    inputDateTimeFormat: 'dd/MM/yyyy h:mm a',
-  },
+	title: 'Administration',
+	icon,
+	projectId,
+	dataset,
+	basePath: '/admin',
+
+	plugins: [
+		structure,
+		presentation,
+		dashboardTool({
+			name: 'deployment',
+			title: 'Deployment',
+			widgets: [vercelWidget()],
+		}),
+		dashboardTool({
+			name: 'info',
+			title: 'Info',
+			widgets: [
+				projectInfoWidget(),
+				projectUsersWidget(),
+				infoWidget({ version: pkg.version }),
+			],
+		}),
+		visionTool({ defaultApiVersion: apiVersion }),
+		codeInput(),
+		documentInternationalization({
+			supportedLanguages,
+			schemaTypes: ['page', 'blog.post'],
+		}),
+	],
+
+	schema: {
+		types: schemaTypes,
+		templates: (templates) =>
+			templates.filter(
+				({ schemaType }) => !singletonTypes.includes(schemaType),
+			),
+	},
+	document: {
+		productionUrl: async (prev, { document }) => {
+			if (['page', 'blog.post'].includes(document?._type)) {
+				return resolveUrl(document as Sanity.PageBase, { base: true })
+			}
+			return prev
+		},
+
+		actions: (input, { schemaType }) => {
+			if (singletonTypes.includes(schemaType)) {
+				return input.filter(
+					({ action }) =>
+						action && ['publish', 'discardChanges', 'restore'].includes(action),
+				)
+			}
+
+			return input
+		},
+	},
 })
