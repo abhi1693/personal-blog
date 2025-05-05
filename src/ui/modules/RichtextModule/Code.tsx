@@ -16,7 +16,7 @@ export default async function Code({
 	if (!value?.code) return null
 
 	const html = await codeToHtml(stegaClean(value.code), {
-		lang: value.language,
+		lang: value.language === 'golang' ? 'go' : value.language,
 		theme,
 		decorations: value.highlightedLines
 			?.map((row) => ({
