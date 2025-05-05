@@ -5,7 +5,7 @@ import SkipToContent from '@/ui/SkipToContent'
 import VisualEditingControls from '@/ui/VisualEditingControls'
 import Footer from '@/ui/footer'
 import Header from '@/ui/header'
-import { GoogleAnalytics } from '@next/third-parties/google'
+import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import _ from 'next/dynamic'
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
@@ -20,6 +20,7 @@ export default async function RootLayout({
 }) {
 	return (
 		<Root>
+			<GoogleTagManager gtmId={process.env.NEXT_GOOGLE_TAG_ID || ''} />
 			<body className="bg-canvas text-ink antialiased">
 				<NuqsAdapter>
 					<SkipToContent />
