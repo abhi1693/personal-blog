@@ -6,6 +6,7 @@ export default function Subscriber() {
 	const [show, setShow] = useState(false)
 	const [dismissed, setDismissed] = useState(false)
 	const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle')
+	const [error, setError] = useState<string | null>(null)
 
 	useEffect(() => {
 		const isDismissed = sessionStorage.getItem('subscriberDismissed') === 'true'
@@ -57,9 +58,18 @@ export default function Subscriber() {
 				setTimeout(() => dismiss(), 1500)
 			} else {
 				setStatus('error')
+				const data = await res.json()
+				if (data.error) {
+					setError(data.error)
+				} else if (data.message) {
+					setError(data.message)
+				} else {
+					setError('Something went wrong. Please try again.')
+				}
 			}
 		} catch {
 			setStatus('error')
+			setError('Something went wrong. Please try again.')
 		}
 	}
 
@@ -120,7 +130,7 @@ export default function Subscriber() {
 							</button>
 							{status === 'error' && (
 								<p className="text-sm text-red-500">
-									Something went wrong. Please try again.
+									{error || 'Something went wrong. Please try again.'}
 								</p>
 							)}
 						</form>
