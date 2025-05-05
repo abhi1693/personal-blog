@@ -33,7 +33,7 @@ export default async function RootLayout({
 
 					<VisualEditingControls />
 				</NuqsAdapter>
-				<GoogleAnalytics gaId={process.env.NEXT_GOOGLE_TAG_ID || ''} />
+				<GoogleAnalytics gaId={process.env.NEXT_GOOGLE_ANALYTICS_ID || ''} />
 				<SpeedInsights />
 			</body>
 		</Root>
