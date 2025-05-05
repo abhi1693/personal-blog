@@ -18,9 +18,18 @@ export default async function processMetadata(
 		metadataBase: new URL(BASE_URL),
 		title,
 		description,
+		category: 'technology',
 		openGraph: {
 			type: 'website',
 			url,
+			title,
+			description,
+			images:
+				ogimage || `${BASE_URL}/api/og?title=${encodeURIComponent(title)}`,
+			siteName: title,
+		},
+		twitter: {
+			card: 'summary_large_image',
 			title,
 			description,
 			images:
@@ -43,6 +52,11 @@ export default async function processMetadata(
 			),
 			types: {
 				'application/rss+xml': `/${BLOG_DIR}/rss.xml`,
+			},
+		},
+		verification: {
+			other: {
+				'google-adsense-account': process.env.NEXT_GOOGLE_ADSENSE_ID ?? '',
 			},
 		},
 	}
