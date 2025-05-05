@@ -51,7 +51,7 @@ export const POST = async (req: Request) => {
       ${recentPosts
 				.map((post) => {
 					const date = new Date(post.isoDate || '').toLocaleDateString()
-					const summary = post.summary?.replace(/<\/?[^>]+(>|$)/g, '') || '' // strip HTML
+					const summary = post.summary?.replace(/<\/?[^>]+(>|$)/g, '') || ''
 					return `
           <li style="margin-bottom: 24px;">
             <a href="${post.link}" target="_blank" style="font-weight: 600; font-size: 16px; color: #0b5fff; text-decoration: none;">${post.title}</a><br />
@@ -76,30 +76,30 @@ export const POST = async (req: Request) => {
 		})
 
 		const contacts = response?.data?.data || []
-		let successCount = 0
-		let skippedCount = 0
 
-		for (const contact of contacts) {
-			if (!contact.email) {
-				skippedCount++
-				continue
-			}
+		const sendResults = await Promise.allSettled(
+			contacts
+				.filter((contact) => contact.email)
+				.map((contact) =>
+					resend.emails.send({
+						from: 'Abhimanyu Saharan <noreply@abhimanyu-saharan.com>',
+						to: contact.email!,
+						subject: '📬 New Blog Posts from Abhimanyu',
+						html,
+					}),
+				),
+		)
 
-			try {
-				await resend.emails.send({
-					from: 'Abhimanyu Saharan <noreply@abhimanyu-saharan.com>',
-					to: contact.email,
-					subject: '📬 New Blog Posts from Abhimanyu',
-					html,
-				})
-				successCount++
-			} catch (err) {
-				console.error(`❌ Failed to send to ${contact.email}:`, err)
-			}
-		}
+		const successCount = sendResults.filter(
+			(r) => r.status === 'fulfilled',
+		).length
+		const failedCount = sendResults.filter(
+			(r) => r.status === 'rejected',
+		).length
+		const skippedCount = contacts.length - sendResults.length
 
 		return NextResponse.json({
-			message: `✅ Sent newsletter to ${successCount} subscriber(s). Skipped ${skippedCount}. Included ${recentPosts.length} post(s).`,
+			message: `✅ Sent newsletter to ${successCount} subscriber(s). Failed: ${failedCount}. Skipped: ${skippedCount}. Included ${recentPosts.length} post(s).`,
 		})
 	} catch (err) {
 		console.error('Newsletter send error:', err)
