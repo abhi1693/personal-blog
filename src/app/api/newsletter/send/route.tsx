@@ -29,34 +29,6 @@ export async function GET(request: NextRequest) {
 			return Response.json({ message: 'No new posts in the last 30 days.' })
 		}
 
-		const html = `
-      <div style="font-family: system-ui, sans-serif; font-size: 16px; color: #222; max-width: 640px; margin: auto; padding: 24px;">
-        <header style="border-bottom: 1px solid #ccc; margin-bottom: 24px;">
-          <h1 style="margin: 0;">📰 Latest from Abhimanyu's Blog</h1>
-          <p style="font-size: 14px; margin-top: 8px;">Scaling infrastructure, one cluster at a time</p>
-        </header>
-        <ul style="padding: 0; list-style: none; margin: 0 0 32px;">
-          ${recentPosts
-						.map((post) => {
-							const date = new Date(post.isoDate || '').toLocaleDateString()
-							const summary = post.summary?.replace(/<\/?[^>]+(>|$)/g, '') || ''
-							return `
-              <li style="margin-bottom: 24px;">
-                <a href="${post.link}" target="_blank" style="font-weight: bold; font-size: 16px; color: #0b5fff; text-decoration: none;">${post.title}</a><br />
-                <span style="font-size: 13px; color: #555;">${date}</span>
-                <p style="font-size: 14px; color: #333;">${summary}</p>
-              </li>`
-						})
-						.join('')}
-        </ul>
-        <footer style="border-top: 1px solid #ccc; padding-top: 16px; font-size: 14px; color: #666;">
-          — Abhimanyu<br />
-          <a href="https://blog.abhimanyu-saharan.com" style="color: #0b5fff;">Visit the Blog</a> |
-          <a href="https://www.youtube.com/@AbhimanyuSaharanOfficial" style="color: #0b5fff;">YouTube</a>
-        </footer>
-      </div>
-    `
-
 		const { data: contactData } = await resend.contacts.list({
 			audienceId: process.env.NEXT_RESEND_AUDIENCE_ID!,
 		})
@@ -66,14 +38,49 @@ export async function GET(request: NextRequest) {
 		const sendResults = await Promise.allSettled(
 			contacts
 				.filter((c) => c.email)
-				.map((c) =>
-					resend.emails.send({
+				.map((c) => {
+					const encodedEmail = encodeURIComponent(c.email!)
+					const unsubscribeUrl = `${BASE_URL}/api/newsletter/unsubscribe?email=${encodedEmail}`
+
+					const html = `
+<div style="font-family: system-ui, sans-serif; font-size: 16px; color: #222; max-width: 640px; margin: auto; padding: 24px;">
+  <header style="border-bottom: 1px solid #ccc; margin-bottom: 24px;">
+    <h1 style="margin: 0;">📰 Latest from Abhimanyu's Blog</h1>
+    <p style="font-size: 14px; margin-top: 8px;">Scaling infrastructure, one cluster at a time</p>
+  </header>
+  <ul style="padding: 0; list-style: none; margin: 0 0 32px;">
+    ${recentPosts
+			.map((post) => {
+				const date = new Date(post.isoDate || '').toLocaleDateString()
+				const summary = post.summary?.replace(/<\/?[^>]+(>|$)/g, '') || ''
+				return `
+      <li style="margin-bottom: 24px;">
+        <a href="${post.link}" target="_blank" style="font-weight: bold; font-size: 16px; color: #0b5fff; text-decoration: none;">${post.title}</a><br />
+        <span style="font-size: 13px; color: #555;">${date}</span>
+        <p style="font-size: 14px; color: #333;">${summary}</p>
+      </li>`
+			})
+			.join('')}
+  </ul>
+  <footer style="border-top: 1px solid #ccc; padding-top: 16px; font-size: 14px; color: #666;">
+    — Abhimanyu<br />
+    <a href="${BASE_URL}" style="color: #0b5fff;">Visit the Blog</a> |
+    <a href="https://www.youtube.com/@AbhimanyuSaharanOfficial" style="color: #0b5fff;">YouTube</a> |
+    <a href="${unsubscribeUrl}" style="color: #0b5fff;">Unsubscribe</a>
+  </footer>
+</div>
+`
+
+					return resend.emails.send({
 						from: 'Abhimanyu Saharan <noreply@abhimanyu-saharan.com>',
 						to: c.email!,
 						subject: '📬 New Blog Posts from Abhimanyu',
+						headers: {
+							'List-Unsubscribe': `<${unsubscribeUrl}>`,
+						},
 						html,
-					}),
-				),
+					})
+				}),
 		)
 
 		const successCount = sendResults.filter(
