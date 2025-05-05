@@ -10,7 +10,6 @@ import Link from 'next/link'
 
 export default async function Header() {
 	const { title, logo, ctas } = await getSite()
-
 	const logoImage = logo?.image?.dark || logo?.image?.default
 
 	return (
@@ -21,20 +20,22 @@ export default async function Header() {
 					'mx-auto grid max-w-screen-xl items-center gap-x-6 p-4',
 				)}
 			>
-				<div className="[grid-area:logo]">
+				<div className="[grid-area:logo] flex items-center gap-2">
 					<Link
-						className={cn('h4 md:h3 grid', logo?.image && 'max-w-3xs')}
 						href="/"
+						className={cn(
+							'flex items-center gap-2',
+							logo?.image && 'max-w-3xs',
+						)}
 					>
-						{logoImage ? (
+						{logoImage && (
 							<Img
 								className="inline-block max-h-[1.2em] w-auto"
 								image={logoImage}
 								alt={logo?.name || title}
 							/>
-						) : (
-							<span className="text-gradient">{title}</span>
 						)}
+						<span className="text-lg font-semibold text-ink">{title}</span>
 					</Link>
 				</div>
 
