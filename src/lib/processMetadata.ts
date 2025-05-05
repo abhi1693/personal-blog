@@ -12,7 +12,7 @@ export default async function processMetadata(
 	},
 ): Promise<Metadata> {
 	const url = resolveUrl(page)
-	const { title, description, ogimage, noIndex , slug} = page.metadata
+	const { title, description, ogimage, noIndex, slug } = page.metadata
 
 	// If slug is index, use description in images for title
 	const ogTitle = slug.current === 'index' ? description : title
