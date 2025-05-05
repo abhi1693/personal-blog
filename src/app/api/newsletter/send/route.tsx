@@ -54,7 +54,7 @@ export const POST = async (req: Request) => {
 					const summary = post.summary?.replace(/<\/?[^>]+(>|$)/g, '') || '' // strip HTML
 					return `
           <li style="margin-bottom: 24px;">
-            <a href="${BASE_URL}${post.link}" target="_blank" style="font-weight: 600; font-size: 16px; color: #0b5fff; text-decoration: none;">${post.title}</a><br />
+            <a href="${post.link}" target="_blank" style="font-weight: 600; font-size: 16px; color: #0b5fff; text-decoration: none;">${post.title}</a><br />
             <span style="font-size: 13px; color: #555;">${date}</span>
             <p style="margin-top: 8px; font-size: 14px; color: #333;">${summary}</p>
           </li>
