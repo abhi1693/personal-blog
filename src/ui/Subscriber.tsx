@@ -22,7 +22,7 @@ export default function Subscriber() {
 
 		const handleScroll = () => {
 			const scrolled = (window.scrollY / document.body.scrollHeight) * 100
-			if (scrolled > 60) {
+			if (scrolled > 30) {
 				setShow(true)
 				window.removeEventListener('scroll', handleScroll)
 			}
