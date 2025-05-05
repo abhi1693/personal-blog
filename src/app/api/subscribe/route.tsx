@@ -1,16 +1,7 @@
 import { NextResponse } from 'next/server'
-import { createClient } from 'redis'
+import { Resend } from 'resend'
 
-let redis: ReturnType<typeof createClient> | null = null
-
-async function getRedisClient() {
-	if (!redis) {
-		redis = createClient({ url: process.env.REDIS_URL })
-		redis.on('error', (err) => console.error('Redis Client Error', err))
-		await redis.connect()
-	}
-	return redis
-}
+const resend = new Resend(process.env.NEXT_RESEND_API_KEY)
 
 export const POST = async (req: Request) => {
 	if (req.method !== 'POST') {
@@ -32,13 +23,11 @@ export const POST = async (req: Request) => {
 	} catch {
 		return new NextResponse(
 			JSON.stringify({ error: 'Request body must be valid JSON' }),
-			{
-				status: 400,
-			},
+			{ status: 400 },
 		)
 	}
 
-	const { email, name } = body
+	const { email, firstName, lastName } = body
 
 	if (!email || typeof email !== 'string') {
 		return new NextResponse(JSON.stringify({ error: 'Email is required.' }), {
@@ -46,32 +35,37 @@ export const POST = async (req: Request) => {
 		})
 	}
 
-	const client = await getRedisClient()
-	const key = `subscriber:${email.toLowerCase()}`
-	const exists = await client.exists(key)
+	try {
+		const { error } = await resend.contacts.create({
+			email: email.toLowerCase(),
+			audienceId: process.env.NEXT_RESEND_AUDIENCE_ID!,
+			firstName: firstName || undefined,
+			lastName: lastName || undefined,
+		})
 
-	if (exists) {
+		if (error) {
+			const alreadyExists = error.message?.includes('already exists')
+			return new NextResponse(
+				JSON.stringify({
+					message: alreadyExists
+						? 'Already subscribed.'
+						: 'Failed to subscribe.',
+				}),
+				{ status: alreadyExists ? 200 : 500 },
+			)
+		}
+
 		return new NextResponse(
-			JSON.stringify({ message: 'Already subscribed.' }),
+			JSON.stringify({ message: 'Subscribed successfully.' }),
+			{ status: 200 },
+		)
+	} catch (err) {
+		console.error('Resend subscribe error:', err)
+		return new NextResponse(
+			JSON.stringify({ error: 'Internal server error' }),
 			{
-				status: 200,
+				status: 500,
 			},
 		)
 	}
-
-	await client.set(
-		key,
-		JSON.stringify({
-			email: email.toLowerCase(),
-			name: name || null,
-			subscribedAt: new Date().toISOString(),
-		}),
-	)
-
-	return new NextResponse(
-		JSON.stringify({ message: 'Subscribed successfully.' }),
-		{
-			status: 200,
-		},
-	)
 }

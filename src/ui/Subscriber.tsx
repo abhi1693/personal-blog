@@ -40,17 +40,18 @@ export default function Subscriber() {
 		const formData = new FormData(form)
 
 		const email = formData.get('email')?.toString() || ''
-		const name = formData.get('name')?.toString() || ''
+		const firstName = formData.get('firstName')?.toString() || ''
+		const lastName = formData.get('lastName')?.toString() || ''
 
 		try {
 			const res = await fetch('/api/subscribe', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ email, name }),
+				body: JSON.stringify({ email, firstName, lastName }),
 			})
 
 			if (res.ok) {
-				localStorage.setItem('subscriberStatus', 'subscribed') // ✅ no email stored
+				localStorage.setItem('subscriberStatus', 'subscribed')
 				setStatus('success')
 				form.reset()
 				setTimeout(() => dismiss(), 1500)
@@ -90,12 +91,20 @@ export default function Subscriber() {
 						</p>
 
 						<form onSubmit={handleSubmit} className="space-y-3">
-							<input
-								name="name"
-								type="text"
-								placeholder="Name (optional)"
-								className="w-full border px-3 py-2 rounded"
-							/>
+							<div className="flex gap-2 flex-col sm:flex-row">
+								<input
+									name="firstName"
+									type="text"
+									placeholder="First name"
+									className="w-full border px-3 py-2 rounded"
+								/>
+								<input
+									name="lastName"
+									type="text"
+									placeholder="Last name"
+									className="w-full border px-3 py-2 rounded"
+								/>
+							</div>
 							<input
 								name="email"
 								type="email"
