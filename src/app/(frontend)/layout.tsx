@@ -1,3 +1,4 @@
+import { BASE_URL } from '@/lib/env'
 import '@/styles/app.css'
 import Announcement from '@/ui/Announcement'
 import Root from '@/ui/Root'
@@ -7,9 +8,44 @@ import Footer from '@/ui/footer'
 import Header from '@/ui/header'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
+import { Metadata } from 'next'
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
 
 export const dynamic = 'force-dynamic'
+
+const BASE_TITLE = 'Blog by Abhimanyu Saharan'
+const BASE_DESCRIPTION =
+	'A technical blog by Abhimanyu Saharan, focused on DevOps, automation, Kubernetes, infrastructure, and real-world software engineering insights.'
+const BASE_IMAGE = `/api/og?title=${encodeURIComponent(BASE_DESCRIPTION)}`
+const BASE_URL_OBJECT = new URL(BASE_URL)
+
+export const metadata: Metadata = {
+	title: {
+		template: '%s | Abhimanyu Saharan',
+		default: 'Blog',
+	},
+	description: BASE_DESCRIPTION,
+	metadataBase: BASE_URL_OBJECT,
+	category: 'technology',
+	openGraph: {
+		type: 'website',
+		url: BASE_URL_OBJECT.toString(),
+		title: BASE_TITLE,
+		description: BASE_DESCRIPTION,
+		images: [BASE_IMAGE],
+	},
+	twitter: {
+		card: 'summary_large_image',
+		title: BASE_TITLE,
+		description: BASE_DESCRIPTION,
+		images: [BASE_IMAGE],
+	},
+	verification: {
+		other: {
+			'google-adsense-account': process.env.NEXT_GOOGLE_ADSENSE_ID ?? '',
+		},
+	},
+}
 
 export default async function RootLayout({
 	children,
