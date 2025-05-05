@@ -5,12 +5,15 @@ import { useEffect, useState } from 'react'
 export default function Subscriber() {
 	const [show, setShow] = useState(false)
 	const [dismissed, setDismissed] = useState(false)
-	const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
+	const [status, setStatus] = useState<
+		'idle' | 'loading' | 'success' | 'error'
+	>('idle')
 	const [error, setError] = useState<string | null>(null)
 
 	useEffect(() => {
 		const isDismissed = sessionStorage.getItem('subscriberDismissed') === 'true'
-		const isSubscribed = localStorage.getItem('subscriberStatus') === 'subscribed'
+		const isSubscribed =
+			localStorage.getItem('subscriberStatus') === 'subscribed'
 
 		if (isDismissed || isSubscribed) {
 			setDismissed(true)
