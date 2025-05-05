@@ -9,9 +9,11 @@ import Header from '@/ui/header'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { Metadata } from 'next'
+import _ from 'next/dynamic'
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
 
 export const dynamic = 'force-dynamic'
+const Subscriber = _(() => import('@/ui/Subscriber'), { ssr: true })
 
 const BASE_TITLE = 'Blog by Abhimanyu Saharan'
 const BASE_DESCRIPTION =
@@ -63,6 +65,7 @@ export default async function RootLayout({
 						{children}
 					</main>
 					<Footer />
+					<Subscriber />
 
 					<VisualEditingControls />
 				</NuqsAdapter>
