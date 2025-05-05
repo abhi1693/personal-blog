@@ -60,13 +60,13 @@ export default function PostContent({
 						{/* Google AdSense */}
 						<script
 							async
-							src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_GOOGLE_ADSENSE_ID}`}
+							src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_GOOGLE_ADSENSE_ID}`}
 							crossOrigin="anonymous"
 						></script>
 						<ins
 							className="adsbygoogle"
 							style={{ display: 'block' }}
-							data-ad-client={process.env.NEXT_PUBLIC_GOOGLE_ADSENSE_ID}
+							data-ad-client={process.env.NEXT_GOOGLE_ADSENSE_ID}
 							data-ad-slot="5194318014"
 							data-ad-format="auto"
 							data-full-width-responsive="true"
