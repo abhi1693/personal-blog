@@ -15,6 +15,7 @@ import { NuqsAdapter } from 'nuqs/adapters/next/app'
 export const dynamic = 'force-dynamic'
 const Subscriber = _(() => import('@/ui/Subscriber'), { ssr: true })
 
+const BASE_TITLE = 'Blog by Abhimanyu Saharan'
 const BASE_DESCRIPTION =
 	'A technical blog by Abhimanyu Saharan, focused on DevOps, automation, Kubernetes, infrastructure, and real-world software engineering insights.'
 const BASE_IMAGE = `/api/og?title=${encodeURIComponent(BASE_DESCRIPTION)}`
@@ -25,20 +26,21 @@ export const metadata: Metadata = {
 		template: '%s | Abhimanyu Saharan',
 		default: 'Blog',
 	},
-	description: 'A technical blog by Abhimanyu Saharan, focused on DevOps, automation, Kubernetes, infrastructure, and real-world software engineering insights.',
+	description: BASE_DESCRIPTION,
 	metadataBase: BASE_URL_OBJECT,
 	category: 'technology',
 	openGraph: {
 		type: 'website',
 		url: BASE_URL_OBJECT.toString(),
-		title: 'Blog by Abhimanyu Saharan',
-		description: 'A technical blog by Abhimanyu Saharan, focused on DevOps, automation, Kubernetes, infrastructure, and real-world software engineering insights.',
+		title: BASE_TITLE,
+		description: BASE_DESCRIPTION,
 		images: [BASE_IMAGE],
+		siteName: BASE_TITLE,
 	},
 	twitter: {
 		card: 'summary_large_image',
-		title: 'Blog by Abhimanyu Saharan',
-		description: 'A technical blog by Abhimanyu Saharan, focused on DevOps, automation, Kubernetes, infrastructure, and real-world software engineering insights.',
+		title: BASE_TITLE,
+		description: BASE_DESCRIPTION,
 		images: [BASE_IMAGE],
 	},
 	verification: {
