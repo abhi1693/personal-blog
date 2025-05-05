@@ -12,7 +12,10 @@ export default async function processMetadata(
 	},
 ): Promise<Metadata> {
 	const url = resolveUrl(page)
-	const { title, description, ogimage, noIndex } = page.metadata
+	const { title, description, ogimage, noIndex , slug} = page.metadata
+
+	// If slug is index, use description in images for title
+	const ogTitle = slug.current === 'index' ? description : title
 
 	return {
 		metadataBase: new URL(BASE_URL),
@@ -25,7 +28,7 @@ export default async function processMetadata(
 			title,
 			description,
 			images:
-				ogimage || `${BASE_URL}/api/og?title=${encodeURIComponent(title)}`,
+				ogimage || `${BASE_URL}/api/og?title=${encodeURIComponent(ogTitle)}`,
 			siteName: title,
 		},
 		twitter: {
@@ -33,7 +36,7 @@ export default async function processMetadata(
 			title,
 			description,
 			images:
-				ogimage || `${BASE_URL}/api/og?title=${encodeURIComponent(title)}`,
+				ogimage || `${BASE_URL}/api/og?title=${encodeURIComponent(ogTitle)}`,
 		},
 		robots: {
 			index: noIndex || vercelPreview ? false : undefined,
