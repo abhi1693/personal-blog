@@ -20,7 +20,6 @@ export default async function RootLayout({
 }) {
 	return (
 		<Root>
-			<GoogleAnalytics gaId={process.env.NEXT_GOOGLE_TAG_ID || ''} />
 			<body className="bg-canvas text-ink antialiased">
 				<NuqsAdapter>
 					<SkipToContent />
@@ -34,7 +33,7 @@ export default async function RootLayout({
 
 					<VisualEditingControls />
 				</NuqsAdapter>
-
+				<GoogleAnalytics gaId={process.env.NEXT_GOOGLE_TAG_ID || ''} />
 				<SpeedInsights />
 			</body>
 		</Root>
