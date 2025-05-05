@@ -40,15 +40,16 @@ export async function GET() {
 		)
 	}
 
-	const url = resolveUrl(blog)
+	const blogUrl = resolveUrl(blog, { base: true }) // Full absolute URL
+	const feedUrl = `${BASE_URL}/${BLOG_DIR}/rss.xml`
 
 	const feed = new Feed({
 		title: blog?.title || blog.metadata.title,
 		description: blog.metadata.description,
-		link: url,
-		id: url,
+		id: blogUrl,
+		link: blogUrl,
 		copyright,
-		favicon: BASE_URL + '/favicon.ico',
+		favicon: `${BASE_URL}/favicon.ico`,
 		language: DEFAULT_LANG,
 		generator: BASE_URL,
 	})
@@ -85,7 +86,14 @@ export async function GET() {
 		})
 	})
 
-	return new Response(feed.atom1(), {
+	const atomXml = feed.atom1()
+	const selfLinkTag = `<link rel="self" type="application/atom+xml" href="${feedUrl}" />`
+	const atomWithSelfLink = atomXml.replace(
+		'<feed xmlns="http://www.w3.org/2005/Atom">',
+		`<feed xmlns="http://www.w3.org/2005/Atom">\n  ${selfLinkTag}`,
+	)
+
+	return new Response(atomWithSelfLink, {
 		headers: {
 			'Content-Type': 'application/atom+xml',
 		},
