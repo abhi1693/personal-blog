@@ -56,26 +56,6 @@ export default function PostContent({
 							url={`${BASE_URL}/posts/${post.metadata.slug.current}`}
 							title={post.metadata.title}
 						/>
-
-						{/* Google AdSense */}
-						<script
-							async
-							src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_GOOGLE_ADSENSE_ID}`}
-							crossOrigin="anonymous"
-						></script>
-						<ins
-							className="adsbygoogle"
-							style={{ display: 'block' }}
-							data-ad-client={process.env.NEXT_GOOGLE_ADSENSE_ID}
-							data-ad-slot="5194318014"
-							data-ad-format="auto"
-							data-full-width-responsive="true"
-						></ins>
-						<script
-							dangerouslySetInnerHTML={{
-								__html: '(adsbygoogle = window.adsbygoogle || []).push({});',
-							}}
-						></script>
 					</>
 				</aside>
 
