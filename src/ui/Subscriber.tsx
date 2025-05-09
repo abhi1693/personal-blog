@@ -1,5 +1,6 @@
 'use client'
 
+import { motion, AnimatePresence } from 'framer-motion'
 import { useEffect, useState } from 'react'
 
 export default function Subscriber() {
@@ -73,8 +74,6 @@ export default function Subscriber() {
 		}
 	}
 
-	if (dismissed || !show) return null
-
 	const renderSuccess = () => (
 		<div className="text-center py-4">
 			<h2 className="text-base font-semibold">🎉 Subscribed!</h2>
@@ -122,17 +121,27 @@ export default function Subscriber() {
 	)
 
 	return (
-		<div className="fixed bottom-4 left-4 z-50 w-[240px] bg-white shadow-md rounded-lg border p-3 text-sm">
-			<div className="relative">
-				<button
-					onClick={dismiss}
-					className="absolute top-1.5 right-2 text-sm text-gray-500 hover:text-black"
-					aria-label="Close"
+		<AnimatePresence>
+			{!dismissed && show && (
+				<motion.div
+					initial={{ opacity: 0, y: 40 }}
+					animate={{ opacity: 1, y: 0 }}
+					exit={{ opacity: 0, y: 40 }}
+					transition={{ duration: 0.3, ease: 'easeOut' }}
+					className="fixed bottom-4 left-4 z-50 w-[240px] bg-white shadow-md rounded-lg border p-3 text-sm"
 				>
-					✕
-				</button>
-				{status === 'success' ? renderSuccess() : renderForm()}
-			</div>
-		</div>
+					<div className="relative">
+						<button
+							onClick={dismiss}
+							className="absolute top-1.5 right-2 text-sm text-gray-500 hover:text-black"
+							aria-label="Close"
+						>
+							✕
+						</button>
+						{status === 'success' ? renderSuccess() : renderForm()}
+					</div>
+				</motion.div>
+			)}
+		</AnimatePresence>
 	)
 }
