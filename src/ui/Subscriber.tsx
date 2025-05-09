@@ -48,7 +48,6 @@ export default function Subscriber() {
 		const payload = {
 			email: formData.get('email')?.toString() || '',
 			firstName: formData.get('firstName')?.toString() || '',
-			lastName: formData.get('lastName')?.toString() || '',
 		}
 
 		try {
@@ -77,44 +76,36 @@ export default function Subscriber() {
 	if (dismissed || !show) return null
 
 	const renderSuccess = () => (
-		<div className="text-center py-8">
-			<h2 className="text-lg font-semibold">🎉 Subscribed!</h2>
-			<p className="text-sm mt-2">Thank you for joining the list.</p>
+		<div className="text-center py-4">
+			<h2 className="text-base font-semibold">🎉 Subscribed!</h2>
+			<p className="text-xs mt-2">Thank you for joining the list.</p>
 		</div>
 	)
 
 	const renderForm = () => (
 		<>
-			<h2 className="text-lg font-semibold mb-2">Enjoying the content?</h2>
-			<p className="text-sm mb-4">
-				Get monthly DevOps & Kubernetes insights. No spam.
+			<h2 className="text-base font-semibold mb-1">Enjoying the content?</h2>
+			<p className="text-xs mb-3 text-gray-600">
+				Get DevOps & Kubernetes insights.
 			</p>
-			<form onSubmit={handleSubmit} className="space-y-3">
-				<div className="flex gap-2 flex-col sm:flex-row">
-					<input
-						name="firstName"
-						type="text"
-						placeholder="First name"
-						className="w-full border px-3 py-2 rounded"
-					/>
-					<input
-						name="lastName"
-						type="text"
-						placeholder="Last name"
-						className="w-full border px-3 py-2 rounded"
-					/>
-				</div>
+			<form onSubmit={handleSubmit} className="space-y-2">
+				<input
+					name="firstName"
+					type="text"
+					placeholder="First name"
+					className="w-full border px-3 py-1.5 text-sm rounded"
+				/>
 				<input
 					name="email"
 					type="email"
 					required
 					placeholder="Email address"
-					className="w-full border px-3 py-2 rounded"
+					className="w-full border px-3 py-1.5 text-sm rounded"
 				/>
 				<button
 					type="submit"
 					disabled={status === 'loading'}
-					className="w-full bg-black text-white py-2 px-4 rounded flex items-center justify-center gap-2"
+					className="w-full bg-black text-white py-1.5 px-4 text-sm rounded flex items-center justify-center gap-2"
 				>
 					{status === 'loading' && (
 						<span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
@@ -122,7 +113,7 @@ export default function Subscriber() {
 					{status === 'loading' ? 'Subscribing...' : 'Subscribe'}
 				</button>
 				{status === 'error' && (
-					<p className="text-sm text-red-500">
+					<p className="text-xs text-red-500">
 						{error || 'Something went wrong. Please try again.'}
 					</p>
 				)}
@@ -131,11 +122,11 @@ export default function Subscriber() {
 	)
 
 	return (
-		<div className="fixed inset-0 z-[9999] bg-black/50 flex items-center justify-center p-4">
-			<div className="bg-white rounded-lg max-w-md w-full p-6 relative shadow-xl">
+		<div className="fixed bottom-4 left-4 z-50 w-[240px] bg-white shadow-md rounded-lg border p-3 text-sm">
+			<div className="relative">
 				<button
 					onClick={dismiss}
-					className="absolute top-3 right-3 text-sm text-gray-500 hover:text-black"
+					className="absolute top-1.5 right-2 text-sm text-gray-500 hover:text-black"
 					aria-label="Close"
 				>
 					✕
