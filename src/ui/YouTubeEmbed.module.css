@@ -1,0 +1,19 @@
+/* Default state */
+.wrapper :global(.yt-lite > .lty-playbtn),
+.wrapper :global(.yt-lite > .lty-playbtn::before) {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%) scale(1); /* center + scale */
+	transition:
+		background-color 0.3s ease,
+		box-shadow 0.3s ease,
+		transform 0.2s ease;
+}
+
+/* Hover effect */
+.wrapper :global(.yt-lite > .lty-playbtn:hover) {
+	background-color: #b30000;
+	box-shadow: 0 0 12px rgba(255, 0, 0, 0.6);
+	transform: translate(-50%, -50%) scale(1.1); /* center + zoom */
+}
