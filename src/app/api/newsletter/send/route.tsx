@@ -66,6 +66,7 @@ export async function GET(request: NextRequest) {
     — Abhimanyu<br />
     <a href="${BASE_URL}" style="color: #0b5fff;">Visit the Blog</a> |
     <a href="https://www.youtube.com/@AbhimanyuSaharanOfficial" style="color: #0b5fff;">YouTube</a> |
+    <a href="https://buymeacoffee.com/asaharan" style="color: #0b5fff;">Support</a> |
     <a href="${unsubscribeUrl}" style="color: #0b5fff;">Unsubscribe</a>
   </footer>
 </div>
