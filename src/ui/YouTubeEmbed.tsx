@@ -1,8 +1,8 @@
 'use client'
 
+import styles from './YouTubeEmbed.module.css'
 import LiteYouTubeEmbed from 'react-lite-youtube-embed'
 import 'react-lite-youtube-embed/dist/LiteYouTubeEmbed.css'
-import styles from './YouTubeEmbed.module.css'
 
 interface YouTubeEmbedProps {
 	videoId: string
