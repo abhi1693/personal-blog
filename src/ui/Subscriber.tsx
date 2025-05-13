@@ -85,7 +85,7 @@ export default function Subscriber() {
 		<>
 			<h2 className="text-base font-semibold mb-1">Enjoying the content?</h2>
 			<p className="text-xs mb-3 text-gray-600">
-				Get DevOps & Kubernetes insights.
+				Want more like this?
 			</p>
 			<form onSubmit={handleSubmit} className="space-y-2">
 				<input
