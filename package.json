@@ -1,6 +1,6 @@
 {
   "name": "personal-blog",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "An impressive Sanity.io starter template with Next.js 15 and Tailwind 4",
   "author": "Abhimanyu Saharan <desk.abhimanyu@gmail.com> (https://blog.abhimanyu-saharan.com)",
   "scripts": {
@@ -22,7 +22,6 @@
     "@sanity/preview-url-secret": "^2.1.11",
     "@sanity/vision": "^3.88.3",
     "@tailwindcss/postcss": "^4.1.6",
-    "@vercel/speed-insights": "^1.2.0",
     "clsx": "^2.1.1",
     "feed": "^5.0.1",
     "framer-motion": "^12.11.0",
