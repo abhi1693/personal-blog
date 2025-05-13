@@ -24,10 +24,10 @@ export default function PricingList({
 
 			<div
 				className={cn(
-					'carousel max-lg:full-bleed items-stretch gap-6 max-lg:px-4',
+					'grid gap-6 max-lg:px-4', // base = stacked
 					count <= 3
-						? 'md:grid-cols-[repeat(var(--col,1),1fr)]'
-						: 'md:overflow-fade-r',
+						? 'md:grid-cols-[repeat(var(--col,1),1fr)]' // grid on md+
+						: 'md:grid-cols-3 overflow-x-auto md:overflow-visible',
 				)}
 				style={{ '--col': count } as React.CSSProperties}
 			>
