@@ -16,7 +16,10 @@ export default {
 		'localhost',
 		'192.168.1.101',
 	],
-	productionBrowserSourceMaps: true,
+	experimental: {
+		webpackMemoryOptimizations: true
+	},
+	productionBrowserSourceMaps: false,
 	images: {
 		dangerouslyAllowSVG: true,
 		remotePatterns: [
