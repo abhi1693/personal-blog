@@ -23,13 +23,13 @@ export default async function Announcement() {
 				<Scheduler start={start} end={end} key={_id}>
 					<aside
 						id="announcement"
-						className="bg-accent text-canvas flex items-center justify-center gap-x-4 p-2 text-center text-balance max-md:text-sm md:gap-x-6"
+						className="bg-accent text-canvas flex flex-wrap items-center justify-center gap-x-4 md:gap-x-6 p-2 px-4 text-center text-balance max-md:text-sm overflow-x-hidden"
 					>
-						<div className="anim-fade-to-r [&_a]:link">
+						<div className="anim-fade-to-r [&_a]:link max-w-full min-w-0">
 							<PortableText value={content} />
 						</div>
 
-						<CTA className="link anim-fade-to-l shrink" link={cta} />
+						<CTA className="link anim-fade-to-l shrink-0" link={cta} />
 					</aside>
 				</Scheduler>
 			))}
