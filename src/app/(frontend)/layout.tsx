@@ -21,13 +21,15 @@ export default async function RootLayout({
 	return (
 		<Root>
 			<GoogleTagManager gtmId={process.env.NEXT_GOOGLE_TAG_MANAGER_ID || ''} />
-			<Script
-				src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js"
-				strategy="afterInteractive"
-			/>
+			{process.env.NODE_ENV === 'production' && (
+				<>
+					<Script
+						src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js"
+						strategy="afterInteractive"
+					/>
 
-			<Script id="onesignal-init" strategy="afterInteractive">
-				{`
+					<Script id="onesignal-init" strategy="afterInteractive">
+						{`
 						window.OneSignalDeferred = window.OneSignalDeferred || [];
 						OneSignalDeferred.push(async function(OneSignal) {
 							await OneSignal.init({
@@ -35,7 +37,9 @@ export default async function RootLayout({
 							});
 						});
 					`}
-			</Script>
+					</Script>
+				</>
+			)}
 			<body className="bg-canvas text-ink antialiased">
 				<NuqsAdapter>
 					<SkipToContent />
