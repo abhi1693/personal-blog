@@ -4,12 +4,11 @@
   "description": "An impressive Sanity.io starter template with Next.js 15 and Tailwind 4",
   "author": "Abhimanyu Saharan <desk.abhimanyu@gmail.com> (https://blog.abhimanyu-saharan.com)",
   "scripts": {
-    "dev": "turbo run dev",
-    "build": "npm run manifest && turbo run build",
+    "dev": "next dev",
+    "build": "npm run manifest && next build",
     "start": "next start",
-    "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "check-types": "turbo run check-types",
+    "lint": "next lint",
+    "format": "prettier --write src/",
     "manifest": "sanity manifest extract --path public/admin/static",
     "typecheck": "tsc --noEmit"
   },
@@ -63,8 +62,6 @@
     "prettier": "^3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.11",
     "tailwindcss": "^4.1.6",
-    "turbo": "^2.5.3",
     "typescript": "^5.8.3"
-  },
-  "packageManager": "npm@9.8.1"
+  }
 }
