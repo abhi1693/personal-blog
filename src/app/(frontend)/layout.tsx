@@ -1,3 +1,4 @@
+import { dev } from '@/lib/env'
 import '@/styles/app.css'
 import Announcement from '@/ui/Announcement'
 import Root from '@/ui/Root'
@@ -9,7 +10,6 @@ import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google'
 import dynamic from 'next/dynamic'
 import Script from 'next/script'
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
-import { dev } from '@/lib/env'
 
 const Subscriber = dynamic(() => import('@/ui/Subscriber'), { ssr: true })
 
