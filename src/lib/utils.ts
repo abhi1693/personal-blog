@@ -45,11 +45,11 @@ export function slug(str: string) {
 }
 
 export const baseUrl = (): string => {
-	const prodUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
+	const vercelEnv = process.env.VERCEL_ENV
 	const vercelUrl = process.env.VERCEL_URL
 
-	if (prodUrl) {
-		return `https://${prodUrl}`
+	if (vercelEnv === 'production') {
+		return `https://blog.abhimanyu-saharan.com`
 	}
 
 	if (vercelUrl) {
