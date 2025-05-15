@@ -6,11 +6,16 @@ import VisualEditingControls from '@/ui/VisualEditingControls'
 import Footer from '@/ui/footer'
 import Header from '@/ui/header'
 import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google'
-import _ from 'next/dynamic'
+import dynamic from 'next/dynamic'
 import Script from 'next/script'
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
+import { dev } from '@/lib/env'
 
-const Subscriber = _(() => import('@/ui/Subscriber'), { ssr: true })
+const Subscriber = dynamic(() => import('@/ui/Subscriber'), { ssr: true })
+
+const gtmId = process.env.NEXT_GOOGLE_TAG_MANAGER_ID || ''
+const gaId = process.env.NEXT_GOOGLE_ANALYTICS_ID || ''
+const oneSignalAppId = process.env.NEXT_ONESIGNAL_APP_ID || ''
 
 export default async function RootLayout({
 	children,
@@ -19,23 +24,20 @@ export default async function RootLayout({
 }) {
 	return (
 		<Root>
-			<GoogleTagManager gtmId={process.env.NEXT_GOOGLE_TAG_MANAGER_ID || ''} />
-			{process.env.NODE_ENV === 'production' && (
+			{!dev && gtmId && <GoogleTagManager gtmId={gtmId} />}
+			{!dev && oneSignalAppId && (
 				<>
 					<Script
 						src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js"
 						strategy="afterInteractive"
 					/>
-
 					<Script id="onesignal-init" strategy="afterInteractive">
 						{`
-						window.OneSignalDeferred = window.OneSignalDeferred || [];
-						OneSignalDeferred.push(async function(OneSignal) {
-							await OneSignal.init({
-								appId: "${process.env.NEXT_ONESIGNAL_APP_ID}",
+					window.OneSignalDeferred = window.OneSignalDeferred || [];
+					OneSignalDeferred.push(async function(OneSignal) {
+						await OneSignal.init({ appId: "${oneSignalAppId}" });
 							});
-						});
-					`}
+						`}
 					</Script>
 				</>
 			)}
@@ -52,7 +54,7 @@ export default async function RootLayout({
 
 					<VisualEditingControls />
 				</NuqsAdapter>
-				<GoogleAnalytics gaId={process.env.NEXT_GOOGLE_ANALYTICS_ID || ''} />
+				{!dev && gaId && <GoogleAnalytics gaId={gaId} />}
 			</body>
 		</Root>
 	)
