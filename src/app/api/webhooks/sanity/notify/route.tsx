@@ -75,11 +75,12 @@ export async function POST(req: NextRequest) {
 		)
 	}
 
-	const { metadata } = body
+	const { metadata, author } = body
 	const title = metadata?.title
 	const description = metadata?.description
 	const slug = metadata?.slug?.current
 	const imageRef = metadata?.image?.asset?._ref
+	const author_imageRef = author?.image?.asset?._ref
 
 	if (!title || !description || !slug) {
 		return NextResponse.json(
@@ -90,6 +91,7 @@ export async function POST(req: NextRequest) {
 
 	const postUrl = `${BASE_URL}/posts/${slug}`
 	const imageUrl = getSanityImageUrl(imageRef, projectId, dataset)
+	const authorImageUrl = getSanityImageUrl(author_imageRef, projectId, dataset)
 
 	const onesignalPayload = {
 		app_id: process.env.NEXT_ONESIGNAL_APP_ID,
@@ -99,7 +101,7 @@ export async function POST(req: NextRequest) {
 		url: postUrl,
 		...(imageUrl && {
 			chrome_web_image: imageUrl,
-			chrome_web_icon: imageUrl,
+			chrome_web_icon: authorImageUrl,
 		}),
 	}
 
