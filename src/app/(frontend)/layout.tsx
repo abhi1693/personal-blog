@@ -10,7 +10,6 @@ import _ from 'next/dynamic'
 import Script from 'next/script'
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
 
-export const dynamic = 'force-dynamic'
 const Subscriber = _(() => import('@/ui/Subscriber'), { ssr: true })
 
 export default async function RootLayout({
