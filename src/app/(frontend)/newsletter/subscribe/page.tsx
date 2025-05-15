@@ -1,4 +1,10 @@
 import SubscriberForm from '@/ui/SubscriberForm'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+	title: 'Join the Newsletter',
+	description: 'Get new posts, guides, and updates straight to your inbox.',
+}
 
 export default function SubscribePage() {
 	return (
