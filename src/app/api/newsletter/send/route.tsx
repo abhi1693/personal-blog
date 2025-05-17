@@ -18,15 +18,15 @@ export async function GET(request: NextRequest) {
 		const feed = await parser.parseURL(`${BASE_URL}/posts/rss.xml`)
 
 		const now = new Date()
-		const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000)
+		const oneWeekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000)
 
 		const recentPosts = feed.items.filter((item) => {
 			const pubDate = item.isoDate ? new Date(item.isoDate) : null
-			return pubDate && pubDate > thirtyDaysAgo
+			return pubDate && pubDate > oneWeekAgo
 		})
 
 		if (recentPosts.length === 0) {
-			return Response.json({ message: 'No new posts in the last 30 days.' })
+			return Response.json({ message: 'No new posts in the last 7 days.' })
 		}
 
 		const { data: contactData } = await resend.contacts.list({
@@ -66,7 +66,7 @@ export async function GET(request: NextRequest) {
     — Abhimanyu<br />
     <a href="${BASE_URL}" style="color: #0b5fff;">Visit the Blog</a> |
     <a href="https://www.youtube.com/@AbhimanyuSaharanOfficial" style="color: #0b5fff;">YouTube</a> |
-    <a href="https://buymeacoffee.com/asaharan" style="color: #0b5fff;">Support</a> |
+    <a href="https://patreon.com/asaharan" style="color: #0b5fff;">Patreon</a> |
     <a href="${unsubscribeUrl}" style="color: #0b5fff;">Unsubscribe</a>
   </footer>
 </div>
