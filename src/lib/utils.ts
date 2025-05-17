@@ -49,7 +49,7 @@ export const baseUrl = (): string => {
 	const vercelUrl = process.env.VERCEL_URL
 
 	if (vercelEnv === 'production') {
-		return `https://blog.abhimanyu-saharan.com`
+		return 'https://blog.abhimanyu-saharan.com'
 	}
 
 	if (vercelUrl) {
