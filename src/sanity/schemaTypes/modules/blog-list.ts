@@ -55,6 +55,14 @@ export default defineType({
 			hidden: ({ parent }) => !!parent.filteredCategory,
 		}),
 		defineField({
+			name: 'filterBySameCategory',
+			title: 'Filter by same category',
+			description: 'Show posts from the same category as the current post',
+			type: 'boolean',
+			initialValue: false,
+			group: 'filtering',
+		}),
+		defineField({
 			name: 'limit',
 			title: 'Number of posts to show',
 			description: 'Leave empty to show all posts',

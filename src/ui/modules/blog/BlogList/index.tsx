@@ -20,6 +20,7 @@ export default async function BlogList({
 	showFeaturedPostsFirst,
 	displayFilters,
 	filteredCategory,
+	filterBySameCategory,
 	...props
 }: Partial<{
 	pretitle: string
@@ -29,16 +30,27 @@ export default async function BlogList({
 	showFeaturedPostsFirst: boolean
 	displayFilters: boolean
 	filteredCategory: Sanity.BlogCategory
+	post: Sanity.BlogPost
+	filterBySameCategory: boolean
 }> &
 	Sanity.Module) {
 	const lang = (await cookies()).get(langCookieName)?.value ?? DEFAULT_LANG
+	const { post } = props
+	const categoryMatchCondition =
+		filterBySameCategory && post?.categories?.length
+			? post.categories
+					.map((_, i) => `$categoryIds[${i}] in categories[]->._id`)
+					.join(' || ')
+			: ''
 
 	const posts = await fetchSanityLive<Sanity.BlogPost[]>({
 		query: groq`
 			*[
 				_type == 'blog.post'
+				&& metadata.slug.current != $currentSlug
 				${!!lang ? `&& (!defined(language) || language == '${lang}')` : ''}
 				${!!filteredCategory ? `&& $filteredCategory in categories[]->._id` : ''}
+				${categoryMatchCondition ? `&& (${categoryMatchCondition})` : ''}
 			]|order(
 				${showFeaturedPostsFirst ? 'featured desc, ' : ''}
 				publishDate desc
@@ -57,6 +69,8 @@ export default async function BlogList({
 		params: {
 			filteredCategory: filteredCategory?._id || '',
 			limit: limit ?? 0,
+			currentSlug: post?.metadata?.slug?.current || '',
+			categoryIds: post?.categories?.map((cat) => cat._id) || [],
 		},
 	})
 
