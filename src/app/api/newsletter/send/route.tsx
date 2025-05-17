@@ -8,6 +8,10 @@ const parser = new Parser()
 
 export const runtime = 'nodejs'
 
+function sleep(ms: number) {
+	return new Promise((resolve) => setTimeout(resolve, ms))
+}
+
 export async function GET(request: NextRequest) {
 	const authHeader = request.headers.get('authorization')
 	if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
@@ -34,15 +38,15 @@ export async function GET(request: NextRequest) {
 		})
 
 		const contacts = contactData?.data || []
+		const sendResults: PromiseSettledResult<any>[] = []
 
-		const sendResults = await Promise.allSettled(
-			contacts
-				.filter((c) => c.email)
-				.map((c) => {
-					const encodedEmail = encodeURIComponent(c.email!)
-					const unsubscribeUrl = `${BASE_URL}/api/newsletter/unsubscribe?email=${encodedEmail}`
+		for (const c of contacts) {
+			if (!c.email) continue
 
-					const html = `
+			const encodedEmail = encodeURIComponent(c.email)
+			const unsubscribeUrl = `${BASE_URL}/api/newsletter/unsubscribe?email=${encodedEmail}`
+
+			const html = `
 <div style="font-family: system-ui, sans-serif; font-size: 16px; color: #222; max-width: 640px; margin: auto; padding: 24px;">
   <header style="border-bottom: 1px solid #ccc; margin-bottom: 24px;">
     <h1 style="margin: 0;">📰 Latest from Abhimanyu's Blog</h1>
@@ -72,17 +76,23 @@ export async function GET(request: NextRequest) {
 </div>
 `
 
-					return resend.emails.send({
-						from: 'Abhimanyu Saharan <noreply@abhimanyu-saharan.com>',
-						to: c.email!,
-						subject: '📬 New Blog Posts from Abhimanyu',
-						headers: {
-							'List-Unsubscribe': `<${unsubscribeUrl}>`,
-						},
-						html,
-					})
-				}),
-		)
+			try {
+				const res = await resend.emails.send({
+					from: 'Abhimanyu Saharan <noreply@abhimanyu-saharan.com>',
+					to: c.email,
+					subject: '📬 New Blog Posts from Abhimanyu',
+					headers: {
+						'List-Unsubscribe': `<${unsubscribeUrl}>`,
+					},
+					html,
+				})
+				sendResults.push({ status: 'fulfilled', value: res })
+			} catch (err) {
+				sendResults.push({ status: 'rejected', reason: err })
+			}
+
+			await sleep(5000) // wait 5 seconds between each email
+		}
 
 		const successCount = sendResults.filter(
 			(r) => r.status === 'fulfilled',
