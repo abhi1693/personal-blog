@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server'
 import { Resend } from 'resend'
 import Parser from 'rss-parser'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+const resend = new Resend(process.env.RESEND_API_KEY_FULL)
 const parser = new Parser()
 
 export const runtime = 'nodejs'
