@@ -48,6 +48,12 @@ export default async function BlogFrontpage({
 
 	return (
 		<section className="section space-y-12">
+			<h1>
+				<span className="text-3xl font-bold">Latest from Abhimanyu's Blog</span>
+				<span className="text-sm text-gray-500">
+					&nbsp;|&nbsp;Scaling infrastructure, one cluster at a time
+				</span>
+			</h1>
 			<PostPreviewLarge post={firstPost} />
 
 			<hr />
