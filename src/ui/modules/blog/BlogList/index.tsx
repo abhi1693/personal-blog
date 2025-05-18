@@ -30,16 +30,16 @@ export default async function BlogList({
 	showFeaturedPostsFirst: boolean
 	displayFilters: boolean
 	filteredCategory: Sanity.BlogCategory
-	post: Sanity.BlogPost
+	currentPage: Sanity.BlogPost | Sanity.Page
 	filterBySameCategory: boolean
 }> &
 	Sanity.Module) {
 	const lang = (await cookies()).get(langCookieName)?.value ?? DEFAULT_LANG
-	const { post } = props
+	const { currentPage } = props
 	const categoryMatchCondition =
-		filterBySameCategory && post?.categories?.length
-			? post.categories
-					.map((_, i) => `$categoryIds[${i}] in categories[]->._id`)
+		filterBySameCategory && currentPage?.categories?.length
+			? currentPage.categories
+					.map((_: any, i: any) => `$categoryIds[${i}] in categories[]->._id`)
 					.join(' || ')
 			: ''
 
@@ -69,8 +69,9 @@ export default async function BlogList({
 		params: {
 			filteredCategory: filteredCategory?._id || '',
 			limit: limit ?? 0,
-			currentSlug: post?.metadata?.slug?.current || '',
-			categoryIds: post?.categories?.map((cat) => cat._id) || [],
+			currentSlug: currentPage?.metadata?.slug?.current || '',
+			categoryIds:
+				currentPage?.categories?.map((cat: { _id: any }) => cat._id) || [],
 		},
 	})
 

@@ -15,10 +15,12 @@ export default async function BlogFrontpage({
 	mainPost,
 	showFeaturedPostsFirst,
 	itemsPerPage,
+	currentPage,
 }: Partial<{
 	mainPost: 'recent' | 'featured'
 	showFeaturedPostsFirst: boolean
 	itemsPerPage: number
+	currentPage: Sanity.BlogPost | Sanity.Page
 }>) {
 	const lang = (await cookies()).get(langCookieName)?.value ?? DEFAULT_LANG
 
@@ -53,7 +55,7 @@ export default async function BlogFrontpage({
 					Latest from Abhimanyu&#39;s Blog
 				</span>
 				<span className="text-sm text-gray-500">
-					&nbsp;|&nbsp;Scaling infrastructure, one cluster at a time
+					&nbsp;|&nbsp;{currentPage?.title || currentPage?.metadata?.title}
 				</span>
 			</h1>
 			<PostPreviewLarge post={firstPost} />

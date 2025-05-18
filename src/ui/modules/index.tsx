@@ -60,9 +60,10 @@ export default function Modules({
 }) {
 	const getAdditionalProps = (module: Sanity.Module) => {
 		switch (module._type) {
-			case 'blog-list':
 			case 'blog-post-content':
 				return { post }
+			case 'blog-frontpage':
+			case 'blog-list':
 			case 'breadcrumbs':
 				return { currentPage: post || page }
 			default:
