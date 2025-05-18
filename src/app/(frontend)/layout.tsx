@@ -7,11 +7,8 @@ import VisualEditingControls from '@/ui/VisualEditingControls'
 import Footer from '@/ui/footer'
 import Header from '@/ui/header'
 import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google'
-import dynamic from 'next/dynamic'
 import Script from 'next/script'
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
-
-const Subscriber = dynamic(() => import('@/ui/Subscriber'), { ssr: true })
 
 const gtmId = process.env.NEXT_GOOGLE_TAG_MANAGER_ID || ''
 const gaId = process.env.NEXT_GOOGLE_ANALYTICS_ID || ''
@@ -50,7 +47,6 @@ export default async function RootLayout({
 						{children}
 					</main>
 					<Footer />
-					<Subscriber />
 
 					<VisualEditingControls />
 				</NuqsAdapter>
