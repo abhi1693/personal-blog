@@ -39,11 +39,11 @@ export default function Subscriber() {
 		<AnimatePresence>
 			{!dismissed && show && (
 				<motion.div
-					initial={{ opacity: 0, y: 40 }}
-					animate={{ opacity: 1, y: 0 }}
-					exit={{ opacity: 0, y: 40 }}
+					initial={{ opacity: 0, x: -40 }}
+					animate={{ opacity: 1, x: 0 }}
+					exit={{ opacity: 0, x: -40 }}
 					transition={{ duration: 0.3, ease: 'easeOut' }}
-					className="fixed bottom-4 left-4 z-50 w-[240px] bg-white shadow-md rounded-lg border p-3 text-sm"
+					className="fixed left-4 top-1/2 -translate-y-1/2 z-50 w-[240px] bg-white shadow-md rounded-lg border p-3 text-sm"
 				>
 					<div className="relative">
 						<button
