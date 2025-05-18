@@ -11,6 +11,19 @@ export default async function Breadcrumbs({
 	hideCurrent?: boolean
 	currentPage: Sanity.Page | Sanity.BlogPost
 }>) {
+	const baseIndex = crumbs?.length ?? 0
+	const category = currentPage?.categories?.[0]
+	const categoryCrumb: Sanity.Link | undefined = category
+		? {
+				_type: 'link',
+				type: 'internal',
+				label: category?.title,
+				internal: {
+					...category,
+				},
+			}
+		: undefined
+
 	return (
 		<nav className="section py-4 text-sm">
 			<ol
@@ -21,22 +34,33 @@ export default async function Breadcrumbs({
 				{crumbs?.map((crumb, key) => (
 					<Fragment key={key}>
 						<Crumb link={crumb} position={key + 1} />
-
-						{(key < crumbs.length - 1 || !hideCurrent) && (
-							<li className="text-ink/20" role="presentation">
-								/
-							</li>
-						)}
+						{(key < crumbs.length - 1 || !hideCurrent) && renderSeparator(key)}
 					</Fragment>
 				))}
 
-				<Crumb position={(crumbs?.length || 0) + 2} hidden={hideCurrent}>
-					{currentPage?.title || currentPage?.metadata.title}
+				{categoryCrumb && (
+					<Fragment>
+						<Crumb link={categoryCrumb} position={baseIndex + 1} />
+						{renderSeparator(baseIndex + 1)}
+					</Fragment>
+				)}
+
+				<Crumb
+					position={baseIndex + (categoryCrumb ? 2 : 1)}
+					hidden={hideCurrent}
+				>
+					{currentPage?.title ?? currentPage?.metadata?.title}
 				</Crumb>
 			</ol>
 		</nav>
 	)
 }
+
+const renderSeparator = (key: number) => (
+	<li key={`sep-${key}`} className="text-ink/20" role="presentation">
+		/
+	</li>
+)
 
 function Crumb({
 	link,
