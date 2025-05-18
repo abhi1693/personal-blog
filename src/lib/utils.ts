@@ -43,18 +43,3 @@ export function slug(str: string) {
 		.replace(/^-+/, '')
 		.replace(/-+$/, '')
 }
-
-export const baseUrl = (): string => {
-	const vercelEnv = process.env.VERCEL_ENV
-	const vercelUrl = process.env.VERCEL_URL
-
-	if (vercelEnv === 'production') {
-		return 'https://blog.abhimanyu-saharan.com'
-	}
-
-	if (vercelUrl) {
-		return `https://${vercelUrl}`
-	}
-
-	return 'http://localhost:3000' // Local fallback
-}
