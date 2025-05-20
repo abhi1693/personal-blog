@@ -1,7 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 
-const distDir = path.join(__dirname, 'dist')
+const distDir = path.join(__dirname, 'dist/tests')
 
 if (!fs.existsSync(distDir)) {
   console.error('No compiled tests found. Run "npm run build:test" first.')
