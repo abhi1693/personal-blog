@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_SANITY_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_SANITY_PROJECT_ID }}
+      NEXT_PUBLIC_SANITY_DATASET: ${{ secrets.NEXT_PUBLIC_SANITY_DATASET }}
+      SANITY_API_READ_TOKEN: ${{ secrets.SANITY_API_READ_TOKEN }}
+      NEXT_PUBLIC_GITHUB_TOKEN: ${{ secrets.NEXT_PUBLIC_GITHUB_TOKEN }}
+      RESEND_API_KEY_FULL: ${{ secrets.RESEND_API_KEY_FULL }}
+      NEXT_RESEND_AUDIENCE_ID: ${{ secrets.NEXT_RESEND_AUDIENCE_ID }}
+      CRON_SECRET: ${{ secrets.CRON_SECRET }}
+      NEXT_GOOGLE_ADSENSE_ID: ${{ secrets.NEXT_GOOGLE_ADSENSE_ID }}
+      NEXT_GOOGLE_TAG_MANAGER_ID: ${{ secrets.NEXT_GOOGLE_TAG_MANAGER_ID }}
+      NEXT_GOOGLE_ANALYTICS_ID: ${{ secrets.NEXT_GOOGLE_ANALYTICS_ID }}
+      NEXT_ONESIGNAL_APP_ID: ${{ secrets.NEXT_ONESIGNAL_APP_ID }}
+      ONESIGNAL_API_KEY: ${{ secrets.ONESIGNAL_API_KEY }}
+      SANITY_WEBHOOK_SECRET: ${{ secrets.SANITY_WEBHOOK_SECRET }}
+      NEXT_PUBLIC_BASE_URL: ${{ secrets.NEXT_PUBLIC_BASE_URL }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run build
