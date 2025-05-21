@@ -17,7 +17,6 @@ jobs:
         with:
           node-version-file: '.nvmrc'
           cache: 'npm'
-          node-version: 20
 
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
@@ -49,7 +48,6 @@ jobs:
         with:
           node-version-file: '.nvmrc'
           cache: 'npm'
-          node-version: 20
 
       - name: Decode and store Google Service Account JSON
         run: echo "${{ secrets.GOOGLE_SVC_ACCOUNT }}" | base64 -d > scripts/service-account.json
