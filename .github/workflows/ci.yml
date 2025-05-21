@@ -25,9 +25,52 @@ jobs:
       - name: Pull Vercel Environment Information
         run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
 
-      - run: cp .vercel/.env.preview.local .env.local
+      - name: Set up environment
+        run: cp .vercel/.env.preview.local .env.local
 
       - run: npm ci
       - run: npm run lint
       - run: npm run typecheck
       - run: npm run test
+
+  submit_sitemap:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    env:
+      GOOGLE_SVC_ACCOUNT: ${{ secrets.GOOGLE_SVC_ACCOUNT }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_PROJECT_ID: prj_4fGzgFZsR6ozmMaBD0sJK1dIeJiL
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+          node-version: 20
+
+      - name: Decode and store Google Service Account JSON
+        run: echo "${{ secrets.GOOGLE_SVC_ACCOUNT }}" | base64 -d > scripts/service-account.json
+
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+
+      - name: Wait for production deployment to be ready
+        run: |
+          deployment=$(curl -s -H "Authorization: Bearer $VERCEL_TOKEN" \
+            "https://api.vercel.com/v6/deployments?projectId=$VERCEL_PROJECT_ID&target=production&limit=1")
+
+          deployment_state=$(echo "$deployment" | jq -r '.deployments[0].state')
+
+          while [ "$deployment_state" != "READY" ]; do
+            echo "Waiting for deployment to be ready..."
+            sleep 30
+            deployment=$(curl -s -H "Authorization: Bearer $VERCEL_TOKEN" \
+              "https://api.vercel.com/v6/deployments?projectId=$VERCEL_PROJECT_ID&target=production&limit=1")
+            deployment_state=$(echo "$deployment" | jq -r '.deployments[0].state')
+          done
+
+      - name: Submit Sitemap
+        run: node scripts/submit-sitemap.js

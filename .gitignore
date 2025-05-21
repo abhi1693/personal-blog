@@ -43,3 +43,5 @@ tests/dist/
 public/google*.html
 
 public/admin/static
+
+scripts/service-account.json

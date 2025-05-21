@@ -27,6 +27,7 @@
     "clsx": "^2.1.1",
     "feed": "^5.0.1",
     "framer-motion": "^12.11.0",
+    "googleapis": "^149.0.0",
     "next": "^15.3.2",
     "next-sanity": "^9.11.0",
     "next-sanity-image": "^6.1.1",
