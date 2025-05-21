@@ -76,7 +76,7 @@ jobs:
               | jq -r '.readyState')
           done
 
-          echo "✅ Deployment $deployment_id is READY
+          echo "✅ Deployment $deployment_id is READY"
 
       - name: Submit Sitemap
         run: node scripts/sitemap-to-google
