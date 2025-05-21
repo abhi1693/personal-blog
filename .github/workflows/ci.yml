@@ -79,4 +79,4 @@ jobs:
           echo "✅ Deployment $deployment_id is READY
 
       - name: Submit Sitemap
-        run: node scripts/submit-sitemap.js
+        run: node scripts/sitemap-to-google
