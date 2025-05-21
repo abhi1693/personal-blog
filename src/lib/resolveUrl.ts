@@ -14,24 +14,18 @@ export default function resolveUrl(
 		language?: string
 	} = {},
 ) {
+	const segment = page?._type === 'blog.post' ? `/${BLOG_DIR}/` : '/'
 	const lang = language && language !== DEFAULT_LANG ? `/${language}` : ''
-	const slug = page?.metadata?.slug?.current || page?.slug?.current
+	const slug = page?.metadata?.slug?.current
+	const path = slug === 'index' ? null : slug
 
-	let segment = '/'
-	let path: null | string | undefined = null
-
-	if (page?._type === 'blog.post') {
-		segment = `/${BLOG_DIR}/`
-		path = slug === 'index' ? null : slug
-	} else if (page?._type === 'blog.category') {
-		// Render as query param route for category
-		segment = '/'
-		path = `?category=${slug}`
-	} else {
-		path = slug === 'index' ? null : slug
-	}
-
-	return [base && BASE_URL, lang, segment, path, stegaClean(params)]
+	return [
+		base && BASE_URL,
+		lang,
+		segment,
+		path,
+		stegaClean(params),
+	]
 		.filter(Boolean)
 		.join('')
 }
