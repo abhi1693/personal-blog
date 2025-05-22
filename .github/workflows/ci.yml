@@ -87,4 +87,6 @@ jobs:
         run: node scripts/sitemap-to-google
 
       - name: Submit to IndexNow
+        env:
+          LASTMOD_THRESHOLD_DAYS: 1
         run: node scripts/indexnow.js
