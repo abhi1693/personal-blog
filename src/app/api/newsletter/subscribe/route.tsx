@@ -38,22 +38,21 @@ export const POST = async (req: Request) => {
 		})
 	}
 
-       const rawBody = await req.text()
-       if (rawBody.length > MAX_BODY_SIZE) {
-               return new NextResponse(
-                       JSON.stringify({ error: 'Payload too large' }),
-                       { status: 413 },
-               )
-       }
-       let body: any
-       try {
-               body = JSON.parse(rawBody)
-       } catch {
-               return new NextResponse(
-                       JSON.stringify({ error: 'Request body must be valid JSON' }),
-                       { status: 400 },
-               )
-       }
+	const rawBody = await req.text()
+	if (rawBody.length > MAX_BODY_SIZE) {
+		return new NextResponse(JSON.stringify({ error: 'Payload too large' }), {
+			status: 413,
+		})
+	}
+	let body: any
+	try {
+		body = JSON.parse(rawBody)
+	} catch {
+		return new NextResponse(
+			JSON.stringify({ error: 'Request body must be valid JSON' }),
+			{ status: 400 },
+		)
+	}
 
 	const rawEmail = typeof body.email === 'string' ? body.email.trim() : ''
 	const email = rawEmail.toLowerCase()

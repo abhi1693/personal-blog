@@ -4,9 +4,9 @@ export function isValidEmail(email: string): boolean {
 }
 
 export function sanitizeText(text: string, maxLength = 64): string {
-       return text
-               .replace(/<[^>]*>/g, '')
-               .replace(/[\n\r\t]/g, ' ')
-               .slice(0, maxLength)
-               .trim()
+	return text
+		.replace(/<[^>]*>/g, '')
+		.replace(/[\n\r\t]/g, ' ')
+		.slice(0, maxLength)
+		.trim()
 }

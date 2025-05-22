@@ -19,13 +19,7 @@ export default function resolveUrl(
 	const slug = page?.metadata?.slug?.current
 	const path = slug === 'index' ? null : slug
 
-	return [
-		base && BASE_URL,
-		lang,
-		segment,
-		path,
-		stegaClean(params),
-	]
+	return [base && BASE_URL, lang, segment, path, stegaClean(params)]
 		.filter(Boolean)
 		.join('')
 }
