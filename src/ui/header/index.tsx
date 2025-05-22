@@ -33,6 +33,8 @@ export default async function Header() {
 								className="inline-block max-h-[1.2em] w-auto"
 								image={logoImage}
 								alt={logo?.name || title}
+								width={20}
+								height={20}
 							/>
 						)}
 						<span className="text-lg font-semibold text-ink">{title}</span>
