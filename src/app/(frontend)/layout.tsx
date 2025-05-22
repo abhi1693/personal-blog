@@ -21,6 +21,13 @@ export default async function RootLayout({
 }) {
 	return (
 		<Root>
+			<head>
+				<link rel="preconnect" href="https://k.clarity.ms" />
+				<link rel="preconnect" href="https://c.clarity.ms" />
+				<link rel="preconnect" href="https://imgsct.cookiebot.com" />
+				<link rel="preconnect" href="https://c.bing.com" />
+				<link rel="preconnect" href="https://pagead2.googlesyndication.com" />
+			</head>
 			{!dev && gtmId && <GoogleTagManager gtmId={gtmId} />}
 			{!dev && oneSignalAppId && (
 				<>
