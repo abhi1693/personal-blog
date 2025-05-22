@@ -8,6 +8,7 @@ import { articleJsonLd } from '@/lib/processJsonLd'
 import { cn } from '@/lib/utils'
 import Date from '@/ui/Date'
 import ShareButtons from '@/ui/ShareButtons'
+import SubscriberForm from '@/ui/SubscriberForm'
 import YouTubeEmbed from '@/ui/YouTubeEmbed'
 import Content from '@/ui/modules/RichtextModule/Content'
 import TableOfContents from '@/ui/modules/RichtextModule/TableOfContents'
@@ -63,6 +64,9 @@ export default function PostContent({
 								url={`${BASE_URL}/posts/${post.metadata.slug.current}`}
 								title={post.metadata.title}
 							/>
+							<div className="my-6 border-t border-gray-200" />
+							<SubscriberForm />
+							<div className="my-6 border-t border-gray-200" />
 						</>
 					</aside>
 
