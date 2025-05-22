@@ -34,7 +34,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 					+ metadata.slug.current
 				),
 				'lastModified': _updatedAt,
-				'priority': 0.4
+				'priority': select(featured == true => 0.8, 0.4),
 			}
 		}`,
 		params: {
