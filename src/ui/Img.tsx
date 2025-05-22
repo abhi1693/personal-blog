@@ -17,7 +17,7 @@ export function Img({
 
 	const { src, width, height } = generateSrc(image, w, h)
 
-	const loading = stegaClean(image.loading)
+	const loading = stegaClean(image.loading) || 'lazy'
 
 	return (
 		<NextImage
