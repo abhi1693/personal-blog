@@ -16,6 +16,10 @@ export default {
 		'localhost',
 		'192.168.1.101',
 	],
+	compiler:{
+		styledComponents: true,
+		removeConsole: true,
+	},
 	experimental: {
 		webpackMemoryOptimizations: true
 	},
