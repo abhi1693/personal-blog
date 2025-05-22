@@ -85,3 +85,6 @@ jobs:
 
       - name: Submit Sitemap
         run: node scripts/sitemap-to-google
+
+      - name: Submit to IndexNow
+        run: node scripts/indexnow.js
