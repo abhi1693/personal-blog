@@ -50,6 +50,8 @@ export default function TableOfContents({
 		})
 	}, [headings])
 
+	if(!headings?.length) return null
+
 	return (
 		<details
 			className={cn(css.root, 'group accordion max-lg:bg-ink/3 max-lg:p-3')}
