@@ -47,31 +47,48 @@ export async function GET(request: NextRequest) {
 			const unsubscribeUrl = `${BASE_URL}/api/newsletter/unsubscribe?email=${encodedEmail}`
 
 			const html = `
-<div style="font-family: system-ui, sans-serif; font-size: 16px; color: #222; max-width: 640px; margin: auto; padding: 24px;">
-  <header style="border-bottom: 1px solid #ccc; margin-bottom: 24px;">
-    <h1 style="margin: 0;">📰 Latest from Abhimanyu's Blog</h1>
-    <p style="font-size: 14px; margin-top: 8px;">Scaling infrastructure, one cluster at a time</p>
+<div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif; font-size: 16px; color: #222; max-width: 640px; margin: auto; padding: 24px; line-height: 1.6;">
+  <header style="border-bottom: 2px solid #eee; margin-bottom: 24px; padding-bottom: 8px;">
+    <h1 style="margin: 0; font-size: 24px;">📰 Abhimanyu's Blog Digest</h1>
+    <p style="font-size: 14px; color: #666; margin-top: 4px;">Scaling infrastructure, one cluster at a time</p>
   </header>
   <ul style="padding: 0; list-style: none; margin: 0 0 32px;">
     ${recentPosts
 			.map((post) => {
-				const date = new Date(post.isoDate || '').toLocaleDateString()
-				const summary = post.summary?.replace(/<\/?[^>]+(>|$)/g, '') || ''
+				const date = new Date(post.isoDate || '1970-01-01').toLocaleDateString(
+					'en-US',
+					{ month: 'short', day: 'numeric', year: 'numeric' },
+				)
+				const summary =
+					post.contentSnippet?.slice(0, 200).replace(/<\/?[^>]+(>|$)/g, '') ||
+					''
+
 				return `
-      <li style="margin-bottom: 24px;">
-        <a href="${post.link}" target="_blank" style="font-weight: bold; font-size: 16px; color: #0b5fff; text-decoration: none;">${post.title}</a><br />
-        <span style="font-size: 13px; color: #555;">${date}</span>
-        <p style="font-size: 14px; color: #333;">${summary}</p>
+      <li style="margin-bottom: 32px; padding-bottom: 24px; border-bottom: 1px solid #eee;">
+        <a href="${post.link}" target="_blank" style="font-weight: 600; font-size: 18px; color: #0b5fff; text-decoration: none; display: block; margin-bottom: 4px;">${post.title}</a>
+        <div style="font-size: 13px; color: #999; margin-bottom: 8px;">${date}</div>
+        <p style="font-size: 14px; color: #333; margin: 0;">${summary}...</p>
       </li>`
 			})
 			.join('')}
   </ul>
-  <footer style="border-top: 1px solid #ccc; padding-top: 16px; font-size: 14px; color: #666;">
+
+  <section style="border-top: 2px solid #eee; padding-top: 24px; margin-top: 32px;">
+    <p style="font-size: 15px; font-weight: 500; margin-bottom: 8px;">Support my work and get more in-depth content:</p>
+    <a href="https://patreon.com/asaharan" style="display: inline-block; background-color: #ff424d; color: #fff; padding: 10px 16px; text-decoration: none; border-radius: 4px; font-weight: 600; font-size: 15px; margin-bottom: 12px;">Join on Patreon</a>
+    <div style="margin-top: 16px;">
+      <a href="https://www.digitalocean.com/?refcode=e3b7cf0861b0&utm_campaign=Referral_Invite&utm_medium=Referral_Program&utm_source=badge" target="_blank">
+        <img src="https://web-platforms.sfo2.cdn.digitaloceanspaces.com/WWW/Badge%202.svg" alt="DigitalOcean Referral Badge" style="max-width: 160px;" />
+      </a>
+    </div>
+  </section>
+
+  <footer style="border-top: 1px solid #ccc; padding-top: 16px; font-size: 14px; color: #666; text-align: center; margin-top: 32px;">
     — Abhimanyu<br />
-    <a href="${BASE_URL}" style="color: #0b5fff;">Visit the Blog</a> |
-    <a href="https://www.youtube.com/@AbhimanyuSaharanOfficial" style="color: #0b5fff;">YouTube</a> |
-    <a href="https://patreon.com/asaharan" style="color: #0b5fff;">Patreon</a> |
-    <a href="${unsubscribeUrl}" style="color: #0b5fff;">Unsubscribe</a>
+    <a href="${BASE_URL}" style="color: #0b5fff; text-decoration: none;">Visit the Blog</a> |
+    <a href="https://www.youtube.com/@AbhimanyuSaharanOfficial" style="color: #0b5fff; text-decoration: none;">YouTube</a> |
+    <a href="https://patreon.com/asaharan" style="color: #0b5fff; text-decoration: none;">Patreon</a> |
+    <a href="${unsubscribeUrl}" style="color: #0b5fff; text-decoration: none;">Unsubscribe</a>
   </footer>
 </div>
 `
