@@ -7,6 +7,14 @@ import { escapeHTML, toHTML } from '@portabletext/to-html'
 import { Feed } from 'feed'
 import { groq } from 'next-sanity'
 
+function rewriteRelativeUrls(html: string, baseUrl: string): string {
+	return html
+		.replace(/(href|src)=["']\/(?!\/)([^"']+)["']/g, (match, attr, path) => {
+			return `${attr}="${baseUrl}/${path}"`;
+		});
+}
+
+
 export async function GET() {
 	const { blog, posts, copyright } = await fetchSanityLive<{
 		blog: Sanity.Page
@@ -40,8 +48,8 @@ export async function GET() {
 		)
 	}
 
-	const blogUrl = resolveUrl(blog, { base: true }) // Full absolute URL
-	const feedUrl = `${BASE_URL}/${BLOG_DIR}/rss.xml`
+	const blogUrl = resolveUrl(blog, { base: true })
+	const selfUrl = `${BASE_URL}/${BLOG_DIR}/rss.xml`
 
 	const feed = new Feed({
 		title: blog?.title || blog.metadata.title,
@@ -57,15 +65,21 @@ export async function GET() {
 	posts.map((post) => {
 		const url = resolveUrl(post, { language: post.language })
 
+		const date = new Date(post.publishDate)
+		if(date > new Date()) {
+			// Skip future posts
+			return
+		}
+
 		return feed.addItem({
 			title: escapeHTML(post.metadata.title),
 			description: post.metadata.description,
 			id: url,
 			link: url,
-			published: new Date(post.publishDate),
-			date: new Date(post.publishDate),
+			published: date,
+			date,
 			author: post.authors?.map((author) => ({ name: author.name })),
-			content: toHTML(post.body, {
+			content: rewriteRelativeUrls(toHTML(post.body, {
 				components: {
 					types: {
 						image: ({ value: { alt = '', caption, source, ...value } }) => {
@@ -82,21 +96,33 @@ export async function GET() {
 						'custom-html': () => '',
 					},
 				},
-			}),
+			}), BASE_URL),
 			image: post.image,
 		})
 	})
 
-	const atomXml = feed.atom1()
-	const selfLinkTag = `<link rel="self" type="application/atom+xml" href="${feedUrl}" />`
-	const atomWithSelfLink = atomXml.replace(
-		'<feed xmlns="http://www.w3.org/2005/Atom">',
-		`<feed xmlns="http://www.w3.org/2005/Atom">\n  ${selfLinkTag}`,
-	)
-
-	return new Response(atomWithSelfLink, {
+	let xml = feed.rss2()
+	xml = xml.replace(
+  /<rss version="2.0"([^>]*)>/,
+  (_match, attrs) => {
+    const newAttrs = [
+      attrs,
+      !attrs.includes('xmlns:atom=') && `xmlns:atom="http://www.w3.org/2005/Atom"`,
+      !attrs.includes('xmlns:media=') && `xmlns:media="http://search.yahoo.com/mrss/"`,
+    ]
+      .filter(Boolean)
+      .join(' ');
+    return `<rss version="2.0" ${newAttrs}>`;
+  }
+);
+xml = xml.replace(
+  /<channel>/,
+  `<channel>\n<atom:link href="${selfUrl}" rel="self" type="application/rss+xml" />`
+);
+	return new Response(xml, {
 		headers: {
-			'Content-Type': 'application/atom+xml',
+			'Content-Type': 'application/rss+xml; charset=utf-8',
+			'Cache-Control': 's-maxage=3600, stale-while-revalidate=86400',
 		},
-	})
+	});
 }
