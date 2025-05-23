@@ -82,6 +82,8 @@ export default async function BlogList({
 			: 'carousel max-xl:full-bleed md:overflow-fade-r pb-4 [--size:320px] max-xl:px-4',
 	)
 
+	if (!posts?.length) return null
+
 	return (
 		<section className="section space-y-8" {...moduleProps(props)}>
 			{intro && (
