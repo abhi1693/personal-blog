@@ -65,7 +65,26 @@ export default function PostContent({
 								title={post.metadata.title}
 							/>
 							<div className="my-6 border-t border-gray-200" />
+
+							{/* Patreon CTA */}
+							<div className="space-y-2 text-sm text-gray-700">
+								<p>
+									Enjoying the content? Become a patron to support the work.
+								</p>
+								<a
+									href="https://www.patreon.com/asaharan?utm_source=blog&utm_medium=sidebar&utm_campaign=patreon_cta"
+									target="_blank"
+									rel="noopener noreferrer"
+									className="inline-block rounded bg-red-600 px-4 py-2 text-white hover:bg-red-700"
+								>
+									Support on Patreon
+								</a>
+							</div>
+
+							<div className="my-6 border-t border-gray-200" />
+
 							<SubscriberForm />
+
 							<div className="my-6 border-t border-gray-200" />
 						</>
 					</aside>
