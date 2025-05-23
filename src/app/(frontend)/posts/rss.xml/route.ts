@@ -8,12 +8,13 @@ import { Feed } from 'feed'
 import { groq } from 'next-sanity'
 
 function rewriteRelativeUrls(html: string, baseUrl: string): string {
-	return html
-		.replace(/(href|src)=["']\/(?!\/)([^"']+)["']/g, (match, attr, path) => {
-			return `${attr}="${baseUrl}/${path}"`;
-		});
+	return html.replace(
+		/(href|src)=["']\/(?!\/)([^"']+)["']/g,
+		(match, attr, path) => {
+			return `${attr}="${baseUrl}/${path}"`
+		},
+	)
 }
-
 
 export async function GET() {
 	const { blog, posts, copyright } = await fetchSanityLive<{
@@ -66,7 +67,7 @@ export async function GET() {
 		const url = resolveUrl(post, { language: post.language })
 
 		const date = new Date(post.publishDate)
-		if(date > new Date()) {
+		if (date > new Date()) {
 			// Skip future posts
 			return
 		}
@@ -79,50 +80,52 @@ export async function GET() {
 			published: date,
 			date,
 			author: post.authors?.map((author) => ({ name: author.name })),
-			content: rewriteRelativeUrls(toHTML(post.body, {
-				components: {
-					types: {
-						image: ({ value: { alt = '', caption, source, ...value } }) => {
-							const img = `<img src="${urlFor(value).url()}" alt="${escapeHTML(alt)}" />`
-							const figcaption =
-								caption && `<figcaption>${escapeHTML(caption)}</figcaption>`
-							const aSource = source && `<a href="${source}">(Source)</a>`
-							return `<figure>${[img, figcaption, aSource].filter(Boolean).join(' ')}</figure>`
+			content: rewriteRelativeUrls(
+				toHTML(post.body, {
+					components: {
+						types: {
+							image: ({ value: { alt = '', caption, source, ...value } }) => {
+								const img = `<img src="${urlFor(value).url()}" alt="${escapeHTML(alt)}" />`
+								const figcaption =
+									caption && `<figcaption>${escapeHTML(caption)}</figcaption>`
+								const aSource = source && `<a href="${source}">(Source)</a>`
+								return `<figure>${[img, figcaption, aSource].filter(Boolean).join(' ')}</figure>`
+							},
+							admonition: ({ value: { title, content } }) =>
+								`<dl><dt>${title}</dt><dd>${toHTML(content)}</dd></dl>`,
+							code: ({ value }) =>
+								`<pre><code>${escapeHTML(value.code)}</code></pre>`,
+							'custom-html': () => '',
 						},
-						admonition: ({ value: { title, content } }) =>
-							`<dl><dt>${title}</dt><dd>${toHTML(content)}</dd></dl>`,
-						code: ({ value }) =>
-							`<pre><code>${escapeHTML(value.code)}</code></pre>`,
-						'custom-html': () => '',
 					},
-				},
-			}), BASE_URL),
+				}),
+				BASE_URL,
+			),
 			image: post.image,
 		})
 	})
 
 	let xml = feed.rss2()
+	xml = xml.replace(/<rss version="2.0"([^>]*)>/, (_match, attrs) => {
+		const newAttrs = [
+			attrs,
+			!attrs.includes('xmlns:atom=') &&
+				`xmlns:atom="http://www.w3.org/2005/Atom"`,
+			!attrs.includes('xmlns:media=') &&
+				`xmlns:media="http://search.yahoo.com/mrss/"`,
+		]
+			.filter(Boolean)
+			.join(' ')
+		return `<rss version="2.0" ${newAttrs}>`
+	})
 	xml = xml.replace(
-  /<rss version="2.0"([^>]*)>/,
-  (_match, attrs) => {
-    const newAttrs = [
-      attrs,
-      !attrs.includes('xmlns:atom=') && `xmlns:atom="http://www.w3.org/2005/Atom"`,
-      !attrs.includes('xmlns:media=') && `xmlns:media="http://search.yahoo.com/mrss/"`,
-    ]
-      .filter(Boolean)
-      .join(' ');
-    return `<rss version="2.0" ${newAttrs}>`;
-  }
-);
-xml = xml.replace(
-  /<channel>/,
-  `<channel>\n<atom:link href="${selfUrl}" rel="self" type="application/rss+xml" />`
-);
+		/<channel>/,
+		`<channel>\n<atom:link href="${selfUrl}" rel="self" type="application/rss+xml" />`,
+	)
 	return new Response(xml, {
 		headers: {
 			'Content-Type': 'application/rss+xml; charset=utf-8',
 			'Cache-Control': 's-maxage=3600, stale-while-revalidate=86400',
 		},
-	});
+	})
 }
