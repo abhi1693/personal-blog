@@ -14,7 +14,19 @@ export default function AccordionList({
 	connect,
 	generateSchema,
 	...props
-}: Partial<Sanity.AccordionList> & Sanity.Module) {
+}: Partial<{
+	pretitle: string
+	intro: any
+	items: {
+		summary: string
+		content: any
+		open?: boolean
+	}[]
+	layout: 'vertical' | 'horizontal'
+	connect: boolean
+	generateSchema: boolean
+}> &
+	Sanity.Module) {
 	return (
 		<section
 			className={cn(
