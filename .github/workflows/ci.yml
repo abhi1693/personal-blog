@@ -37,6 +37,8 @@ jobs:
   submit_sitemap:
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && github.ref == 'refs/heads/master' || github.event_name == 'schedule'
+    needs:
+      - build
     env:
       GOOGLE_SVC_ACCOUNT: ${{ secrets.GOOGLE_SVC_ACCOUNT }}
       VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
