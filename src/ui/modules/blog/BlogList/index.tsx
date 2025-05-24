@@ -21,6 +21,7 @@ export default async function BlogList({
 	displayFilters,
 	filteredCategory,
 	filterBySameCategory,
+	currentPage,
 	...props
 }: Partial<{
 	pretitle: string
@@ -35,7 +36,6 @@ export default async function BlogList({
 }> &
 	Sanity.Module) {
 	const lang = (await cookies()).get(langCookieName)?.value ?? DEFAULT_LANG
-	const { currentPage } = props
 	const categoryMatchCondition =
 		filterBySameCategory && currentPage?.categories?.length
 			? currentPage.categories
