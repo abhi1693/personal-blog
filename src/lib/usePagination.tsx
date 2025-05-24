@@ -51,9 +51,12 @@ export function usePagination<T extends unknown>({
 		if ((atStart && atEnd) || !paginatedItems?.length) return null
 
 		return (
-			<nav {...props}>
+			<nav className="flex items-center justify-center py-2" {...props}>
 				<button
-					className={prevClassName || buttonClassName}
+					className={`${
+						prevClassName || buttonClassName
+					} px-3 py-1 mx-1 text-sm font-medium border border-gray-300 rounded 
+            bg-white text-gray-700 hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed`}
 					onClick={() => {
 						onPrev()
 						onClick()
@@ -64,13 +67,16 @@ export function usePagination<T extends unknown>({
 				</button>
 
 				{!hidePage && (
-					<span>
+					<span className="mx-2 text-sm font-semibold text-gray-800">
 						{currentPage} of {totalPages}
 					</span>
 				)}
 
 				<button
-					className={nextClassName || buttonClassName}
+					className={`${
+						nextClassName || buttonClassName
+					} px-3 py-1 mx-1 text-sm font-medium border border-gray-300 rounded 
+            bg-white text-gray-700 hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed`}
 					onClick={() => {
 						onNext()
 						onClick()
