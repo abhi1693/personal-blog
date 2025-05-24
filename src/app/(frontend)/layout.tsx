@@ -7,12 +7,10 @@ import VisualEditingControls from '@/ui/VisualEditingControls'
 import Footer from '@/ui/footer'
 import Header from '@/ui/header'
 import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google'
-import Script from 'next/script'
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
 
 const gtmId = process.env.NEXT_GOOGLE_TAG_MANAGER_ID || ''
 const gaId = process.env.NEXT_GOOGLE_ANALYTICS_ID || ''
-const oneSignalAppId = process.env.NEXT_ONESIGNAL_APP_ID || ''
 
 export default async function RootLayout({
 	children,
@@ -29,22 +27,6 @@ export default async function RootLayout({
 				<link rel="preconnect" href="https://pagead2.googlesyndication.com" />
 			</head>
 			{!dev && gtmId && <GoogleTagManager gtmId={gtmId} />}
-			{!dev && oneSignalAppId && (
-				<>
-					<Script
-						src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js"
-						strategy="afterInteractive"
-					/>
-					<Script id="onesignal-init" strategy="afterInteractive">
-						{`
-					window.OneSignalDeferred = window.OneSignalDeferred || [];
-					OneSignalDeferred.push(async function(OneSignal) {
-						await OneSignal.init({ appId: "${oneSignalAppId}" });
-							});
-						`}
-					</Script>
-				</>
-			)}
 			<body className="bg-canvas text-ink antialiased">
 				<NuqsAdapter>
 					<SkipToContent />
