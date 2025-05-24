@@ -35,7 +35,7 @@ export function faqJsonLd(post: Sanity.BlogPost) {
 			.join('\n')
 	}
 
-	if(!post.faq?.items) return null
+	if (!post.faq?.items) return null
 
 	const faqs = post.faq?.items.map((item) => ({
 		'@type': 'Question',

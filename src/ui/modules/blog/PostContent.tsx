@@ -10,6 +10,7 @@ import Date from '@/ui/Date'
 import ShareButtons from '@/ui/ShareButtons'
 import SubscriberForm from '@/ui/SubscriberForm'
 import YouTubeEmbed from '@/ui/YouTubeEmbed'
+import AccordionList from '@/ui/modules/AccordionList'
 import Content from '@/ui/modules/RichtextModule/Content'
 import TableOfContents from '@/ui/modules/RichtextModule/TableOfContents'
 
@@ -107,6 +108,7 @@ export default function PostContent({
 						)}
 
 						<Content value={post.body} className={cn(css.body)} />
+						{!post.faq?.options?.hidden && post.faq?.items && <AccordionList {...post.faq} />}
 					</div>
 				</div>
 			</article>

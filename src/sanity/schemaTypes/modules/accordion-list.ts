@@ -90,7 +90,7 @@ export default defineType({
 			title: 'Connect accordions',
 			description: 'Allows only one accordion to be expanded at a time',
 			type: 'boolean',
-			initialValue: false,
+			initialValue: true,
 			group: 'options',
 		}),
 		defineField({
@@ -98,7 +98,7 @@ export default defineType({
 			title: 'Generate schema.org schema',
 			type: 'boolean',
 			description: 'Recommended for FAQ content',
-			initialValue: false,
+			initialValue: true,
 			group: 'options',
 		}),
 	],

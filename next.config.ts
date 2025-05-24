@@ -18,7 +18,7 @@ export default {
 	],
 	compiler:{
 		styledComponents: true,
-		removeConsole: true,
+		removeConsole: process.env.NODE_ENV === 'production',
 	},
 	experimental: {
 		webpackMemoryOptimizations: true

@@ -206,7 +206,6 @@ declare global {
 			pretitle?: string
 			intro?: any
 			items: AccordionItem[]
-			options?: Module
 			layout?: 'vertical' | 'horizontal'
 			connect?: boolean
 			generateSchema?: boolean
