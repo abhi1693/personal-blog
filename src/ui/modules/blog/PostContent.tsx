@@ -4,7 +4,7 @@ import css from './PostContent.module.css'
 import ReadTime from './ReadTime'
 import { BASE_URL } from '@/lib/env'
 import moduleProps from '@/lib/moduleProps'
-import { articleJsonLd, faqJsonLd } from '@/lib/processJsonLd'
+import { articleJsonLd } from '@/lib/processJsonLd'
 import { cn } from '@/lib/utils'
 import Date from '@/ui/Date'
 import ShareButtons from '@/ui/ShareButtons'
@@ -23,7 +23,6 @@ export default function PostContent({
 	const showTOC = !post.hideTableOfContents || !!post.headings?.length
 	const showYouTube = post.youtubeEmbed?.videoID
 	const jsonLdArticle = articleJsonLd(post)
-	const jsonLdFaq = post.faq?.generateSchema ? faqJsonLd(post) : null
 
 	return (
 		<>
@@ -32,12 +31,6 @@ export default function PostContent({
 				type="application/ld+json"
 				dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdArticle) }}
 			/>
-			{jsonLdFaq && (
-				<script
-					type="application/ld+json"
-					dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdFaq) }}
-				/>
-			)}
 			{/* Main article content */}
 			<article {...moduleProps(props)}>
 				<header className="section space-y-6 text-center">
@@ -108,7 +101,9 @@ export default function PostContent({
 						)}
 
 						<Content value={post.body} className={cn(css.body)} />
-						{!post.faq?.options?.hidden && post.faq?.items && <AccordionList {...post.faq} />}
+						{!post.faq?.options?.hidden && post.faq?.items && (
+							<AccordionList {...post.faq} />
+						)}
 					</div>
 				</div>
 			</article>
