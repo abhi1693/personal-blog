@@ -50,7 +50,7 @@ export default function TableOfContents({
 		})
 	}, [headings])
 
-	if(!headings?.length) return null
+	if (!headings?.length) return null
 
 	return (
 		<details

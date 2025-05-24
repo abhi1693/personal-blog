@@ -4,7 +4,7 @@ import css from './PostContent.module.css'
 import ReadTime from './ReadTime'
 import { BASE_URL } from '@/lib/env'
 import moduleProps from '@/lib/moduleProps'
-import { articleJsonLd } from '@/lib/processJsonLd'
+import { articleJsonLd, faqJsonLd } from '@/lib/processJsonLd'
 import { cn } from '@/lib/utils'
 import Date from '@/ui/Date'
 import ShareButtons from '@/ui/ShareButtons'
@@ -21,14 +21,23 @@ export default function PostContent({
 
 	const showTOC = !post.hideTableOfContents || !!post.headings?.length
 	const showYouTube = post.youtubeEmbed?.videoID
-	const jsonLd = articleJsonLd(post)
+	const jsonLdArticle = articleJsonLd(post)
+	const jsonLdFaq = post.faq?.generateSchema ? faqJsonLd(post) : null
 
 	return (
 		<>
+			{/* JSON-LD for SEO */}
 			<script
 				type="application/ld+json"
-				dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdArticle) }}
 			/>
+			{jsonLdFaq && (
+				<script
+					type="application/ld+json"
+					dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdFaq) }}
+				/>
+			)}
+			{/* Main article content */}
 			<article {...moduleProps(props)}>
 				<header className="section space-y-6 text-center">
 					<h1 className="h1 text-balance">{post.metadata.title}</h1>

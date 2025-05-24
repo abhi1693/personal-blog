@@ -90,6 +90,11 @@ export default defineType({
 			group: 'metadata',
 		}),
 		defineField({
+			name: 'faq',
+			type: 'accordion-list',
+			group: 'metadata',
+		}),
+		defineField({
 			name: 'language',
 			type: 'string',
 			readOnly: true,

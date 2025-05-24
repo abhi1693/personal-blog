@@ -23,3 +23,32 @@ export function articleJsonLd(post: Sanity.BlogPost) {
 		...(imageUrl && { image: imageUrl }),
 	}
 }
+
+export function faqJsonLd(post: Sanity.BlogPost) {
+	function extractPlainText(content: any): string {
+		if (!Array.isArray(content)) return ''
+		return content
+			.map(
+				(block) =>
+					block.children?.map((child: any) => child.text).join('') ?? '',
+			)
+			.join('\n')
+	}
+
+	const faqs = post.faq?.items.map((item) => ({
+		'@type': 'Question',
+		name: item.summary,
+		acceptedAnswer: {
+			'@type': 'Answer',
+			text: extractPlainText(item.content),
+		},
+	}))
+
+	return faqs?.length
+		? {
+				'@context': 'https://schema.org',
+				'@type': 'FAQPage',
+				mainEntity: faqs,
+			}
+		: null
+}

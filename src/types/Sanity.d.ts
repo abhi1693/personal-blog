@@ -69,6 +69,7 @@ declare global {
 			featured: boolean
 			hideTableOfContents: boolean
 			publishDate: string
+			faq?: AccordionList
 		}
 
 		interface BlogCategory extends SanityDocument {
@@ -199,6 +200,22 @@ declare global {
 			image?: Image
 			ogimage?: string
 			noIndex: boolean
+		}
+
+		interface AccordionList extends Module<'accordion-list'> {
+			pretitle?: string
+			intro?: any
+			items: AccordionItem[]
+			options?: Module
+			layout?: 'vertical' | 'horizontal'
+			connect?: boolean
+			generateSchema?: boolean
+		}
+
+		interface AccordionItem {
+			summary: string
+			content: any
+			open?: boolean
 		}
 
 		interface Module<T = string> {
