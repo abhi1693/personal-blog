@@ -1,4 +1,10 @@
-export default function DateComponent({ value }: { value?: string }) {
+export default function DateComponent({
+	value,
+	itemProp,
+}: {
+	value?: string
+	itemProp?: string
+}) {
 	if (!value) return null
 
 	const formatted = new Date(value + 'T00:00:00').toLocaleDateString('en-US', {
@@ -7,5 +13,9 @@ export default function DateComponent({ value }: { value?: string }) {
 		day: 'numeric',
 	})
 
-	return <time dateTime={value}>{formatted}</time>
+	return (
+		<time dateTime={value} itemProp={itemProp}>
+			{formatted}
+		</time>
+	)
 }
