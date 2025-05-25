@@ -15,34 +15,36 @@ export default function Admonition({
 
 	const { title, content, tone } = value
 
-	const color = tone
-		? {
-				note: 'border-blue-500 bg-blue-500/5 [&_svg]:text-blue-600',
-				important: 'border-purple-500 bg-purple-500/5 [&_svg]:text-purple-600',
-				tip: 'border-green-500 bg-green-500/5 [&_svg]:text-green-600',
-				warning: 'border-yellow-500 bg-yellow-500/5 [&_svg]:text-yellow-500',
-				caution: 'border-red-500 bg-red-500/5 [&_svg]:text-red-500',
-			}[tone]
-		: 'border-neutral-400 bg-neutral-500/5'
+	const toneStyles = {
+		note: 'border-blue-500 bg-blue-500/5 [&_svg]:text-blue-600',
+		important: 'border-purple-500 bg-purple-500/5 [&_svg]:text-purple-600',
+		tip: 'border-green-500 bg-green-500/5 [&_svg]:text-green-600',
+		warning: 'border-yellow-500 bg-yellow-500/5 [&_svg]:text-yellow-500',
+		caution: 'border-red-500 bg-red-500/5 [&_svg]:text-red-500',
+	}
 
-	const Icon = tone
-		? {
-				note: VscInfo,
-				important: VscReport,
-				tip: VscLightbulb,
-				warning: VscWarning,
-				caution: VscWarning,
-			}[tone]
-		: null
+	const icons = {
+		note: VscInfo,
+		important: VscReport,
+		tip: VscLightbulb,
+		warning: VscWarning,
+		caution: VscWarning,
+	}
+
+	const color = tone ? toneStyles[tone] : 'border-neutral-400 bg-neutral-500/5'
+	const Icon = tone ? icons[tone] : null
 
 	return (
 		<dl className={cn('space-y-2 border-s-2 px-4 py-3', color)}>
-			<dt className="flex items-center gap-2 font-bold">
-				{Icon && <Icon className="size-5" />}
-				<div>{title}</div>
-			</dt>
+			{title ? (
+				<dt className="flex items-center gap-2 font-bold">
+					{Icon && <Icon className="size-5" />}
+					<div>{title}</div>
+				</dt>
+			) : null}
 
-			<dd>
+			<dd className={cn(!title && Icon && 'flex items-start gap-2')}>
+				{!title && Icon && <Icon className="mt-1 size-5 shrink-0" />}
 				<PortableText value={content} />
 			</dd>
 		</dl>
