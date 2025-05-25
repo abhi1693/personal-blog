@@ -34,6 +34,7 @@ export default defineType({
 				defineArrayMember({
 					title: 'module',
 					type: 'object',
+					name: 'module',
 					fields: [
 						defineField({
 							name: 'subModules',
