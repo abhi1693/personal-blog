@@ -29,7 +29,7 @@ export async function GET() {
 				metadata,
 				'image': metadata.image.asset->url,
 			},
-			'posts': *[_type == 'blog.post']{
+			'posts': *[_type == 'blog.post'] | order(publishDate desc){
 				_type,
 				body,
 				publishDate,
