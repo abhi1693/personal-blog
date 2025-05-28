@@ -13,6 +13,8 @@ import Modules from '@/ui/modules'
 import { groq } from 'next-sanity'
 import { notFound } from 'next/navigation'
 
+export const revalidate = 86400
+
 export default async function Page({ params }: Props) {
 	const post = await getPost(await params)
 	if (!post) notFound()
