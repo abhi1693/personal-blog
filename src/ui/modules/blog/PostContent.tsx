@@ -13,6 +13,7 @@ import YouTubeEmbed from '@/ui/YouTubeEmbed'
 import AccordionList from '@/ui/modules/AccordionList'
 import Content from '@/ui/modules/RichtextModule/Content'
 import TableOfContents from '@/ui/modules/RichtextModule/TableOfContents'
+import Comments from '@/ui/modules/blog/Comments'
 
 export default function PostContent({
 	post,
@@ -104,6 +105,10 @@ export default function PostContent({
 						{!post.faq?.options?.hidden && post.faq?.items && (
 							<AccordionList {...post.faq} />
 						)}
+
+						<div className="pt-4 border-t border-gray-200">
+							<Comments/>
+						</div>
 					</div>
 				</div>
 			</article>
