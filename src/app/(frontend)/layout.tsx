@@ -8,6 +8,7 @@ import Footer from '@/ui/footer'
 import Header from '@/ui/header'
 import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google'
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
+import NewsletterModalClient from '@/ui/NewsletterModalClient'
 
 const gtmId = process.env.NEXT_GOOGLE_TAG_MANAGER_ID || ''
 const gaId = process.env.NEXT_GOOGLE_ANALYTICS_ID || ''
@@ -34,6 +35,7 @@ export default async function RootLayout({
 					<Header />
 					<main id="main-content" role="main" tabIndex={-1}>
 						{children}
+						<NewsletterModalClient />
 					</main>
 					<Footer />
 
