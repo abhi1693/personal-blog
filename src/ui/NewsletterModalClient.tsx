@@ -1,13 +1,16 @@
 'use client'
 
-import { useEffect, useState } from 'react'
 import NewsletterModal from './NewsletterModal'
+import { SUBSCRIBER_STATUS_KEY, SUBSCRIBER_STATUS_SUBSCRIBED } from '@/lib/env'
+import { useEffect, useState } from 'react'
 
 export default function NewsletterModalClient() {
 	const [showModal, setShowModal] = useState(false)
 
 	useEffect(() => {
-		const alreadySubscribed = localStorage.getItem('subscriberStatus') === 'subscribed'
+		const alreadySubscribed =
+			localStorage.getItem(SUBSCRIBER_STATUS_KEY) ===
+			SUBSCRIBER_STATUS_SUBSCRIBED
 		if (!alreadySubscribed) {
 			const timeout = setTimeout(() => {
 				setShowModal(true)
@@ -17,6 +20,9 @@ export default function NewsletterModalClient() {
 	}, [])
 
 	return (
-		<NewsletterModal isOpen={showModal} onCloseAction={() => setShowModal(false)} />
+		<NewsletterModal
+			isOpen={showModal}
+			onCloseAction={() => setShowModal(false)}
+		/>
 	)
 }

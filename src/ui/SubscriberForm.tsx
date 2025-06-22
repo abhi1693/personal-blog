@@ -1,5 +1,6 @@
 'use client'
 
+import { SUBSCRIBER_STATUS_KEY, SUBSCRIBER_STATUS_SUBSCRIBED } from '@/lib/env'
 import { useState } from 'react'
 
 export default function SubscriberForm({
@@ -36,7 +37,10 @@ export default function SubscriberForm({
 
 			const data = await res.json()
 			if (res.ok) {
-				localStorage.setItem('subscriberStatus', 'subscribed')
+				localStorage.setItem(
+					SUBSCRIBER_STATUS_KEY,
+					SUBSCRIBER_STATUS_SUBSCRIBED,
+				)
 				setStatus('success')
 				form.reset()
 				onSuccess?.()
