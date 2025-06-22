@@ -107,7 +107,7 @@ export default function PostContent({
 						)}
 
 						<div className="pt-4 border-t border-gray-200">
-							<Comments/>
+							<Comments />
 						</div>
 					</div>
 				</div>
