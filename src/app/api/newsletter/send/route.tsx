@@ -74,6 +74,18 @@ export async function GET(request: NextRequest) {
   </ul>
 
   <section style="border-top: 2px solid #eee; padding-top: 24px; margin-top: 32px;">
+    <p style="font-size: 15px; font-weight: 500; margin-bottom: 8px;">Books by Abhimanyu Saharan</p>
+    <div style="margin-bottom: 16px;">
+      <a href="https://www.amazon.com/dp/B0FH7LM19W" target="_blank" style="text-decoration: none; color: #0b5fff; font-weight: 600; font-size: 15px;">📘 Kubernetes Production Readiness - Series</a>
+      <p style="margin: 4px 0 16px 0; font-size: 14px; color: #555;">Available in Kindle and Paperback. Everything you need to know before deploying Kubernetes to production.</p>
+
+      <a href="https://www.amazon.com/dp/B0FHXX9R5X" target="_blank" style="text-decoration: none; color: #0b5fff; font-weight: 600; font-size: 15px;">🧠 Thinking Like A Developer: In the Age of AI</a>
+      <p style="margin: 4px 0 0 0; font-size: 14px; color: #555;">Sharpen your thinking, not just your syntax. A guide to structured problem-solving and using AI effectively.</p>
+    </div>
+    <p style="font-size: 13px; color: #999;">See all books on <a href="https://www.amazon.com/stores/Abhimanyu-Saharan/author/B0FHX5NFNY" target="_blank" style="color: #0b5fff;">Amazon Author Page</a>.</p>
+  </section>
+
+  <section style="border-top: 2px solid #eee; padding-top: 24px; margin-top: 32px;">
     <p style="font-size: 15px; font-weight: 500; margin-bottom: 8px;">Support my work and get more in-depth content:</p>
     <a href="https://patreon.com/asaharan" style="display: inline-block; background-color: #ff424d; color: #fff; padding: 10px 16px; text-decoration: none; border-radius: 4px; font-weight: 600; font-size: 15px; margin-bottom: 12px;">Join on Patreon</a>
     <div style="margin-top: 16px;">
@@ -88,6 +100,7 @@ export async function GET(request: NextRequest) {
     <a href="${BASE_URL}" style="color: #0b5fff; text-decoration: none;">Visit the Blog</a> |
     <a href="https://www.youtube.com/@AbhimanyuSaharanOfficial" style="color: #0b5fff; text-decoration: none;">YouTube</a> |
     <a href="https://patreon.com/asaharan" style="color: #0b5fff; text-decoration: none;">Patreon</a> |
+    <a href="https://www.amazon.com/stores/Abhimanyu-Saharan/author/B0FHX5NFNY" style="color: #0b5fff; text-decoration: none;">Books</a> |
     <a href="${unsubscribeUrl}" style="color: #0b5fff; text-decoration: none;">Unsubscribe</a>
   </footer>
 </div>
