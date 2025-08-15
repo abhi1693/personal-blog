@@ -39,9 +39,11 @@ const platforms = [
 export default function ShareButtons({
 	url,
 	title,
+	compact = false,
 }: {
 	url: string
 	title: string
+	compact?: boolean
 }) {
 	const [copied, setCopied] = useState(false)
 
@@ -66,9 +68,18 @@ export default function ShareButtons({
 	}
 
 	return (
-		<div className="mt-6 border-t pt-4 text-sm">
-			<p className="mb-2 font-semibold">Share this post</p>
-			<div className="flex flex-wrap items-center gap-5 text-xl text-blue-600">
+		<div className={compact ? 'text-sm' : 'mt-6 border-t pt-4 text-sm'}>
+			{compact ? (
+				<span className="sr-only">Share this post</span>
+			) : (
+				<p className="mb-2 font-semibold">Share this post</p>
+			)}
+			<div
+				className={
+					'flex flex-wrap items-center gap-5 text-blue-600 ' +
+					(compact ? 'text-lg' : 'text-xl')
+				}
+			>
 				{platforms.map(({ name, Icon, href }) => (
 					<a
 						key={name}

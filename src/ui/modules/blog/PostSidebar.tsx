@@ -1,8 +1,6 @@
 import TableOfContents from '@/ui/modules/RichtextModule/TableOfContents'
-import ShareButtons from '@/ui/ShareButtons'
 import SubscriberForm from '@/ui/SubscriberForm'
 import BookPromo from '@/ui/modules/blog/BookPromo'
-import { BASE_URL } from '@/lib/env'
 
 export default function PostSidebar({ post }: { post: Sanity.BlogPost }) {
   const showTOC = !post.hideTableOfContents && !!post.headings?.length
@@ -12,13 +10,6 @@ export default function PostSidebar({ post }: { post: Sanity.BlogPost }) {
       {showTOC && <TableOfContents headings={post.headings} />}
 
       <>
-        <ShareButtons
-          url={`${BASE_URL}/posts/${post.metadata.slug.current}`}
-          title={post.metadata.title}
-        />
-
-        <div className="my-6 border-t border-gray-200" />
-
         <BookPromo authors={post.authors} />
 
         <div className="my-6 border-t border-gray-200" />
@@ -47,4 +38,3 @@ export default function PostSidebar({ post }: { post: Sanity.BlogPost }) {
     </aside>
   )
 }
-

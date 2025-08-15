@@ -10,6 +10,8 @@ import YouTubeEmbed from '@/ui/YouTubeEmbed'
 import AccordionList from '@/ui/modules/AccordionList'
 import Content from '@/ui/modules/RichtextModule/Content'
 import PostSidebar from '@/ui/modules/blog/PostSidebar'
+import ShareButtons from '@/ui/ShareButtons'
+import { BASE_URL } from '@/lib/env'
 
 export default function PostContent({
 	post,
@@ -48,6 +50,15 @@ export default function PostContent({
 							linked
 						/>
 					)}
+
+					{/* Share buttons in header */}
+					<div className="flex justify-center">
+						<ShareButtons
+							compact
+							url={`${BASE_URL}/posts/${post.metadata.slug.current}`}
+							title={post.metadata.title}
+						/>
+					</div>
 				</header>
 
 					<div className={cn('section grid gap-8', 'lg:grid-cols-[1fr_auto]')}>
