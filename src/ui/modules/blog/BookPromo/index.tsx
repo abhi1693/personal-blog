@@ -3,12 +3,12 @@ import { getBooksByAuthors } from '@/sanity/lib/queries'
 import { headers } from 'next/headers'
 
 export default async function BookPromo({
-  authors,
+	authors,
 }: {
-  authors?: Sanity.Person[]
+	authors?: Sanity.Person[]
 }) {
-  const authorIds = authors?.map((a) => a?._id).filter(Boolean) as string[]
-  const books = await getBooksByAuthors(authorIds)
+	const authorIds = authors?.map((a) => a?._id).filter(Boolean) as string[]
+	const books = await getBooksByAuthors(authorIds)
 	if (!books?.length) return null
 
 	// Detect country from Vercel geolocation headers

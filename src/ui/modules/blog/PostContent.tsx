@@ -1,7 +1,5 @@
 import Authors from './Authors'
-import Categories from './Categories'
 import css from './PostContent.module.css'
-import ReadTime from './ReadTime'
 import moduleProps from '@/lib/moduleProps'
 import { articleJsonLd } from '@/lib/processJsonLd'
 import { cn } from '@/lib/utils'
@@ -10,8 +8,6 @@ import YouTubeEmbed from '@/ui/YouTubeEmbed'
 import AccordionList from '@/ui/modules/AccordionList'
 import Content from '@/ui/modules/RichtextModule/Content'
 import PostSidebar from '@/ui/modules/blog/PostSidebar'
-import ShareButtons from '@/ui/ShareButtons'
-import { BASE_URL } from '@/lib/env'
 
 export default function PostContent({
 	post,
@@ -31,38 +27,36 @@ export default function PostContent({
 			/>
 			{/* Main article content */}
 			<article {...moduleProps(props)}>
-				<header className="section space-y-6 text-center">
+				<header className="section space-y-5 text-center">
+					{/* Block 1: Title + optional dek */}
 					<h1 className="h1 text-balance">{post.metadata.title}</h1>
-					<div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
-						<Date value={post.publishDate} />
-						<Categories
-							className="flex flex-wrap gap-x-2"
-							categories={post.categories}
-							linked
-						/>
-						<ReadTime value={post.readTime} />
-					</div>
-
-					{post.authors?.length && (
-						<Authors
-							className="flex flex-wrap items-center justify-center gap-4"
-							authors={post.authors}
-							linked
-						/>
+					{post.metadata.description && (
+						<p className="mx-auto max-w-prose text-pretty text-base text-gray-600">
+							{post.metadata.description}
+						</p>
 					)}
 
-					{/* Share buttons in header */}
-					<div className="flex justify-center">
-						<ShareButtons
-							compact
-							url={`${BASE_URL}/posts/${post.metadata.slug.current}`}
-							title={post.metadata.title}
-						/>
+					{/* Block 2: Centered meta (Date | By Author[s]) */}
+					<div className="mx-auto max-w-screen-md text-gray-600">
+						<p className="flex flex-wrap items-center justify-center gap-3 text-sm md:text-base">
+							<Date value={post.publishDate} long />
+							{post.authors?.length ? (
+								<>
+									<span aria-hidden>|</span>
+									<Authors
+										className="inline-flex items-center gap-3"
+										authors={post.authors}
+										linked
+									/>
+								</>
+							) : null}
+						</p>
+						{/* Share removed */}
 					</div>
 				</header>
 
-					<div className={cn('section grid gap-8', 'lg:grid-cols-[1fr_auto]')}>
-						<PostSidebar post={post} />
+				<div className={cn('section grid gap-8', 'lg:grid-cols-[1fr_auto]')}>
+					<PostSidebar post={post} />
 
 					<div className="grid gap-8 max-w-screen-md">
 						{showYouTube && (

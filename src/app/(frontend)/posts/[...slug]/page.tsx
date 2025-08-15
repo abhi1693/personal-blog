@@ -60,7 +60,6 @@ async function getPost(params: Params) {
 					asset->
 				}
 			},
-			'readTime': length(string::split(pt::text(body), ' ')) / 200,
 			'headings': body[style in ['h2', 'h3']]{
 				style,
 				'text': pt::text(@)

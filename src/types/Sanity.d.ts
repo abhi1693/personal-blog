@@ -61,7 +61,6 @@ declare global {
 		interface BlogPost extends PageBase {
 			readonly _type: 'blog.post'
 			body: any
-			readTime: number
 			headings?: { style: string; text: string }[]
 			categories: BlogCategory[]
 			authors: Person[]
