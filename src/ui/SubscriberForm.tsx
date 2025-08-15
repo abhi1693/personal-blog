@@ -1,7 +1,7 @@
 'use client'
 
-import { SUBSCRIBER_STATUS_KEY, SUBSCRIBER_STATUS_SUBSCRIBED } from '@/lib/env'
 import { useState } from 'react'
+import { useSubscribeNewsletter } from '@/ui/hooks/useSubscribeNewsletter'
 
 export default function SubscriberForm({
 	onSuccess,
@@ -10,47 +10,17 @@ export default function SubscriberForm({
 	onSuccess?: () => void
 	showTitle?: boolean
 }) {
-	const [status, setStatus] = useState<
-		'idle' | 'loading' | 'success' | 'error'
-	>('idle')
-	const [error, setError] = useState<string | null>(null)
+	const { status, error, submit } = useSubscribeNewsletter(onSuccess)
+	const [email, setEmail] = useState('')
+	const [firstName, setFirstName] = useState('')
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
-		setStatus('loading')
-		setError(null)
 
-		const form = e.currentTarget
-		const formData = new FormData(form)
-
-		const payload = {
-			email: formData.get('email')?.toString() || '',
-			firstName: formData.get('firstName')?.toString() || '',
-		}
-
-		try {
-			const res = await fetch('/api/newsletter/subscribe', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify(payload),
-			})
-
-			const data = await res.json()
-			if (res.ok) {
-				localStorage.setItem(
-					SUBSCRIBER_STATUS_KEY,
-					SUBSCRIBER_STATUS_SUBSCRIBED,
-				)
-				setStatus('success')
-				form.reset()
-				onSuccess?.()
-			} else {
-				setStatus('error')
-				setError(data?.error || data?.message || 'Something went wrong.')
-			}
-		} catch {
-			setStatus('error')
-			setError('Something went wrong. Please try again.')
+		const res = await submit({ email, firstName })
+		if (res.ok) {
+			setEmail('')
+			setFirstName('')
 		}
 	}
 
@@ -79,6 +49,8 @@ export default function SubscriberForm({
 					type="text"
 					placeholder="First name"
 					className="w-full border px-3 py-1.5 text-sm rounded"
+					value={firstName}
+					onChange={(e) => setFirstName(e.target.value)}
 				/>
 				<input
 					name="email"
@@ -86,6 +58,8 @@ export default function SubscriberForm({
 					required
 					placeholder="Email address"
 					className="w-full border px-3 py-1.5 text-sm rounded"
+					value={email}
+					onChange={(e) => setEmail(e.target.value)}
 				/>
 				<button
 					type="submit"
@@ -101,6 +75,9 @@ export default function SubscriberForm({
 					<p className="text-xs text-red-500">
 						{error || 'Something went wrong. Please try again.'}
 					</p>
+				)}
+				{status === 'already' && (
+					<p className="text-xs text-green-600">You&#39;re already subscribed.</p>
 				)}
 			</form>
 		</>

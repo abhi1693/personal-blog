@@ -2,10 +2,11 @@
 
 import SubscriberForm from './SubscriberForm'
 import { SUBSCRIBER_STATUS_KEY, SUBSCRIBER_STATUS_SUBSCRIBED } from '@/lib/env'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
+import { isSubscribedLocal } from '@/lib/newsletter'
 
 const DISMISS_KEY = 'newsletterModalDismissedAt'
-const DISMISS_DAYS = 14
+const DISMISS_DAYS = 1
 
 function isDismissedRecently(): boolean {
 	try {
@@ -20,16 +21,8 @@ function isDismissedRecently(): boolean {
 	}
 }
 
-function isSubscribed(): boolean {
-	try {
-		return (
-			localStorage.getItem(SUBSCRIBER_STATUS_KEY) ===
-			SUBSCRIBER_STATUS_SUBSCRIBED
-		)
-	} catch {
-		return false
-	}
-}
+const isSubscribed = () =>
+	isSubscribedLocal(SUBSCRIBER_STATUS_KEY, SUBSCRIBER_STATUS_SUBSCRIBED)
 
 export default function SubscribeModal({ siteName }: { siteName?: string }) {
 	const [open, setOpen] = useState(false)
@@ -50,10 +43,6 @@ export default function SubscribeModal({ siteName }: { siteName?: string }) {
 		try {
 			localStorage.setItem(DISMISS_KEY, String(Date.now()))
 		} catch {}
-		onClose()
-	}
-
-	const onSuccess = () => {
 		onClose()
 	}
 
@@ -79,9 +68,6 @@ export default function SubscribeModal({ siteName }: { siteName?: string }) {
 				</button>
 
 				<div className="p-6 md:p-8">
-					<p className="text-sm/relaxed text-ink/80">
-						Thank you for dropping by.
-					</p>
 					<h2 className="mt-1 text-2xl md:text-3xl font-bold text-ink">
 						Get the best insights on Kubernetes, DevOps & Cloud
 					</h2>
@@ -99,13 +85,7 @@ export default function SubscribeModal({ siteName }: { siteName?: string }) {
 					</div>
 
 					<div className="mt-6">
-						<SubscriberForm onSuccess={onSuccess} showTitle={false} />
-						<button
-							onClick={onNoThanks}
-							className="mt-3 w-full text-center text-xs text-ink/70 underline underline-offset-4"
-						>
-							No thanks
-						</button>
+						<SubscriberForm showTitle={false} />
 					</div>
 				</div>
 			</div>
