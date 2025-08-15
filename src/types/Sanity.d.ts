@@ -94,7 +94,20 @@ declare global {
 
 		interface Person extends SanityDocument {
 			name: string
+			slug?: { current: string }
 			image?: Image
+			// profile
+			title?: string
+			tagline?: string
+			location?: string
+			company?: string
+			socials?: Link[]
+			// content
+			bio?: any
+			coverImage?: Image
+			featuredPosts?: BlogPost[]
+			featuredBooks?: Book[]
+			// seo
 		}
 
 		interface Book extends SanityDocument {

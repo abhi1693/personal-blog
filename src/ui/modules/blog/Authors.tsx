@@ -57,15 +57,11 @@ function Author({
 			</>
 		),
 	}
-	return linked ? (
-		<Link
-			href={{
-				pathname: `/`,
-				query: { author: author?.slug.current },
-			}}
-			{...props}
-		/>
-	) : (
-		<div {...props} />
-	)
+
+	const href = author?.slug?.current
+		? `/authors/${author.slug.current}`
+		: undefined
+	const isLinked = !!(linked && href)
+
+	return isLinked ? <Link href={href} {...props} /> : <div {...props} />
 }

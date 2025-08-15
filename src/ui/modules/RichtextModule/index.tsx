@@ -11,7 +11,6 @@ export default function RichtextModule({
 	stretch: boolean
 }> &
 	Sanity.Module) {
-
 	return (
 		<section className={cn('section grid gap-8')} {...moduleProps(props)}>
 			<Content
