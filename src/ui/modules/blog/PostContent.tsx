@@ -2,18 +2,14 @@ import Authors from './Authors'
 import Categories from './Categories'
 import css from './PostContent.module.css'
 import ReadTime from './ReadTime'
-import { BASE_URL } from '@/lib/env'
 import moduleProps from '@/lib/moduleProps'
 import { articleJsonLd } from '@/lib/processJsonLd'
 import { cn } from '@/lib/utils'
 import Date from '@/ui/Date'
-import ShareButtons from '@/ui/ShareButtons'
-import SubscriberForm from '@/ui/SubscriberForm'
 import YouTubeEmbed from '@/ui/YouTubeEmbed'
 import AccordionList from '@/ui/modules/AccordionList'
 import Content from '@/ui/modules/RichtextModule/Content'
-import TableOfContents from '@/ui/modules/RichtextModule/TableOfContents'
-import BookPromo from '@/ui/modules/blog/BookPromo'
+import PostSidebar from '@/ui/modules/blog/PostSidebar'
 
 export default function PostContent({
 	post,
@@ -21,7 +17,6 @@ export default function PostContent({
 }: { post?: Sanity.BlogPost } & Sanity.Module) {
 	if (!post) return null
 
-	const showTOC = !post.hideTableOfContents || !!post.headings?.length
 	const showYouTube = post.youtubeEmbed?.videoID
 	const jsonLdArticle = articleJsonLd(post)
 
@@ -55,45 +50,8 @@ export default function PostContent({
 					)}
 				</header>
 
-				<div
-					className={cn(
-						'section grid gap-8',
-						(showTOC || post.youtubeEmbed) && 'lg:grid-cols-[1fr_auto]',
-					)}
-				>
-					<aside className="lg:sticky-below-header mx-auto w-full max-w-lg self-start [--offset:1rem] lg:order-1 lg:w-3xs">
-						{showTOC && <TableOfContents headings={post.headings} />}
-						<>
-							<ShareButtons
-								url={`${BASE_URL}/posts/${post.metadata.slug.current}`}
-								title={post.metadata.title}
-							/>
-							<div className="my-6 border-t border-gray-200" />
-							<BookPromo authors={post.authors} />
-							<div className="my-6 border-t border-gray-200" />
-
-							{/* Patreon CTA */}
-							<div className="space-y-2 text-sm text-gray-700">
-								<p>
-									Enjoying the content? Become a patron to support the work.
-								</p>
-								<a
-									href="https://www.patreon.com/asaharan?utm_source=blog&utm_medium=sidebar&utm_campaign=patreon_cta"
-									target="_blank"
-									rel="noopener noreferrer"
-									className="inline-block rounded bg-red-600 px-4 py-2 text-white hover:bg-red-700"
-								>
-									Support on Patreon
-								</a>
-							</div>
-
-							<div className="my-6 border-t border-gray-200" />
-
-							<SubscriberForm />
-
-							<div className="my-6 border-t border-gray-200" />
-						</>
-					</aside>
+					<div className={cn('section grid gap-8', 'lg:grid-cols-[1fr_auto]')}>
+						<PostSidebar post={post} />
 
 					<div className="grid gap-8 max-w-screen-md">
 						{showYouTube && (
