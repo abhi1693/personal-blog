@@ -27,23 +27,56 @@ export default function BookPromoClient({
 	}, [book, country])
 
 	return (
-		<aside className="rounded-md border border-gray-200 p-0 shadow-sm">
+		<aside className="rounded-md border border-amber-200 bg-gradient-to-br from-amber-50 to-white p-0 shadow-sm">
 			<a
 				href={resolvedLink}
 				target="_blank"
 				rel="noopener noreferrer"
-				className="group block p-4 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+				className="group block p-4 transition-all duration-200 hover:-translate-y-0.5 hover:bg-amber-50/60 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+				onClick={() => {
+					try {
+						// GTM dataLayer
+						// @ts-ignore
+						window.dataLayer = window.dataLayer || []
+						// @ts-ignore
+						window.dataLayer.push({
+							event: 'book_promo_click',
+							book_title: book.title,
+							country: country || undefined,
+						})
+						// gtag fallback
+						// @ts-ignore
+						if (typeof window.gtag === 'function') {
+							// @ts-ignore
+							window.gtag('event', 'book_promo_click', {
+								event_category: 'engagement',
+								event_label: book.title,
+							})
+						}
+					} catch {}
+				}}
 			>
-				<div className="flex gap-4">
-					<div className="w-20 shrink-0 overflow-hidden rounded">
-						<Img image={book.image} width={160} alt={book.title} />
-					</div>
-					<div className="space-y-1">
-						<h3 className="font-semibold leading-tight group-hover:underline">
+				<div className="flex items-start gap-4">
+					{book.image && (
+						<div className="w-20 h-28 shrink-0 overflow-hidden rounded">
+							<Img
+								image={book.image}
+								width={160}
+								height={224}
+								className="h-full w-full object-cover"
+								alt={book.title}
+							/>
+						</div>
+					)}
+					<div className="min-w-0 flex-1">
+						<h3 className="line-clamp-3 font-semibold leading-tight group-hover:underline">
 							{book.title}
 						</h3>
-						<div className="pt-1 text-sm font-medium text-blue-700">
-							Learn more →
+						<div className="pt-2 text-sm font-medium text-blue-700">
+							Get the book{' '}
+							<span className="inline-block transition-transform group-hover:translate-x-0.5">
+								→
+							</span>
 						</div>
 					</div>
 				</div>
