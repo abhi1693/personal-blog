@@ -1,5 +1,6 @@
 import blogCategory from './documents/blog.category'
 import blogPost from './documents/blog.post'
+import book from './documents/book'
 import globalModule from './documents/global-module'
 import navigation from './documents/navigation'
 import page from './documents/page'
@@ -53,6 +54,7 @@ export const schemaTypes: SchemaTypeDefinition[] = [
 	page,
 	globalModule,
 	blogPost,
+	book,
 	blogCategory,
 	navigation,
 

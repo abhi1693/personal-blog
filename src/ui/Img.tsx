@@ -77,7 +77,9 @@ export function ResponsiveImg({
 
 	return (
 		<picture {...pictureProps}>
-			{responsive?.map((r, key) => <Source {...r} key={key} />)}
+			{responsive?.map((r, key) => (
+				<Source {...r} key={key} />
+			))}
 			<Img {...imgProps} {...props} />
 		</picture>
 	)

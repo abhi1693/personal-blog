@@ -100,6 +100,18 @@ declare global {
 			image?: Image
 		}
 
+		interface Book extends SanityDocument {
+			title: string
+			defaultLink: string
+			countryLinks?: {
+				country: string // ISO 3166-1 alpha-2
+				link: string
+			}[]
+			image?: Image
+			authors: Person[]
+			active?: boolean
+		}
+
 		interface Pricing extends SanityDocument {
 			title: string
 			highlight?: string

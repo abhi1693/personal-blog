@@ -185,3 +185,19 @@ export async function getTranslations() {
 		}`,
 	})
 }
+
+export async function getBooksByAuthors(authorIds: string[]) {
+	if (!authorIds?.length) return [] as Sanity.Book[]
+	return await fetchSanityLive<Sanity.Book[]>({
+		query: groq`*[_type == 'book' && active == true && count(authors[@._ref in $authorIds]) > 0]{
+			_type,
+			_id,
+			title,
+			defaultLink,
+			countryLinks,
+			image { ${IMAGE_QUERY} },
+			authors[]->
+		}`,
+		params: { authorIds },
+	})
+}

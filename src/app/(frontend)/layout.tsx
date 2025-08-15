@@ -1,7 +1,6 @@
 import { dev } from '@/lib/env'
 import '@/styles/app.css'
 import Announcement from '@/ui/Announcement'
-import NewsletterModalClient from '@/ui/NewsletterModalClient'
 import Root from '@/ui/Root'
 import SkipToContent from '@/ui/SkipToContent'
 import VisualEditingControls from '@/ui/VisualEditingControls'

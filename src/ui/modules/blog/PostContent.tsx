@@ -13,6 +13,7 @@ import YouTubeEmbed from '@/ui/YouTubeEmbed'
 import AccordionList from '@/ui/modules/AccordionList'
 import Content from '@/ui/modules/RichtextModule/Content'
 import TableOfContents from '@/ui/modules/RichtextModule/TableOfContents'
+import BookPromo from '@/ui/modules/blog/BookPromo'
 
 export default function PostContent({
 	post,
@@ -67,6 +68,8 @@ export default function PostContent({
 								url={`${BASE_URL}/posts/${post.metadata.slug.current}`}
 								title={post.metadata.title}
 							/>
+							<div className="my-6 border-t border-gray-200" />
+							<BookPromo authors={post.authors} />
 							<div className="my-6 border-t border-gray-200" />
 
 							{/* Patreon CTA */}
