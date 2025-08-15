@@ -69,7 +69,7 @@ export default function BookPromoClient({
 						</div>
 					)}
 					<div className="min-w-0 flex-1">
-						<h3 className="line-clamp-3 font-semibold leading-tight group-hover:underline">
+						<h3 className="line-clamp-5 font-semibold leading-tight group-hover:underline">
 							{book.title}
 						</h3>
 						<div className="pt-2 text-sm font-medium text-blue-700">
