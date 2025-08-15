@@ -78,12 +78,7 @@ export default defineType({
 			group: 'options',
 			initialValue: false,
 		}),
-		defineField({
-			name: 'hideTableOfContents',
-			type: 'boolean',
-			group: 'options',
-			initialValue: false,
-		}),
+
 		defineField({
 			name: 'metadata',
 			type: 'metadata',

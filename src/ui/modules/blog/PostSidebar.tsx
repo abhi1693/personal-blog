@@ -1,15 +1,10 @@
 import Categories from './Categories'
 import SubscriberForm from '@/ui/SubscriberForm'
-import TableOfContents from '@/ui/modules/RichtextModule/TableOfContents'
 import BookPromo from '@/ui/modules/blog/BookPromo'
 
 export default function PostSidebar({ post }: { post: Sanity.BlogPost }) {
-	const showTOC = !post.hideTableOfContents && !!post.headings?.length
-
 	return (
 		<aside className="lg:sticky-below-header mx-auto w-full max-w-lg self-start [--offset:1rem] lg:order-1 lg:w-3xs">
-			{showTOC && <TableOfContents headings={post.headings} />}
-
 			<>
 				<BookPromo authors={post.authors} />
 

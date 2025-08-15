@@ -38,27 +38,9 @@ export default defineType({
 			group: 'content',
 		}),
 		defineField({
-			name: 'tableOfContents',
-			type: 'boolean',
-			initialValue: false,
-			group: 'options',
-		}),
-		defineField({
-			name: 'tocPosition',
-			type: 'string',
-			options: {
-				list: ['left', 'right'],
-				layout: 'radio',
-			},
-			hidden: ({ parent }) => !parent.tableOfContents,
-			initialValue: 'right',
-			group: 'options',
-		}),
-		defineField({
 			name: 'stretch',
 			type: 'boolean',
 			initialValue: false,
-			hidden: ({ parent }) => parent.tableOfContents,
 			group: 'options',
 		}),
 	],

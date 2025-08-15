@@ -111,13 +111,7 @@ export const MODULES_QUERY = groq`
 		content[]{
 			...,
 			_type == 'image' => { ${IMAGE_QUERY} }
-		},
-		'headings': select(
-			tableOfContents => content[style in ['h2', 'h3', 'h4', 'h5', 'h6']]{
-				style,
-				'text': pt::text(@)
-			}
-		),
+		}
 	},
 	_type == 'tabbed-content' => {
 		tabs[]{

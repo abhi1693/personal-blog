@@ -61,12 +61,10 @@ declare global {
 		interface BlogPost extends PageBase {
 			readonly _type: 'blog.post'
 			body: any
-			headings?: { style: string; text: string }[]
 			categories: BlogCategory[]
 			authors: Person[]
 			youTubeEmbed?: YouTubeEmbed
 			featured: boolean
-			hideTableOfContents: boolean
 			publishDate: string
 			faq?: AccordionList
 		}
