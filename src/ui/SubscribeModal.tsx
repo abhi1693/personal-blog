@@ -2,8 +2,8 @@
 
 import SubscriberForm from './SubscriberForm'
 import { SUBSCRIBER_STATUS_KEY, SUBSCRIBER_STATUS_SUBSCRIBED } from '@/lib/env'
-import { useEffect, useState } from 'react'
 import { isSubscribedLocal } from '@/lib/newsletter'
+import { useEffect, useState } from 'react'
 
 const DISMISS_KEY = 'newsletterModalDismissedAt'
 const DISMISS_DAYS = 1

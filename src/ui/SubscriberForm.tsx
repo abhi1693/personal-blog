@@ -1,7 +1,7 @@
 'use client'
 
-import { useState } from 'react'
 import { useSubscribeNewsletter } from '@/ui/hooks/useSubscribeNewsletter'
+import { useState } from 'react'
 
 export default function SubscriberForm({
 	onSuccess,
@@ -77,7 +77,9 @@ export default function SubscriberForm({
 					</p>
 				)}
 				{status === 'already' && (
-					<p className="text-xs text-green-600">You&#39;re already subscribed.</p>
+					<p className="text-xs text-green-600">
+						You&#39;re already subscribed.
+					</p>
 				)}
 			</form>
 		</>
