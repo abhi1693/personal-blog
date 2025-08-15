@@ -34,7 +34,6 @@ export default async function RootLayout({
 					<Header />
 					<main id="main-content" role="main" tabIndex={-1}>
 						{children}
-						{/*<NewsletterModalClient />*/}
 					</main>
 					<Footer />
 
