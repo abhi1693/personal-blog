@@ -1,8 +1,10 @@
 import { dev } from '@/lib/env'
+import { getSite } from '@/sanity/lib/queries'
 import '@/styles/app.css'
 import Announcement from '@/ui/Announcement'
 import Root from '@/ui/Root'
 import SkipToContent from '@/ui/SkipToContent'
+import SubscribeModal from '@/ui/SubscribeModal'
 import VisualEditingControls from '@/ui/VisualEditingControls'
 import Footer from '@/ui/footer'
 import Header from '@/ui/header'
@@ -17,6 +19,7 @@ export default async function RootLayout({
 }: {
 	children: React.ReactNode
 }) {
+	const { title: siteTitle } = await getSite()
 	return (
 		<Root>
 			<head>
@@ -38,6 +41,7 @@ export default async function RootLayout({
 					<Footer />
 
 					<VisualEditingControls />
+					<SubscribeModal siteName={siteTitle} />
 				</NuqsAdapter>
 				{!dev && gaId && <GoogleAnalytics gaId={gaId} />}
 			</body>
