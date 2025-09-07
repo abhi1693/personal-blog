@@ -36,18 +36,14 @@ export default function BookPromoClient({
 				onClick={() => {
 					try {
 						// GTM dataLayer
-						// @ts-expect-error: dataLayer is injected by GTM at runtime
 						window.dataLayer = window.dataLayer || []
-						// @ts-expect-error: dataLayer typings are not available
 						window.dataLayer.push({
 							event: 'book_promo_click',
 							book_title: book.title,
 							country: country || undefined,
 						})
 						// gtag fallback
-						// @ts-expect-error: gtag is injected by GA at runtime
 						if (typeof window.gtag === 'function') {
-							// @ts-expect-error: gtag global may not be typed
 							window.gtag('event', 'book_promo_click', {
 								event_category: 'engagement',
 								event_label: book.title,
