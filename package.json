@@ -7,7 +7,7 @@
     "dev": "next dev",
     "build": "npm run manifest && next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint .",
     "format": "prettier --write src/ scripts/",
     "manifest": "sanity manifest extract --path public/admin/static",
     "typecheck": "tsc --noEmit",

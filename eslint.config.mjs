@@ -5,20 +5,17 @@ const compat = new FlatCompat({
   baseDirectory: import.meta.dirname,
 })
 
-const eslintConfig = [
-  ...compat.config({
-    extends: ['next', 'prettier'],
-  }),
-	...studio,
-
-  {
-    rules: {
-      'import/no-anonymous-default-export': 'off',
-			'react-hooks/rules-of-hooks': 'off',
-			'react-hooks/exhaustive-deps': 'off',
-			'react/no-unknown-property': 'off'
-    },
+const eslintConfig = [...compat.extends("next/core-web-vitals", "next/typescript"), {
+  ignores: ["node_modules/**", ".next/**", "out/**", "build/**", "next-env.d.ts"]
+}, ...compat.config({
+  extends: ['next', 'prettier'],
+}), ...studio, {
+  rules: {
+    'import/no-anonymous-default-export': 'off',
+          'react-hooks/rules-of-hooks': 'off',
+          'react-hooks/exhaustive-deps': 'off',
+          'react/no-unknown-property': 'off'
   },
-]
+}]
 
 export default eslintConfig

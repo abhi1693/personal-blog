@@ -1,6 +1,7 @@
 import { getSite } from '@/sanity/lib/queries'
 import CTA from '@/ui/CTA'
 import { stegaClean } from 'next-sanity'
+import Link from 'next/link'
 
 export default async function Menu() {
 	const { footerMenu } = await getSite()
@@ -50,9 +51,9 @@ export default async function Menu() {
 			})}
 
 			{!containsAuthors && (
-				<a href="/authors" className="hover:link">
+				<Link href="/authors" className="hover:link">
 					Authors
-				</a>
+				</Link>
 			)}
 		</nav>
 	)
