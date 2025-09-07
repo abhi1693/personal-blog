@@ -71,7 +71,7 @@
   },
   "overrides": {
     "sanitypress-utils": {
-      "sanity": "4.4.1"
+      "sanity": "4.6.1"
     }
   }
 }
