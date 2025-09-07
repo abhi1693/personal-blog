@@ -1,8 +1,8 @@
+import { BLOG_DIR } from '@/lib/env'
 import errors from '@/lib/errors'
 import { languages } from '@/lib/i18n'
 import processMetadata from '@/lib/processMetadata'
 import resolveUrl from '@/lib/resolveUrl'
-import { BLOG_DIR } from '@/lib/env'
 import { client } from '@/sanity/lib/client'
 import { fetchSanityLive } from '@/sanity/lib/fetch'
 import {
@@ -23,46 +23,44 @@ export default async function Page({ params }: Props) {
 }
 
 export async function generateMetadata({
-  params,
-  searchParams,
+	params,
+	searchParams,
 }: {
-  params: Promise<Params>
-  searchParams: Promise<Record<string, string | string[] | undefined>>
+	params: Promise<Params>
+	searchParams: Promise<Record<string, string | string[] | undefined>>
 }) {
-  const [resolvedParams, sp] = await Promise.all([
-    params,
-    searchParams,
-  ])
-  const page = await getPage(resolvedParams)
-  if (!page) notFound()
+	const [resolvedParams, sp] = await Promise.all([params, searchParams])
+	const page = await getPage(resolvedParams)
+	if (!page) notFound()
 
-  const meta = await processMetadata(page)
+	const meta = await processMetadata(page)
 
-  const hasFacetParams = !!sp && (
-    sp.category !== undefined ||
-    sp.tag !== undefined ||
-    sp.page !== undefined ||
-    sp.sort !== undefined
-  )
+	const hasFacetParams =
+		!!sp &&
+		(sp.category !== undefined ||
+			sp.tag !== undefined ||
+			sp.page !== undefined ||
+			sp.sort !== undefined)
 
-  if (hasFacetParams) {
-    const categoryParam = Array.isArray(sp.category)
-      ? sp.category[0]
-      : sp.category
-    const canonical = categoryParam && categoryParam !== 'All'
-      ? `/${BLOG_DIR}/category/${categoryParam}`
-      : resolveUrl(page)
-    return {
-      ...meta,
-      robots: { index: false, follow: true },
-      alternates: {
-        ...(meta.alternates || {}),
-        canonical,
-      },
-    }
-  }
+	if (hasFacetParams) {
+		const categoryParam = Array.isArray(sp.category)
+			? sp.category[0]
+			: sp.category
+		const canonical =
+			categoryParam && categoryParam !== 'All'
+				? `/${BLOG_DIR}/category/${categoryParam}`
+				: resolveUrl(page)
+		return {
+			...meta,
+			robots: { index: false, follow: true },
+			alternates: {
+				...(meta.alternates || {}),
+				canonical,
+			},
+		}
+	}
 
-  return meta
+	return meta
 }
 
 export async function generateStaticParams() {

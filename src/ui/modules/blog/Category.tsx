@@ -20,7 +20,7 @@ export default function Category({
 	}
 
 	return linked ? (
-    <Link href={`/${BLOG_DIR}/category/${value?.slug.current}`} {...props} />
+		<Link href={`/${BLOG_DIR}/category/${value?.slug.current}`} {...props} />
 	) : (
 		<div {...props} />
 	)

@@ -7,13 +7,13 @@ import { Img } from '@/ui/Img'
 import Link from 'next/link'
 
 export default function PostPreview({
-  post,
-  skeleton,
-  href,
+	post,
+	skeleton,
+	href,
 }: {
-  post?: Sanity.BlogPost
-  skeleton?: boolean
-  href?: string
+	post?: Sanity.BlogPost
+	skeleton?: boolean
+	href?: string
 }) {
 	if (!post && !skeleton) return null
 
