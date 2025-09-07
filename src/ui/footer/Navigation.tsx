@@ -5,6 +5,16 @@ import { stegaClean } from 'next-sanity'
 export default async function Menu() {
 	const { footerMenu } = await getSite()
 
+	const containsAuthors = footerMenu?.items?.some((item: any) => {
+		if (item?._type !== 'link') return false
+		const l = item.link
+		if (!l) return false
+		if (l.type === 'external') return l.external?.endsWith('/authors')
+		if (l.type === 'internal')
+			return l.internal?.metadata?.slug?.current === 'authors'
+		return false
+	})
+
 	return (
 		<nav className="flex flex-wrap items-start gap-x-12 gap-y-6 max-sm:flex-col">
 			{footerMenu?.items?.map((item, key) => {
@@ -38,6 +48,12 @@ export default async function Menu() {
 						return null
 				}
 			})}
+
+			{!containsAuthors && (
+				<a href="/authors" className="hover:link">
+					Authors
+				</a>
+			)}
 		</nav>
 	)
 }
