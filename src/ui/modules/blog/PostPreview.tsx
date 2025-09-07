@@ -7,11 +7,13 @@ import { Img } from '@/ui/Img'
 import Link from 'next/link'
 
 export default function PostPreview({
-	post,
-	skeleton,
+  post,
+  skeleton,
+  href,
 }: {
-	post?: Sanity.BlogPost
-	skeleton?: boolean
+  post?: Sanity.BlogPost
+  skeleton?: boolean
+  href?: string
 }) {
 	if (!post && !skeleton) return null
 
@@ -40,7 +42,7 @@ export default function PostPreview({
 			<div className={cn('h4', skeleton && 'skeleton-2')}>
 				<Link
 					className="group-hover:underline"
-					href={resolveUrl(post, { base: false })}
+					href={href || resolveUrl(post, { base: false })}
 					itemProp="url"
 				>
 					<span className="absolute inset-0" />

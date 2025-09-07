@@ -1,4 +1,4 @@
-import { BASE_URL } from '@/lib/env'
+import { BASE_URL, BLOG_DIR } from '@/lib/env'
 import { DEFAULT_LANG, langCookieName } from '@/lib/i18n'
 import resolveUrl from '@/lib/resolveUrl'
 import { client } from '@/sanity/lib/client'
@@ -107,7 +107,10 @@ export default async function Page({ params }: Props) {
 					<ul className="grid gap-x-8 gap-y-12 sm:grid-cols-[repeat(auto-fill,minmax(300px,1fr))]">
 						{author.featuredPosts.map((post) => (
 							<li key={post._id} className="anim-fade">
-								<PostPreview post={post} />
+								<PostPreview
+									post={post}
+									href={`/${BLOG_DIR}/${post.metadata?.slug?.current}`}
+								/>
 							</li>
 						))}
 					</ul>
@@ -151,7 +154,10 @@ export default async function Page({ params }: Props) {
 					<ul className="grid gap-x-8 gap-y-12 sm:grid-cols-[repeat(auto-fill,minmax(300px,1fr))]">
 						{posts.map((post) => (
 							<li key={post._id} className="anim-fade">
-								<PostPreview post={post} />
+								<PostPreview
+									post={post}
+									href={`/${BLOG_DIR}/${post.metadata?.slug?.current}`}
+								/>
 							</li>
 						))}
 					</ul>

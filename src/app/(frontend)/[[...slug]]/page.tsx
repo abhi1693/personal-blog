@@ -2,6 +2,7 @@ import errors from '@/lib/errors'
 import { languages } from '@/lib/i18n'
 import processMetadata from '@/lib/processMetadata'
 import resolveUrl from '@/lib/resolveUrl'
+import { BLOG_DIR } from '@/lib/env'
 import { client } from '@/sanity/lib/client'
 import { fetchSanityLive } from '@/sanity/lib/fetch'
 import {
@@ -24,26 +25,39 @@ export default async function Page({ params }: Props) {
 export async function generateMetadata({
   params,
   searchParams,
-}: Props & { searchParams?: Record<string, string | string[] | undefined> }) {
-  const page = await getPage(await params)
+}: {
+  params: Promise<Params>
+  searchParams: Promise<Record<string, string | string[] | undefined>>
+}) {
+  const [resolvedParams, sp] = await Promise.all([
+    params,
+    searchParams,
+  ])
+  const page = await getPage(resolvedParams)
   if (!page) notFound()
 
   const meta = await processMetadata(page)
 
-  const hasFacetParams = !!searchParams && (
-    'category' in searchParams ||
-    'tag' in searchParams ||
-    'page' in searchParams ||
-    'sort' in searchParams
+  const hasFacetParams = !!sp && (
+    sp.category !== undefined ||
+    sp.tag !== undefined ||
+    sp.page !== undefined ||
+    sp.sort !== undefined
   )
 
   if (hasFacetParams) {
+    const categoryParam = Array.isArray(sp.category)
+      ? sp.category[0]
+      : sp.category
+    const canonical = categoryParam && categoryParam !== 'All'
+      ? `/${BLOG_DIR}/category/${categoryParam}`
+      : resolveUrl(page)
     return {
       ...meta,
       robots: { index: false, follow: true },
       alternates: {
         ...(meta.alternates || {}),
-        canonical: resolveUrl(page),
+        canonical,
       },
     }
   }
