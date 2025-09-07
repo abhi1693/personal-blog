@@ -1,16 +1,17 @@
 import { BASE_URL, BLOG_DIR } from '@/lib/env'
 import { DEFAULT_LANG } from '@/lib/i18n'
-import { fetchSanityLive } from '@/sanity/lib/fetch'
+import { client } from '@/sanity/lib/client'
 import type { MetadataRoute } from 'next'
 import { groq } from 'next-sanity'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const data = await fetchSanityLive<{
+  const data = await client.fetch<{
     pages: MetadataRoute.Sitemap
     blog: MetadataRoute.Sitemap
     people: Array<{ slug: string; _updatedAt: string }>
-  }>({
-    query: groq`{
+    categories: Array<{ slug: string; _updatedAt: string; count: number }>
+  }>(
+    groq`{
       'pages': *[
         _type == 'page' &&
         !(metadata.slug.current in ['404']) &&
@@ -43,13 +44,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       'people': *[_type == 'person' && defined(slug.current)]|order(name asc){
         'slug': slug.current,
         '_updatedAt': _updatedAt
+      },
+      'categories': *[_type == 'blog.category' && defined(slug.current)]|order(title asc){
+        'slug': slug.current,
+        '_updatedAt': _updatedAt,
+        'count': count(*[_type == 'blog.post' && references(^._id)])
       }
     }`,
-    params: {
+    {
       baseUrl: BASE_URL + '/',
       defaultLang: DEFAULT_LANG,
-    },
-  })
+    }
+  )
 
   const authorsIndex: MetadataRoute.Sitemap = [
     {
@@ -65,5 +71,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.5,
   }))
 
-  return [...data.pages, ...data.blog, ...authorsIndex, ...authorProfiles]
+  const categoryPages: MetadataRoute.Sitemap = (data.categories || [])
+    .filter((c) => (c.count ?? 0) > 0)
+    .map((c) => ({
+      url: `${BASE_URL}/${BLOG_DIR}/category/${c.slug}`,
+      lastModified: c._updatedAt,
+      priority: 0.4,
+    }))
+
+  return [
+    ...data.pages,
+    ...data.blog,
+    ...authorsIndex,
+    ...authorProfiles,
+    ...categoryPages,
+  ]
 }
