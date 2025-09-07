@@ -5,8 +5,6 @@ import Link from 'next/link'
 import type { ComponentProps } from 'react'
 
 export default function CTA({
-	_type,
-	_key,
 	link,
 	style,
 	className,
