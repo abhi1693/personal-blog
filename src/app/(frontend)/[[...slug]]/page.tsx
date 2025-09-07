@@ -1,6 +1,7 @@
 import errors from '@/lib/errors'
 import { languages } from '@/lib/i18n'
 import processMetadata from '@/lib/processMetadata'
+import resolveUrl from '@/lib/resolveUrl'
 import { client } from '@/sanity/lib/client'
 import { fetchSanityLive } from '@/sanity/lib/fetch'
 import {
@@ -20,10 +21,34 @@ export default async function Page({ params }: Props) {
 	return <Modules modules={page.modules} page={page} />
 }
 
-export async function generateMetadata({ params }: Props) {
-	const page = await getPage(await params)
-	if (!page) notFound()
-	return processMetadata(page)
+export async function generateMetadata({
+  params,
+  searchParams,
+}: Props & { searchParams?: Record<string, string | string[] | undefined> }) {
+  const page = await getPage(await params)
+  if (!page) notFound()
+
+  const meta = await processMetadata(page)
+
+  const hasFacetParams = !!searchParams && (
+    'category' in searchParams ||
+    'tag' in searchParams ||
+    'page' in searchParams ||
+    'sort' in searchParams
+  )
+
+  if (hasFacetParams) {
+    return {
+      ...meta,
+      robots: { index: false, follow: true },
+      alternates: {
+        ...(meta.alternates || {}),
+        canonical: resolveUrl(page),
+      },
+    }
+  }
+
+  return meta
 }
 
 export async function generateStaticParams() {
