@@ -3,7 +3,7 @@
 import { dev } from '@/lib/env'
 import { client } from '@/sanity/lib/client'
 import { token } from '@/sanity/lib/token'
-import { defineLive } from 'next-sanity'
+import { defineLive } from 'next-sanity/live'
 import { draftMode } from 'next/headers'
 
 export const { sanityFetch, SanityLive } = defineLive({

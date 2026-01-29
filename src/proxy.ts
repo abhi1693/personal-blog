@@ -1,12 +1,8 @@
 import { DEFAULT_LANG, langCookieName } from './lib/i18n'
 import { getTranslations } from './sanity/lib/queries'
-import {
-	NextResponse,
-	type NextRequest,
-	type MiddlewareConfig,
-} from 'next/server'
+import { NextResponse, type NextRequest, type ProxyConfig } from 'next/server'
 
-export default async function (request: NextRequest) {
+export default async function proxy(request: NextRequest) {
 	const { pathname } = request.nextUrl
 	const lang = request.cookies.get(langCookieName)?.value
 
@@ -50,6 +46,6 @@ export default async function (request: NextRequest) {
 	return NextResponse.next()
 }
 
-export const config: MiddlewareConfig = {
+export const config: ProxyConfig = {
 	matcher: ['/((?!favicon.ico|_next|api|admin).*)'],
 }
