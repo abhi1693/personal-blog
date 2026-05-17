@@ -4,6 +4,7 @@ FROM node:22.18.0-bookworm-slim AS deps
 WORKDIR /app
 
 ENV NEXT_TELEMETRY_DISABLED=1
+ENV DO_NOT_TRACK=1
 
 COPY .npmrc package.json package-lock.json ./
 RUN npm ci
@@ -12,6 +13,7 @@ FROM node:22.18.0-bookworm-slim AS builder
 WORKDIR /app
 
 ENV NEXT_TELEMETRY_DISABLED=1
+ENV DO_NOT_TRACK=1
 
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .

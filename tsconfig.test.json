@@ -5,6 +5,7 @@
 		"outDir": "./tests/dist",
 		"module": "CommonJS",
 		"moduleResolution": "node",
+		"ignoreDeprecations": "6.0",
 		"types": ["node"],
 		"esModuleInterop": true
 	},
