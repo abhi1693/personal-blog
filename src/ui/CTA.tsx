@@ -30,7 +30,6 @@ export default function CTA({
 		)
 
 	if (link?.type === 'external' && link.external)
-		// eslint-disable-next-line jsx-a11y/anchor-has-content
 		return <a href={stegaClean(link.external)} rel="nofollow" {...props} />
 
 	return <div {...(props as ComponentProps<'div'>)} />

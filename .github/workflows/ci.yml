@@ -10,8 +10,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
     steps:
       - uses: actions/checkout@v4
 
@@ -20,14 +18,21 @@ jobs:
           node-version-file: '.nvmrc'
           cache: 'npm'
 
-      - name: Install Vercel CLI
-        run: npm install --global vercel@latest
-
-      - name: Pull Vercel Environment Information
-        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
-
-      - name: Set up environment
-        run: cp .vercel/.env.preview.local .env.local
+      - name: Write test environment
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+          GITHUB_TOKEN: ${{ github.token }}
+          NEXT_GOOGLE_ADSENSE_ID: ${{ vars.NEXT_GOOGLE_ADSENSE_ID }}
+          NEXT_GOOGLE_ANALYTICS_ID: ${{ vars.NEXT_GOOGLE_ANALYTICS_ID }}
+          NEXT_GOOGLE_TAG_MANAGER_ID: ${{ vars.NEXT_GOOGLE_TAG_MANAGER_ID }}
+          NEXT_PUBLIC_BASE_URL: ${{ vars.NEXT_PUBLIC_BASE_URL }}
+          NEXT_PUBLIC_SANITY_API_VERSION: ${{ vars.NEXT_PUBLIC_SANITY_API_VERSION }}
+          NEXT_PUBLIC_SANITY_DATASET: ${{ vars.NEXT_PUBLIC_SANITY_DATASET }}
+          NEXT_PUBLIC_SANITY_PROJECT_ID: ${{ vars.NEXT_PUBLIC_SANITY_PROJECT_ID }}
+          NEXT_RESEND_AUDIENCE_ID: ${{ vars.NEXT_RESEND_AUDIENCE_ID }}
+          RESEND_API_KEY_FULL: ${{ secrets.RESEND_API_KEY_FULL }}
+          SANITY_API_READ_TOKEN: ${{ secrets.SANITY_API_READ_TOKEN }}
+        run: .github/scripts/write-env.sh .env.local
 
       - run: npm ci
       - run: npm run lint
@@ -41,8 +46,6 @@ jobs:
       - build
     env:
       GOOGLE_SVC_ACCOUNT: ${{ secrets.GOOGLE_SVC_ACCOUNT }}
-      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-      VERCEL_PROJECT_ID: prj_4fGzgFZsR6ozmMaBD0sJK1dIeJiL
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -58,32 +61,6 @@ jobs:
 
       - name: Decode and store Google Service Account JSON
         run: echo "${{ secrets.GOOGLE_SVC_ACCOUNT }}" | base64 -d > scripts/service-account.json
-
-      - name: Install Vercel CLI
-        run: npm install --global vercel@latest
-
-      - name: Wait for production deployment to be ready
-        run: |
-          # Fetch the most recent production deployment
-          deployment=$(curl -s -H "Authorization: Bearer $VERCEL_TOKEN" \
-            "https://api.vercel.com/v6/deployments?projectId=$VERCEL_PROJECT_ID&target=production&limit=1")
-
-          deployment_id=$(echo "$deployment" | jq -r '.deployments[0].uid')
-          deployment_state=$(echo "$deployment" | jq -r '.deployments[0].readyState')
-
-          echo "Tracking deployment ID: $deployment_id"
-          echo "Initial state: $deployment_state"
-
-          # Wait only for the specific deployment ID
-          while [ "$deployment_state" != "READY" ]; do
-            echo "Still waiting for deployment $deployment_id to be READY..."
-            sleep 10
-            deployment_state=$(curl -s -H "Authorization: Bearer $VERCEL_TOKEN" \
-              "https://api.vercel.com/v13/deployments/$deployment_id" \
-              | jq -r '.readyState')
-          done
-
-          echo "✅ Deployment $deployment_id is READY"
 
       - name: Submit Sitemap
         run: node scripts/sitemap-to-google

@@ -4,7 +4,7 @@ import { setLangCookie } from './actions'
 import { DEFAULT_LANG, supportedLanguages } from '@/lib/i18n'
 import { cn } from '@/lib/utils'
 import { redirect, usePathname } from 'next/navigation'
-import { useEffect, useState, type ComponentProps } from 'react'
+import { useState, type ComponentProps } from 'react'
 import { VscGlobe, VscLoading } from 'react-icons/vsc'
 
 export default function Switcher({
@@ -14,10 +14,9 @@ export default function Switcher({
 }: {
 	translations: Sanity.Translation[]
 } & ComponentProps<'label'>) {
-	const [loading, setLoading] = useState(false)
+	const [pendingPathname, setPendingPathname] = useState<string>()
 	const pathname = usePathname()
-
-	useEffect(() => setLoading(false), [pathname])
+	const loading = Boolean(pendingPathname && pendingPathname !== pathname)
 
 	const available = T.find((t) =>
 		[
@@ -40,7 +39,7 @@ export default function Switcher({
 				className="input border-canvas/10 focus:border-canvas/30 px-[.5em] outline-none"
 				value={pathname === available?.slug ? available.slug : pathname}
 				onChange={(e) => {
-					setLoading(true)
+					setPendingPathname(e.target.value)
 					setLangCookie(
 						(e.target as HTMLSelectElement).selectedOptions[0].dataset.lang,
 					)

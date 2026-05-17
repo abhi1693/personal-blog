@@ -1,16 +1,12 @@
 {
-  "extends": "./tsconfig.json",
-  "compilerOptions": {
-    "noEmit": false,
-    "outDir": "./tests/dist",
-    "module": "CommonJS",
-    "moduleResolution": "node",
-    "types": ["node"],
-    "esModuleInterop": true
-  },
-  "include": [
-    "tests/**/*.ts",
-    "src/**/*.ts",
-    "src/**/*.tsx"
-  ]
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		"noEmit": false,
+		"outDir": "./tests/dist",
+		"module": "CommonJS",
+		"moduleResolution": "node",
+		"types": ["node"],
+		"esModuleInterop": true
+	},
+	"include": ["tests/**/*.ts"]
 }

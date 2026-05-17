@@ -1,4 +1,4 @@
-import { BASE_URL, BLOG_DIR, vercelPreview } from './env'
+import { BASE_URL, BLOG_DIR } from './env'
 import { DEFAULT_LANG } from './i18n'
 import resolveUrl from './resolveUrl'
 import type { Metadata } from 'next'
@@ -39,7 +39,7 @@ export default async function processMetadata(
 				ogimage || `${BASE_URL}/api/og?title=${encodeURIComponent(ogTitle)}`,
 		},
 		robots: {
-			index: noIndex || vercelPreview ? false : undefined,
+			index: noIndex ? false : undefined,
 		},
 		alternates: {
 			canonical: url,

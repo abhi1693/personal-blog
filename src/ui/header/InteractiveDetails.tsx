@@ -3,7 +3,7 @@
 import css from './InteractiveDetails.module.css'
 import { cn } from '@/lib/utils'
 import { usePathname } from 'next/navigation'
-import { useEffect, useState, type ComponentProps } from 'react'
+import { useRef, useState, type ComponentProps } from 'react'
 import { isMobile } from 'react-device-detect'
 
 /**
@@ -24,30 +24,30 @@ export default function InteractiveDetails({
 	closeAfterNavigate?: boolean
 	delay?: number
 } & ComponentProps<'details'>) {
-	const [open, setOpen] = useState(false)
-	let timeout: NodeJS.Timeout
+	const pathname = usePathname()
+	const [openState, setOpenState] = useState({ open: false, pathname })
+	const timeout = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
+	const open =
+		closeAfterNavigate && openState.pathname !== pathname
+			? false
+			: openState.open
+	const setOpen = (value: boolean) => setOpenState({ open: value, pathname })
 
 	const events = !isMobile
 		? {
 				onMouseEnter: () => {
 					if (delay) {
-						timeout = setTimeout(() => setOpen(true), delay)
+						timeout.current = setTimeout(() => setOpen(true), delay)
 					} else {
 						setOpen(true)
 					}
 				},
 				onMouseLeave: () => {
-					if (delay) clearTimeout(timeout)
+					if (timeout.current) clearTimeout(timeout.current)
 					setOpen(false)
 				},
 			}
 		: {}
-
-	// Close after navigation
-	const pathname = usePathname()
-	useEffect(() => {
-		if (closeAfterNavigate) setOpen(false)
-	}, [closeAfterNavigate, pathname])
 
 	return (
 		<details

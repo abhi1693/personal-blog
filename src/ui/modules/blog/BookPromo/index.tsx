@@ -11,7 +11,6 @@ export default async function BookPromo({
 	const books = await getBooksByAuthors(authorIds)
 	if (!books?.length) return null
 
-	// Detect country from Vercel geolocation headers
 	const h = await headers()
 	const country = resolveCountryFromHeaders(h)
 
@@ -20,7 +19,6 @@ export default async function BookPromo({
 
 function resolveCountryFromHeaders(h: Headers): string | undefined {
 	const code =
-		h.get('x-vercel-ip-country') ||
 		h.get('cf-ipcountry') ||
 		h.get('x-geo-country') ||
 		undefined

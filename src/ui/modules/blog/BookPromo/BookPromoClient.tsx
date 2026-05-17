@@ -3,6 +3,15 @@
 import { Img } from '@/ui/Img'
 import { useMemo } from 'react'
 
+const hashString = (value: string) => {
+	let hash = 0
+	for (let i = 0; i < value.length; i += 1) {
+		hash = (hash << 5) - hash + value.charCodeAt(i)
+		hash |= 0
+	}
+	return Math.abs(hash)
+}
+
 export default function BookPromoClient({
 	books,
 	country,
@@ -12,19 +21,21 @@ export default function BookPromoClient({
 }) {
 	const book = useMemo(() => {
 		if (!books?.length) return undefined
-		const idx = Math.floor(Math.random() * books.length)
+		const seed = `${country ?? ''}:${books.map((item) => item.title).join('|')}`
+		const idx = hashString(seed) % books.length
 		return books[idx]
-	}, [books])
-
-	if (!book) return null
+	}, [books, country])
 
 	const resolvedLink = useMemo(() => {
+		if (!book) return undefined
 		const c = (country || '').toUpperCase()
 		const match = book.countryLinks?.find(
 			(cl) => cl?.country?.toUpperCase() === c,
 		)
 		return match?.link || book.defaultLink
 	}, [book, country])
+
+	if (!book) return null
 
 	return (
 		<aside className="rounded-md border border-amber-200 bg-gradient-to-br from-amber-50 to-white p-0 shadow-sm">

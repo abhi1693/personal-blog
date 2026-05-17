@@ -11,7 +11,6 @@ import {
 	projectInfoWidget,
 	projectUsersWidget,
 } from '@sanity/dashboard'
-import { vercelWidget } from 'sanity-plugin-dashboard-widget-vercel'
 import { visionTool } from '@sanity/vision'
 import { codeInput } from '@sanity/code-input'
 import { supportedLanguages } from '@/lib/i18n'
@@ -31,11 +30,6 @@ export default defineConfig({
 	plugins: [
 		structure,
 		presentation,
-		dashboardTool({
-			name: 'deployment',
-			title: 'Deployment',
-			widgets: [vercelWidget()],
-		}),
 		dashboardTool({
 			name: 'info',
 			title: 'Info',
