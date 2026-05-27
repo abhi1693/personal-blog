@@ -1,7 +1,7 @@
 import { BASE_URL, BLOG_DIR } from '@/lib/env'
 import { DEFAULT_LANG } from '@/lib/i18n'
 import resolveUrl from '@/lib/resolveUrl'
-import { fetchSanityLive } from '@/sanity/lib/fetch'
+import { client } from '@/sanity/lib/client'
 import { urlFor } from '@/sanity/lib/image'
 import { escapeHTML, toHTML } from '@portabletext/to-html'
 import { Feed } from 'feed'
@@ -17,12 +17,12 @@ function rewriteRelativeUrls(html: string, baseUrl: string): string {
 }
 
 export async function GET() {
-	const { blog, posts, copyright } = await fetchSanityLive<{
+	const { blog, posts, copyright } = await client.fetch<{
 		blog: Sanity.Page
 		posts: Array<Sanity.BlogPost & { image?: string }>
 		copyright: string
-	}>({
-		query: groq`{
+	}>(
+		groq`{
 			'blog': *[_type == 'page' && metadata.slug.current == '${BLOG_DIR}'][0]{
 				_type,
 				title,
@@ -40,7 +40,13 @@ export async function GET() {
 			},
 			'copyright': pt::text(*[_type == 'site'][0].copyright)
 		}`,
-	})
+		{},
+		{
+			cache: 'no-store',
+			perspective: 'published',
+			useCdn: true,
+		},
+	)
 
 	if (!blog || !posts) {
 		return new Response(
