@@ -38,7 +38,7 @@ export default function PostContent({
 
 					{/* Block 2: Centered meta (Date | By Author[s]) */}
 					<div className="mx-auto max-w-screen-md text-gray-600">
-						<p className="flex flex-wrap items-center justify-center gap-3 text-sm md:text-base">
+						<div className="flex flex-wrap items-center justify-center gap-3 text-sm md:text-base">
 							<Date value={post.publishDate} long />
 							{post.authors?.length ? (
 								<>
@@ -50,7 +50,7 @@ export default function PostContent({
 									/>
 								</>
 							) : null}
-						</p>
+						</div>
 						{/* Share removed */}
 					</div>
 				</header>
