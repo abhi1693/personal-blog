@@ -1,7 +1,7 @@
 'use client'
 
 import { createDataAttribute, stegaClean } from 'next-sanity'
-import { useDraftModeEnvironment } from 'next-sanity/hooks'
+import { useVisualEditingEnvironment } from 'next-sanity/hooks'
 import { usePathname } from 'next/navigation'
 import { VscSymbolField, VscBeakerStop } from 'react-icons/vsc'
 
@@ -10,10 +10,10 @@ export default function DraftModeControls({
 }: {
 	globalModules?: Sanity.GlobalModule[]
 }) {
-	const environment = useDraftModeEnvironment()
-	if (!['live', 'unknown'].includes(environment)) return null
-
+	const environment = useVisualEditingEnvironment()
 	const pathname = usePathname()
+
+	if (environment !== 'standalone') return null
 
 	const filteredGlobalModules = globalModules
 		?.filter(({ path, excludePaths: ex }) => {

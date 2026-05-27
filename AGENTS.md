@@ -8,7 +8,7 @@
 - `tests`: TypeScript tests compiled to `tests/dist`.
 
 ## Build, Test, and Development Commands
-- `npm i`: install (Node `v22.18.0`, see `.nvmrc`).
+- `npm i`: install (Node `v22.22.2`, see `.nvmrc`).
 - `npm run dev`: start Next.js locally at `http://localhost:3000`.
 - `npm run build`: extract Studio manifest then build the app.
 - `npm start`: run the production build.
