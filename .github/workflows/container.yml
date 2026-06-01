@@ -30,16 +30,10 @@ jobs:
             runner: ubuntu-24.04
             suffix: amd64
           - platform: linux/arm64
-            runner: ubuntu-24.04
+            runner: ubuntu-24.04-arm
             suffix: arm64
     steps:
       - uses: actions/checkout@v6
-
-      - name: Set up QEMU
-        if: matrix.platform != 'linux/amd64'
-        uses: docker/setup-qemu-action@v4
-        with:
-          platforms: arm64
 
       - name: Write build environment
         env:
