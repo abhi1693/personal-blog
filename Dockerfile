@@ -1,6 +1,7 @@
 # syntax=docker/dockerfile:1.7
 
-FROM node:22.18.0-bookworm-slim AS deps
+ARG NODE_IMAGE=node:22.18.0-bookworm-slim
+FROM ${NODE_IMAGE} AS deps
 WORKDIR /app
 
 ENV NEXT_TELEMETRY_DISABLED=1
@@ -9,7 +10,7 @@ ENV DO_NOT_TRACK=1
 COPY .npmrc package.json package-lock.json ./
 RUN npm ci
 
-FROM node:22.18.0-bookworm-slim AS builder
+FROM ${NODE_IMAGE} AS builder
 WORKDIR /app
 
 ENV NEXT_TELEMETRY_DISABLED=1
@@ -19,7 +20,7 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN --mount=type=secret,id=env,target=/app/.env.local npm run build
 
-FROM node:22.18.0-bookworm-slim AS runner
+FROM ${NODE_IMAGE} AS runner
 WORKDIR /app
 
 ENV HOSTNAME=0.0.0.0
