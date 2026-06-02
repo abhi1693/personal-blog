@@ -6,6 +6,13 @@ export default async function proxy(request: NextRequest) {
 	const { pathname } = request.nextUrl
 	const lang = request.cookies.get(langCookieName)?.value
 
+	const postMarkdownPath = resolvePostMarkdownPath(pathname)
+	if (postMarkdownPath) {
+		const url = request.nextUrl.clone()
+		url.pathname = postMarkdownPath
+		return NextResponse.rewrite(url)
+	}
+
 	const T = await getTranslations()
 
 	const isPrefixed = !!T.find((t) =>
@@ -48,4 +55,25 @@ export default async function proxy(request: NextRequest) {
 
 export const config: ProxyConfig = {
 	matcher: ['/((?!favicon.ico|_next|api|admin).*)'],
+}
+
+function resolvePostMarkdownPath(pathname: string) {
+	const match = pathname.match(/^\/(.+)\.md$/)
+	if (!match) return undefined
+
+	const path = match[1]
+	const postPrefix = 'posts/'
+	const postIndex = path.indexOf(postPrefix)
+	if (postIndex === -1) return undefined
+
+	const beforePostPrefix = path.slice(0, postIndex)
+	if (beforePostPrefix && !beforePostPrefix.endsWith('/')) return undefined
+
+	const slug = path.slice(postIndex + postPrefix.length)
+	if (!slug || slug.startsWith('category/')) return undefined
+
+	const languagePrefix = beforePostPrefix.replace(/\/$/, '')
+	const markdownSlug = [languagePrefix, slug].filter(Boolean).join('/')
+
+	return `/posts-md/${markdownSlug}`
 }

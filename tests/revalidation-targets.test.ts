@@ -14,10 +14,13 @@ assert.deepStrictEqual(postTargets, [
 	{ path: '/' },
 	{ path: '/posts' },
 	{ path: '/posts/rss.xml' },
+	{ path: '/llms.txt' },
+	{ path: '/llms-full.txt' },
 	{ path: '/sitemap.xml' },
 	{ path: '/posts/[...slug]', type: 'page' },
 	{ path: '/posts/category/[slug]', type: 'page' },
 	{ path: '/posts/new-post' },
+	{ path: '/posts/new-post.md' },
 	{ path: '/posts/category/kubernetes' },
 	{ path: '/posts/category/infra' },
 ])

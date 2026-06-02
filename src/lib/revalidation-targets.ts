@@ -57,6 +57,8 @@ export function getSanityRevalidationTargets(
 	add({ path: '/' })
 	add({ path: `/${BLOG_DIR}` })
 	add({ path: `/${BLOG_DIR}/rss.xml` })
+	add({ path: '/llms.txt' })
+	add({ path: '/llms-full.txt' })
 	add({ path: '/sitemap.xml' })
 
 	if (!body) return [...targets.values()]
@@ -73,10 +75,13 @@ export function getSanityRevalidationTargets(
 
 		if (slug) {
 			add({ path: `/${BLOG_DIR}/${slug}` })
+			add({ path: `/${BLOG_DIR}/${slug}.md` })
 
 			if (language && language !== DEFAULT_LANG) {
 				add({ path: `/${language}/${BLOG_DIR}/${slug}` })
+				add({ path: `/${language}/${BLOG_DIR}/${slug}.md` })
 				add({ path: `/${BLOG_DIR}/${language}/${slug}` })
+				add({ path: `/${BLOG_DIR}/${language}/${slug}.md` })
 			}
 		}
 
