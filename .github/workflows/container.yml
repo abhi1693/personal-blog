@@ -31,13 +31,13 @@ jobs:
           NEXT_RESEND_AUDIENCE_ID: ${{ vars.NEXT_RESEND_AUDIENCE_ID }}
           RESEND_API_KEY_FULL: ${{ secrets.RESEND_API_KEY_FULL }}
           SANITY_API_READ_TOKEN: ${{ secrets.SANITY_API_READ_TOKEN }}
-        run: .github/scripts/write-env.sh .env.local
+        run: .github/scripts/write-env.sh build-secret.env
 
       - name: Upload build secret
         uses: actions/upload-artifact@v7
         with:
           name: personal-blog-build-secret
-          path: .env.local
+          path: build-secret.env
           retention-days: 1
 
   build:
@@ -52,7 +52,7 @@ jobs:
       platforms: linux/arm64
       cache-scope: personal-blog-arm64
       build-secret-artifact: personal-blog-build-secret
-      build-secret-file: .env.local
+      build-secret-file: build-secret.env
       build-secret-id: env
       tags: |
         type=semver,pattern={{version}}
