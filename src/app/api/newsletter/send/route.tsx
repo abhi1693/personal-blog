@@ -30,7 +30,13 @@ export async function GET(request: NextRequest) {
 		})
 
 		if (recentPosts.length === 0) {
-			return new Response('No new posts in the last 7 days.', { status: 404 })
+			return Response.json({
+				message: 'No new posts in the last 7 days.',
+				sent: 0,
+				failed: 0,
+				skipped: 0,
+				postsIncluded: 0,
+			})
 		}
 
 		const { data: contactData } = await resend.contacts.list({
