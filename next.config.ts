@@ -20,7 +20,7 @@ export default {
 	experimental: {
 		webpackMemoryOptimizations: true
 	},
-	productionBrowserSourceMaps: false,
+	productionBrowserSourceMaps: true,
 	images: {
 		dangerouslyAllowSVG: true,
 		remotePatterns: [

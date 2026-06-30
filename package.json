@@ -5,7 +5,7 @@
 	"author": "Abhimanyu Saharan <desk.abhimanyu@gmail.com> (https://blog.abhimanyu-saharan.com)",
 	"scripts": {
 		"dev": "next dev",
-		"build": "npm run manifest && next build",
+  "build": "npm run manifest && next build && node scripts/prepare-faro-sourcemaps.mjs",
 		"start": "next start",
 		"lint": "eslint src scripts",
 		"format": "prettier --write src/ scripts/",
