@@ -7,7 +7,7 @@ ENV NEXT_TELEMETRY_DISABLED=1
 ENV DO_NOT_TRACK=1
 
 COPY .npmrc package.json package-lock.json ./
-RUN npm ci
+RUN npm ci --ignore-scripts --prefer-offline --no-audit --fund=false
 
 FROM node:22.18.0-bookworm-slim AS builder
 WORKDIR /app
@@ -17,7 +17,16 @@ ENV DO_NOT_TRACK=1
 
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-RUN --mount=type=secret,id=env,target=/app/.env.local npm run build
+RUN --mount=type=secret,id=env,target=/app/.env.local \
+	set -a; \
+	if [ -f /app/.env.local ]; then . /app/.env.local; fi; \
+	set +a; \
+	NEXT_PUBLIC_FARO_ENABLED="${NEXT_PUBLIC_FARO_ENABLED:-false}" \
+	NEXT_PUBLIC_FARO_URL="${NEXT_PUBLIC_FARO_URL:-}" \
+	NEXT_PUBLIC_FARO_API_KEY="${NEXT_PUBLIC_FARO_API_KEY:-}" \
+	NEXT_PUBLIC_FARO_APP_NAME="${NEXT_PUBLIC_FARO_APP_NAME:-personal-blog}" \
+	NEXT_PUBLIC_FARO_ENVIRONMENT="${NEXT_PUBLIC_FARO_ENVIRONMENT:-production}" \
+	npm run build
 
 FROM node:22.18.0-bookworm-slim AS runner
 WORKDIR /app
