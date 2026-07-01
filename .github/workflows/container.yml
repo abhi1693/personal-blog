@@ -3,6 +3,11 @@ name: Container
 on:
   release:
     types: [published]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Semver image version without a leading v
+        required: true
 
 permissions:
   contents: read
@@ -46,7 +51,7 @@ jobs:
     uses: abhi1693/actions/.github/workflows/docker-build-push.yml@master
     with:
       runs-on: ubuntu-24.04-arm
-      image: ghcr.io/${{ github.repository }}
+      image: ghcr.io/abhi1693/personal-blog
       context: .
       file: Dockerfile
       platforms: linux/arm64
@@ -56,9 +61,9 @@ jobs:
       build-secret-id: env
       tags: |
         type=semver,pattern={{version}}
-        type=raw,value=latest
+        type=raw,value=${{ inputs.version }},enable=${{ github.event_name == 'workflow_dispatch' }}
       labels: |
-        org.opencontainers.image.source=https://github.com/${{ github.repository }}
+        org.opencontainers.image.source=https://github.com/abhi1693/personal-blog
         org.opencontainers.image.title=personal-blog
     secrets:
       github-token: ${{ secrets.GITHUB_TOKEN }}
