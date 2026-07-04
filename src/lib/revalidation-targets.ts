@@ -99,7 +99,20 @@ export function getSanityRevalidationTargets(
 
 	if (type === 'page') {
 		const slug = getDocumentSlug(body)
-		if (slug) add({ path: slug === 'index' ? '/' : `/${slug}` })
+		const language =
+			typeof body.language === 'string' ? body.language : undefined
+
+		if (slug) {
+			add({ path: slug === 'index' ? '/' : `/${slug}` })
+			add({ path: slug === 'index' ? '/index.md' : `/${slug}.md` })
+
+			if (language && language !== DEFAULT_LANG) {
+				add({
+					path: slug === 'index' ? `/${language}` : `/${language}/${slug}`,
+				})
+				add({ path: `/${language}/${slug === 'index' ? 'index' : slug}.md` })
+			}
+		}
 	}
 
 	return [...targets.values()]

@@ -13,6 +13,10 @@ export type LlmsPostEntry = LlmsEntry & {
 	content?: string
 }
 
+export type LlmsPageMarkdown = LlmsEntry & {
+	content: string
+}
+
 export type LlmsIndex = {
 	title: string
 	description?: string
@@ -27,7 +31,7 @@ export type LlmsIndex = {
 
 export function formatRobotsTxt({
 	baseUrl,
-	disallow = ['/admin/', '/posts-md/'],
+	disallow = ['/admin/', '/pages-md/', '/posts-md/'],
 }: {
 	baseUrl: string
 	disallow?: string[]
@@ -54,6 +58,7 @@ export function formatLlmsTxt(index: LlmsIndex) {
 		`- [Sitemap](${index.sitemapUrl})`,
 		`- [RSS feed](${index.rssUrl})`,
 		`- [Full content export](${trimTrailingSlash(index.baseUrl)}/llms-full.txt)`,
+		`- [Page Markdown routes](${trimTrailingSlash(index.baseUrl)}/{slug}.md)`,
 		`- [Post Markdown routes](${trimTrailingSlash(index.baseUrl)}/posts/{slug}.md)`,
 		'',
 		formatEntrySection('Key Pages', index.pages),
@@ -188,6 +193,22 @@ export function formatPostMarkdown(post: LlmsPostEntry) {
 		post.content && sanitizeBody(post.content),
 	]
 		.filter((line) => line !== undefined && line !== 0)
+		.join('\n')
+		.trim()
+		.concat('\n')
+}
+
+export function formatPageMarkdown(page: LlmsPageMarkdown) {
+	return [
+		`# ${sanitizeLine(page.title)}`,
+		page.description && `> ${sanitizeLine(page.description)}`,
+		'',
+		`Canonical: ${page.url}`,
+		page.updatedAt && `Last updated: ${formatDate(page.updatedAt)}`,
+		page.content && '',
+		sanitizeBody(page.content),
+	]
+		.filter((line) => line !== undefined)
 		.join('\n')
 		.trim()
 		.concat('\n')

@@ -1,5 +1,6 @@
 import {
 	formatLlmsTxt,
+	formatPageMarkdown,
 	formatPostMarkdown,
 	formatRobotsTxt,
 	type LlmsIndex,
@@ -40,6 +41,7 @@ assert.strictEqual(
 		'User-agent: *',
 		'Allow: /',
 		'Disallow: /admin/',
+		'Disallow: /pages-md/',
 		'Disallow: /posts-md/',
 		'',
 		'LLM-Policy: /llms.txt',
@@ -53,6 +55,9 @@ assert.ok(llms.includes('# Example [Blog]'))
 assert.ok(llms.includes('> Notes for builders'))
 assert.ok(
 	llms.includes('- [About Me](https://example.com/about): Profile and work'),
+)
+assert.ok(
+	llms.includes('- [Page Markdown routes](https://example.com/{slug}.md)'),
 )
 assert.ok(
 	llms.includes(
@@ -77,5 +82,18 @@ assert.ok(
 )
 assert.ok(postMarkdown.includes('Published: 2026-06-02'))
 assert.ok(postMarkdown.includes('## Body\n\nMarkdown content.'))
+
+const pageMarkdown = formatPageMarkdown({
+	title: 'About Me',
+	url: 'https://example.com/about',
+	description: 'Profile and work',
+	updatedAt: '2026-06-04T00:00:00.000Z',
+	content: '## Work\n\nNotes.',
+})
+
+assert.ok(pageMarkdown.startsWith('# About Me\n'))
+assert.ok(pageMarkdown.includes('Canonical: https://example.com/about'))
+assert.ok(pageMarkdown.includes('Last updated: 2026-06-04'))
+assert.ok(pageMarkdown.includes('## Work\n\nNotes.'))
 
 console.log('llms tests passed')

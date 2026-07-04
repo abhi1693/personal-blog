@@ -1,6 +1,6 @@
 import { BASE_URL, BLOG_DIR } from '@/lib/env'
 import { DEFAULT_LANG, languages } from '@/lib/i18n'
-import type { LlmsIndex, LlmsPostEntry } from '@/lib/llms'
+import type { LlmsIndex, LlmsPageMarkdown, LlmsPostEntry } from '@/lib/llms'
 import { blogPostToMarkdown } from '@/lib/portableTextMarkdown'
 import { client } from '@/sanity/lib/client'
 import { groq } from 'next-sanity'
@@ -23,6 +23,10 @@ type SanityLlmsPost = SanityLlmsEntry & {
 		videoId?: string
 	}
 	faq?: Sanity.BlogPost['faq']
+}
+
+type SanityPageMarkdown = SanityLlmsEntry & {
+	content?: string
 }
 
 type SanityLlmsData = {
@@ -154,6 +158,50 @@ export async function getPostMarkdown(
 	return entry || null
 }
 
+export async function getPageMarkdown(
+	slugParts: string[],
+): Promise<LlmsPageMarkdown | null> {
+	const { slug, lang } = processMarkdownSlug(slugParts)
+	const page = await client.fetch<SanityPageMarkdown | null>(
+		groq`*[
+			_type == 'page' &&
+			metadata.noIndex != true &&
+			metadata.slug.current == $slug &&
+			length(markdown.code) > 0
+			${lang ? `&& language == '${lang}'` : ''}
+		][0]{
+			'title': coalesce(metadata.title, title),
+			'description': metadata.description,
+			'updatedAt': _updatedAt,
+			'content': markdown.code,
+			'url': (
+				$baseUrl
+				+ select(defined(language) && language != $defaultLang => language + '/', '')
+				+ select(metadata.slug.current == 'index' => '', metadata.slug.current)
+			)
+		}`,
+		{
+			baseUrl: `${BASE_URL.replace(/\/+$/, '')}/`,
+			defaultLang: DEFAULT_LANG,
+			slug,
+		},
+		{
+			perspective: 'published',
+			useCdn: true,
+		},
+	)
+
+	if (!page?.title || !page.url || !page.content) return null
+
+	return {
+		title: page.title,
+		url: page.url,
+		description: page.description,
+		updatedAt: page.updatedAt,
+		content: page.content,
+	}
+}
+
 export async function getPostMarkdownStaticParams() {
 	const slugs = await client.fetch<string[]>(
 		groq`*[
@@ -164,6 +212,21 @@ export async function getPostMarkdownStaticParams() {
 	)
 
 	return slugs.map((slug) => ({ slug: slug.split('/') }))
+}
+
+export async function getPageMarkdownStaticParams() {
+	const slugs = await client.fetch<string[]>(
+		groq`*[
+			_type == 'page' &&
+			defined(metadata.slug.current) &&
+			metadata.noIndex != true &&
+			length(markdown.code) > 0
+		].metadata.slug.current`,
+	)
+
+	return slugs.map((slug) => ({
+		slug: (slug === 'index' ? 'index' : slug).split('/'),
+	}))
 }
 
 function normalizeEntries(entries: SanityLlmsEntry[] = []) {
@@ -228,6 +291,10 @@ function isPublished(publishedAt?: string) {
 }
 
 function processPostMarkdownSlug(slugParts: string[]) {
+	return processMarkdownSlug(slugParts)
+}
+
+function processMarkdownSlug(slugParts: string[]) {
 	const parts = [...slugParts]
 	const last = parts.at(-1)
 
@@ -238,7 +305,7 @@ function processPostMarkdownSlug(slugParts: string[]) {
 	const lang = languages.includes(parts[0]) ? parts.shift() : undefined
 
 	return {
-		slug: parts.join('/'),
+		slug: parts.join('/') || 'index',
 		lang,
 	}
 }

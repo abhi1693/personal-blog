@@ -1815,8 +1815,17 @@ export type Page = {
 				_key: string
 		  } & TestimonialFeatured)
 	>
+	markdown?: Code
 	metadata?: Metadata
 	language?: string
+}
+
+export type Code = {
+	_type: 'code'
+	language?: string
+	filename?: string
+	code?: string
+	highlightedLines?: Array<number>
 }
 
 export type Reputation = {
@@ -1839,14 +1848,6 @@ export type Reputation = {
 		_type: 'image'
 		_key: string
 	}>
-}
-
-export type Code = {
-	_type: 'code'
-	language?: string
-	filename?: string
-	code?: string
-	highlightedLines?: Array<number>
 }
 
 export type SanityAssistInstructionTask = {
@@ -2157,8 +2158,8 @@ export type AllSanitySchemaTypes =
 	| InternationalizedArrayReferenceValue
 	| BlogPost
 	| Page
-	| Reputation
 	| Code
+	| Reputation
 	| SanityAssistInstructionTask
 	| SanityAssistTaskStatus
 	| SanityAssistSchemaTypeAnnotations

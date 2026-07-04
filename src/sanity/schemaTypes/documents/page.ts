@@ -14,7 +14,11 @@ export default defineType({
 	name: 'page',
 	title: 'Page',
 	type: 'document',
-	groups: [{ name: 'content', default: true }, { name: 'metadata' }],
+	groups: [
+		{ name: 'content', default: true },
+		{ name: 'markdown' },
+		{ name: 'metadata' },
+	],
 	fields: [
 		defineField({
 			name: 'title',
@@ -25,6 +29,16 @@ export default defineType({
 		defineField({
 			...modules,
 			group: 'content',
+		}),
+		defineField({
+			name: 'markdown',
+			type: 'code',
+			description: 'Served at <slug>.md. Leave empty to disable page markdown.',
+			options: {
+				language: 'markdown',
+				languageAlternatives: [{ title: 'Markdown', value: 'markdown' }],
+			},
+			group: 'markdown',
 		}),
 		defineField({
 			name: 'metadata',

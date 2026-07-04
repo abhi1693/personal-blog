@@ -1,3 +1,4 @@
+import { BLOG_DIR } from './lib/env'
 import { DEFAULT_LANG, langCookieName } from './lib/i18n'
 import { getTranslations } from './sanity/lib/queries'
 import { NextResponse, type NextRequest, type ProxyConfig } from 'next/server'
@@ -6,11 +7,20 @@ export default async function proxy(request: NextRequest) {
 	const { pathname } = request.nextUrl
 	const lang = request.cookies.get(langCookieName)?.value
 
-	const postMarkdownPath = resolvePostMarkdownPath(pathname)
-	if (postMarkdownPath) {
+	const markdownPath = resolveMarkdownPath(
+		pathname,
+		request.headers.get('accept'),
+	)
+	if (markdownPath) {
 		const url = request.nextUrl.clone()
-		url.pathname = postMarkdownPath
-		return NextResponse.rewrite(url)
+		url.pathname = markdownPath.pathname
+		const response = NextResponse.rewrite(url)
+
+		if (markdownPath.vary) {
+			response.headers.append('Vary', markdownPath.vary)
+		}
+
+		return response
 	}
 
 	const T = await getTranslations()
@@ -62,7 +72,7 @@ function resolvePostMarkdownPath(pathname: string) {
 	if (!match) return undefined
 
 	const path = match[1]
-	const postPrefix = 'posts/'
+	const postPrefix = `${BLOG_DIR}/`
 	const postIndex = path.indexOf(postPrefix)
 	if (postIndex === -1) return undefined
 
@@ -76,4 +86,70 @@ function resolvePostMarkdownPath(pathname: string) {
 	const markdownSlug = [languagePrefix, slug].filter(Boolean).join('/')
 
 	return `/posts-md/${markdownSlug}`
+}
+
+function resolveMarkdownPath(pathname: string, acceptHeader: string | null) {
+	const postMarkdownPath = resolvePostMarkdownPath(pathname)
+	if (postMarkdownPath) return { pathname: postMarkdownPath }
+
+	const pageMarkdownPath = resolvePageMarkdownPath(pathname)
+	if (pageMarkdownPath) return { pathname: pageMarkdownPath }
+
+	if (!acceptHeader?.includes('text/markdown')) return undefined
+
+	const postPath = resolvePostPath(pathname)
+	if (postPath) return { pathname: postPath, vary: 'Accept' }
+
+	const pagePath = resolvePagePath(pathname)
+	if (pagePath) return { pathname: pagePath, vary: 'Accept' }
+
+	return undefined
+}
+
+function resolvePageMarkdownPath(pathname: string) {
+	const match = pathname.match(/^\/(.+)\.md$/)
+	if (!match) return undefined
+
+	const path = match[1]
+	if (!path || hasFileExtension(path)) return undefined
+
+	return `/pages-md/${path}`
+}
+
+function resolvePostPath(pathname: string) {
+	const path = trimPath(pathname)
+	const postPrefix = `${BLOG_DIR}/`
+	const postIndex = path.indexOf(postPrefix)
+
+	if (postIndex === -1) return undefined
+
+	const beforePostPrefix = path.slice(0, postIndex)
+	if (beforePostPrefix && !beforePostPrefix.endsWith('/')) return undefined
+
+	const slug = path.slice(postIndex + postPrefix.length)
+	if (!slug || slug.startsWith('category/')) return undefined
+
+	const languagePrefix = beforePostPrefix.replace(/\/$/, '')
+	const markdownSlug = [languagePrefix, slug].filter(Boolean).join('/')
+
+	return `/posts-md/${markdownSlug}`
+}
+
+function resolvePagePath(pathname: string) {
+	const path = trimPath(pathname)
+	if (!path) return '/pages-md/index'
+	if (path.startsWith(`${BLOG_DIR}/`) || path.includes(`/${BLOG_DIR}/`)) {
+		return undefined
+	}
+	if (hasFileExtension(path)) return undefined
+
+	return `/pages-md/${path}`
+}
+
+function trimPath(pathname: string) {
+	return pathname.replace(/^\/+|\/+$/g, '')
+}
+
+function hasFileExtension(path: string) {
+	return /\.[^/]+$/.test(path)
 }

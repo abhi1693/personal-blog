@@ -31,6 +31,7 @@ const pageTargets = getSanityRevalidationTargets({
 })
 
 assert.ok(pageTargets.some((target) => target.path === '/'))
+assert.ok(pageTargets.some((target) => target.path === '/index.md'))
 assert.ok(!pageTargets.some((target) => target.path === '/index'))
 
 assert.deepStrictEqual(
