@@ -1,7 +1,8 @@
 import { VscCode } from 'react-icons/vsc'
-import { defineField, defineType } from 'sanity'
+import { defineField } from 'sanity'
+import defineModule from '../fragments/define-module'
 
-export default defineType({
+export default defineModule({
 	name: 'custom-html',
 	title: 'Custom HTML',
 	icon: VscCode,
@@ -9,16 +10,9 @@ export default defineType({
 	groups: [
 		{ name: 'html', title: 'HTML', default: true },
 		{ name: 'css', title: 'CSS' },
-		{ name: 'attributes' },
 		{ name: 'options' },
 	],
 	fields: [
-		defineField({
-			name: 'attributes',
-			title: 'Module attributes',
-			type: 'module-attributes',
-			group: 'attributes',
-		}),
 		defineField({
 			name: 'className',
 			type: 'string',

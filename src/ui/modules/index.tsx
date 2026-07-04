@@ -5,9 +5,12 @@ import CardList from './CardList'
 import CustomHTML from './CustomHTML'
 import FlagList from './FlagList'
 import Hero from './Hero'
+import HeroCover from './HeroCover'
 import HeroSaaS from './HeroSaaS'
 import HeroSplit from './HeroSplit'
 import LogoList from './LogoList'
+import FormModule from './FormModule'
+import QuoteList from './QuoteList'
 import RichtextModule from './RichtextModule'
 import ScheduleModule from './ScheduleModule'
 import SearchModule from './SearchModule'
@@ -17,28 +20,36 @@ import TabbedContent from './TabbedContent'
 import TestimonialFeatured from './TestimonialFeatured'
 import TestimonialList from './TestimonialList'
 import BlogFrontpage from './blog/BlogFrontpage'
+import BlogIndex from './blog/BlogIndex'
 import BlogList from './blog/BlogList'
 import BlogPostContent from './blog/PostContent'
+import BlogPostList from './blog/BlogPostList'
 import { createDataAttribute } from 'next-sanity'
 import dynamic from 'next/dynamic'
 
 const MODULE_MAP = {
 	'accordion-list': AccordionList,
 	'blog-frontpage': BlogFrontpage,
+	'blog-index': BlogIndex,
 	'blog-list': BlogList,
 	'blog-post-content': BlogPostContent,
+	'blog-post-list': BlogPostList,
 	breadcrumbs: Breadcrumbs,
 	callout: Callout,
 	'card-list': CardList,
 	'creative-module': dynamic(() => import('./CreativeModule')),
 	'custom-html': CustomHTML,
 	'flag-list': FlagList,
+	'form-module': FormModule,
 	hero: Hero,
+	'hero.cover': HeroCover,
 	'hero.split': HeroSplit,
 	'hero.saas': HeroSaaS,
 	'logo-list': LogoList,
 	'person-list': dynamic(() => import('./PersonList')),
 	'pricing-list': dynamic(() => import('./PricingList')),
+	prose: RichtextModule,
+	'quote-list': QuoteList,
 	'richtext-module': RichtextModule,
 	'schedule-module': ScheduleModule,
 	'search-module': SearchModule,
@@ -63,7 +74,9 @@ export default function Modules({
 			case 'blog-post-content':
 				return { post }
 			case 'blog-frontpage':
+			case 'blog-index':
 			case 'blog-list':
+			case 'blog-post-list':
 			case 'breadcrumbs':
 				return { currentPage: post || page }
 			default:

@@ -1,16 +1,18 @@
 import { VscEdit } from 'react-icons/vsc'
-import { defineField, defineType } from 'sanity'
+import { defineField } from 'sanity'
+import defineModule from '../fragments/define-module'
 
-export default defineType({
+export default defineModule({
 	name: 'blog-post-content',
 	title: 'Blog post content',
 	icon: VscEdit,
 	type: 'object',
+	groups: [{ name: 'sidebar', default: true }],
 	fields: [
 		defineField({
-			name: 'attributes',
-			title: 'Module attributes',
-			type: 'module-attributes',
+			name: 'sidebar',
+			type: 'sidebar',
+			group: 'sidebar',
 		}),
 	],
 	preview: {

@@ -1,25 +1,19 @@
 import { count } from '@/lib/utils'
 import { TfiLayoutMediaLeftAlt } from 'react-icons/tfi'
-import { defineArrayMember, defineField, defineType } from 'sanity'
+import { defineArrayMember, defineField } from 'sanity'
 import { getBlockText } from 'sanitypress-utils'
+import defineModule from '../fragments/define-module'
 
-export default defineType({
+export default defineModule({
 	name: 'card-list',
 	title: 'Card list',
 	icon: TfiLayoutMediaLeftAlt,
 	type: 'object',
 	groups: [
 		{ name: 'content', default: true },
-		{ name: 'attributes' },
 		{ name: 'options' },
 	],
 	fields: [
-		defineField({
-			name: 'attributes',
-			title: 'Module attributes',
-			type: 'module-attributes',
-			group: 'attributes',
-		}),
 		defineField({
 			name: 'pretitle',
 			type: 'string',

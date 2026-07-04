@@ -1,10 +1,11 @@
 import { reputationBlock } from '../misc/reputation'
 import { TfiLayoutCtaCenter } from 'react-icons/tfi'
-import { defineField, defineType } from 'sanity'
+import { defineField } from 'sanity'
 import { alignItems, textAlign } from 'sanitypress-utils'
 import { getBlockText } from 'sanitypress-utils'
+import defineModule from '../fragments/define-module'
 
-export default defineType({
+export default defineModule({
 	name: 'hero',
 	title: 'Hero',
 	icon: TfiLayoutCtaCenter,
@@ -12,7 +13,6 @@ export default defineType({
 	groups: [
 		{ name: 'content', default: true },
 		{ name: 'asset' },
-		{ name: 'attributes' },
 		{ name: 'options' },
 	],
 	fieldsets: [
@@ -20,12 +20,6 @@ export default defineType({
 		{ name: 'image', options: { columns: 2 } },
 	],
 	fields: [
-		defineField({
-			name: 'attributes',
-			title: 'Module attributes',
-			type: 'module-attributes',
-			group: 'attributes',
-		}),
 		defineField({
 			name: 'pretitle',
 			type: 'string',

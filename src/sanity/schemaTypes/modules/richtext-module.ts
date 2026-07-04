@@ -1,25 +1,20 @@
 import { imageBlock, admonition } from '../fragments'
 import { VscSymbolKeyword } from 'react-icons/vsc'
-import { defineArrayMember, defineField, defineType } from 'sanity'
+import { defineArrayMember, defineField } from 'sanity'
 import { getBlockText } from 'sanitypress-utils'
+import defineModule from '../fragments/define-module'
 
-export default defineType({
+export default defineModule({
 	name: 'richtext-module',
 	title: 'Richtext module',
 	icon: VscSymbolKeyword,
 	type: 'object',
 	groups: [
 		{ name: 'content', title: 'Content', default: true },
-		{ name: 'attributes' },
+		{ name: 'sidebar', title: 'Sidebar' },
 		{ name: 'options', title: 'Options' },
 	],
 	fields: [
-		defineField({
-			name: 'attributes',
-			title: 'Module attributes',
-			type: 'module-attributes',
-			group: 'attributes',
-		}),
 		defineField({
 			name: 'content',
 			type: 'array',
@@ -37,6 +32,11 @@ export default defineType({
 				{ type: 'custom-html' },
 			],
 			group: 'content',
+		}),
+		defineField({
+			name: 'sidebar',
+			type: 'sidebar',
+			group: 'sidebar',
 		}),
 		defineField({
 			name: 'stretch',

@@ -38,6 +38,22 @@ export type ResponsiveImage = {
 	_type: 'image'
 }
 
+export type Mobile = {
+	asset?: SanityImageAssetReference
+	media?: unknown // Unable to locate the referenced type "mobile.media" in schema
+	hotspot?: SanityImageHotspot
+	crop?: SanityImageCrop
+	_type: 'image'
+}
+
+export type LinkCardImage = {
+	asset?: SanityImageAssetReference
+	media?: unknown // Unable to locate the referenced type "link.card.image.media" in schema
+	hotspot?: SanityImageHotspot
+	crop?: SanityImageCrop
+	_type: 'image'
+}
+
 export type TestimonialReference = {
 	_ref: string
 	_type: 'reference'
@@ -345,7 +361,91 @@ export type RichtextModule = {
 				_key: string
 		  } & CustomHtml)
 	>
+	sidebar?: Sidebar
 	stretch?: boolean
+}
+
+export type QuoteReference = {
+	_ref: string
+	_type: 'reference'
+	_weak?: boolean
+	[internalGroqTypeReferenceTo]?: 'quote'
+}
+
+export type QuoteList = {
+	_type: 'quote-list'
+	attributes?: ModuleAttributes
+	eyebrow?: string
+	intro?: Array<{
+		children?: Array<{
+			marks?: Array<string>
+			text?: string
+			_type: 'span'
+			_key: string
+		}>
+		style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote'
+		listItem?: 'bullet' | 'number'
+		markDefs?: Array<{
+			href?: string
+			_type: 'link'
+			_key: string
+		}>
+		level?: number
+		_type: 'block'
+		_key: string
+	}>
+	quotes?: Array<
+		{
+			_key: string
+		} & QuoteReference
+	>
+	layout?: 'grid' | 'carousel'
+	columns?: number
+}
+
+export type Prose = {
+	_type: 'prose'
+	attributes?: ModuleAttributes
+	content?: Array<
+		| {
+				children?: Array<{
+					marks?: Array<string>
+					text?: string
+					_type: 'span'
+					_key: string
+				}>
+				style?:
+					'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote'
+				listItem?: 'bullet' | 'number'
+				markDefs?: Array<{
+					href?: string
+					_type: 'link'
+					_key: string
+				}>
+				level?: number
+				_type: 'block'
+				_key: string
+		  }
+		| {
+				asset?: SanityImageAssetReference
+				media?: unknown
+				hotspot?: SanityImageHotspot
+				crop?: SanityImageCrop
+				alt?: string
+				loading?: 'lazy' | 'eager'
+				caption?: string
+				source?: string
+				_type: 'image'
+				_key: string
+		  }
+		| ({
+				_key: string
+		  } & Code)
+		| ({
+				_key: string
+		  } & CustomHtml)
+	>
+	sidebar?: Sidebar
 }
 
 export type PricingReference = {
@@ -566,6 +666,54 @@ export type HeroSaas = {
 	assetFaded?: boolean
 }
 
+export type HeroCover = {
+	_type: 'hero.cover'
+	attributes?: ModuleAttributes
+	eyebrow?: string
+	content?: Array<
+		| {
+				children?: Array<{
+					marks?: Array<string>
+					text?: string
+					_type: 'span'
+					_key: string
+				}>
+				style?:
+					'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote'
+				listItem?: 'bullet' | 'number'
+				markDefs?: Array<{
+					href?: string
+					_type: 'link'
+					_key: string
+				}>
+				level?: number
+				_type: 'block'
+				_key: string
+		  }
+		| ({
+				_key: string
+		  } & CustomHtml)
+	>
+	ctas?: Array<
+		{
+			_key: string
+		} & Cta
+	>
+	image?: {
+		asset?: SanityImageAssetReference
+		media?: unknown
+		hotspot?: SanityImageHotspot
+		crop?: SanityImageCrop
+		mobile?: Mobile
+		opacity?: number
+		alt?: string
+		loading?: 'lazy' | 'eager'
+		_type: 'image'
+	}
+	verticalAlign?: 'top' | 'center' | 'bottom'
+	textAlign?: 'left' | 'center' | 'right'
+}
+
 export type Hero = {
 	_type: 'hero'
 	attributes?: ModuleAttributes
@@ -611,6 +759,38 @@ export type Hero = {
 	>
 	alignItems?: string
 	textAlign?: string
+}
+
+export type FormReference = {
+	_ref: string
+	_type: 'reference'
+	_weak?: boolean
+	[internalGroqTypeReferenceTo]?: 'form'
+}
+
+export type FormModule = {
+	_type: 'form-module'
+	attributes?: ModuleAttributes
+	eyebrow?: string
+	intro?: Array<{
+		children?: Array<{
+			marks?: Array<string>
+			text?: string
+			_type: 'span'
+			_key: string
+		}>
+		style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote'
+		listItem?: 'bullet' | 'number'
+		markDefs?: Array<{
+			href?: string
+			_type: 'link'
+			_key: string
+		}>
+		level?: number
+		_type: 'block'
+		_key: string
+	}>
+	form?: FormReference
 }
 
 export type FlagList = {
@@ -859,9 +1039,39 @@ export type Breadcrumbs = {
 	hideCurrent?: boolean
 }
 
+export type BlogPostList = {
+	_type: 'blog-post-list'
+	attributes?: ModuleAttributes
+	intro?: Array<{
+		children?: Array<{
+			marks?: Array<string>
+			text?: string
+			_type: 'span'
+			_key: string
+		}>
+		style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote'
+		listItem?: 'bullet' | 'number'
+		markDefs?: Array<{
+			href?: string
+			_type: 'link'
+			_key: string
+		}>
+		level?: number
+		_type: 'block'
+		_key: string
+	}>
+	ctas?: Array<
+		{
+			_key: string
+		} & Cta
+	>
+	limit?: number
+}
+
 export type BlogPostContent = {
 	_type: 'blog-post-content'
 	attributes?: ModuleAttributes
+	sidebar?: Sidebar
 }
 
 export type BlogCategoryReference = {
@@ -899,6 +1109,30 @@ export type BlogList = {
 	filterBySameCategory?: boolean
 	limit?: number
 	filteredCategory?: BlogCategoryReference
+}
+
+export type BlogIndex = {
+	_type: 'blog-index'
+	attributes?: ModuleAttributes
+	intro?: Array<{
+		children?: Array<{
+			marks?: Array<string>
+			text?: string
+			_type: 'span'
+			_key: string
+		}>
+		style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote'
+		listItem?: 'bullet' | 'number'
+		markDefs?: Array<{
+			href?: string
+			_type: 'link'
+			_key: string
+		}>
+		level?: number
+		_type: 'block'
+		_key: string
+	}>
+	postsPerPage?: number
 }
 
 export type BlogFrontpage = {
@@ -980,6 +1214,25 @@ export type AccordionList = {
 	generateSchema?: boolean
 }
 
+export type Sidebar = {
+	_type: 'sidebar'
+	position?: 'left' | 'right'
+	modules?: Array<
+		| ({
+				_key: string
+		  } & Callout)
+		| ({
+				_key: string
+		  } & CustomHtml)
+		| {
+				summary?: string
+				maxHeadingDepth?: number
+				_type: 'tableOfContents'
+				_key: string
+		  }
+	>
+}
+
 export type ModuleAttributes = {
 	_type: 'module-attributes'
 	uid?: string
@@ -1000,6 +1253,43 @@ export type Metadata = {
 		_type: 'image'
 	}
 	noIndex?: boolean
+}
+
+export type Megamenu = {
+	_type: 'megamenu'
+	link?: Link
+	items?: Array<
+		| ({
+				_key: string
+		  } & LinkList)
+		| {
+				image?: LinkCardImage
+				link?: Link
+				content?: Array<{
+					children?: Array<{
+						marks?: Array<string>
+						text?: string
+						_type: 'span'
+						_key: string
+					}>
+					style?: 'normal'
+					listItem?: 'bullet' | 'number'
+					markDefs?: Array<{
+						href?: string
+						_type: 'link'
+						_key: string
+					}>
+					level?: number
+					_type: 'block'
+					_key: string
+				}>
+				_type: 'link.card'
+				_key: string
+		  }
+		| ({
+				_key: string
+		  } & Link)
+	>
 }
 
 export type LinkList = {
@@ -1321,6 +1611,73 @@ export type BlogCategory = {
 	slug?: Slug
 }
 
+export type Quote = {
+	_id: string
+	_type: 'quote'
+	_createdAt: string
+	_updatedAt: string
+	_rev: string
+	quote?: Array<{
+		children?: Array<{
+			marks?: Array<string>
+			text?: string
+			_type: 'span'
+			_key: string
+		}>
+		style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote'
+		listItem?: 'bullet' | 'number'
+		markDefs?: Array<{
+			href?: string
+			_type: 'link'
+			_key: string
+		}>
+		level?: number
+		_type: 'block'
+		_key: string
+	}>
+	author?: {
+		name?: string
+		title?: string
+		image?: {
+			asset?: SanityImageAssetReference
+			media?: unknown
+			hotspot?: SanityImageHotspot
+			crop?: SanityImageCrop
+			_type: 'image'
+		}
+	}
+}
+
+export type Skill = {
+	_id: string
+	_type: 'skill'
+	_createdAt: string
+	_updatedAt: string
+	_rev: string
+	name?: Slug
+	title?: string
+	description?: string
+	content?: Code
+}
+
+export type Code = {
+	_type: 'code'
+	language?: string
+	filename?: string
+	code?: string
+	highlightedLines?: Array<number>
+}
+
+export type Form = {
+	_id: string
+	_type: 'form'
+	_createdAt: string
+	_updatedAt: string
+	_rev: string
+	identifier?: string
+	endpoint?: string
+}
+
 export type Book = {
 	_id: string
 	_type: 'book'
@@ -1355,6 +1712,7 @@ export type GlobalModule = {
 	_createdAt: string
 	_updatedAt: string
 	_rev: string
+	identifier?: string
 	path?: string
 	excludePaths?: Array<string>
 	before?: Array<
@@ -1366,10 +1724,16 @@ export type GlobalModule = {
 		  } & BlogFrontpage)
 		| ({
 				_key: string
+		  } & BlogIndex)
+		| ({
+				_key: string
 		  } & BlogList)
 		| ({
 				_key: string
 		  } & BlogPostContent)
+		| ({
+				_key: string
+		  } & BlogPostList)
 		| ({
 				_key: string
 		  } & Breadcrumbs)
@@ -1390,7 +1754,13 @@ export type GlobalModule = {
 		  } & FlagList)
 		| ({
 				_key: string
+		  } & FormModule)
+		| ({
+				_key: string
 		  } & Hero)
+		| ({
+				_key: string
+		  } & HeroCover)
 		| ({
 				_key: string
 		  } & HeroSaas)
@@ -1406,6 +1776,12 @@ export type GlobalModule = {
 		| ({
 				_key: string
 		  } & PricingList)
+		| ({
+				_key: string
+		  } & Prose)
+		| ({
+				_key: string
+		  } & QuoteList)
 		| ({
 				_key: string
 		  } & RichtextModule)
@@ -1440,10 +1816,16 @@ export type GlobalModule = {
 		  } & BlogFrontpage)
 		| ({
 				_key: string
+		  } & BlogIndex)
+		| ({
+				_key: string
 		  } & BlogList)
 		| ({
 				_key: string
 		  } & BlogPostContent)
+		| ({
+				_key: string
+		  } & BlogPostList)
 		| ({
 				_key: string
 		  } & Breadcrumbs)
@@ -1464,7 +1846,13 @@ export type GlobalModule = {
 		  } & FlagList)
 		| ({
 				_key: string
+		  } & FormModule)
+		| ({
+				_key: string
 		  } & Hero)
+		| ({
+				_key: string
+		  } & HeroCover)
 		| ({
 				_key: string
 		  } & HeroSaas)
@@ -1480,6 +1868,12 @@ export type GlobalModule = {
 		| ({
 				_key: string
 		  } & PricingList)
+		| ({
+				_key: string
+		  } & Prose)
+		| ({
+				_key: string
+		  } & QuoteList)
 		| ({
 				_key: string
 		  } & RichtextModule)
@@ -1620,6 +2014,9 @@ export type Navigation = {
 		| ({
 				_key: string
 		  } & LinkList)
+		| ({
+				_key: string
+		  } & Megamenu)
 	>
 }
 
@@ -1729,6 +2126,7 @@ export type BlogPost = {
 		} & PersonReference
 	>
 	publishDate?: string
+	markdown?: Code
 	featured?: boolean
 	metadata?: Metadata
 	faq?: AccordionList
@@ -1751,10 +2149,16 @@ export type Page = {
 		  } & BlogFrontpage)
 		| ({
 				_key: string
+		  } & BlogIndex)
+		| ({
+				_key: string
 		  } & BlogList)
 		| ({
 				_key: string
 		  } & BlogPostContent)
+		| ({
+				_key: string
+		  } & BlogPostList)
 		| ({
 				_key: string
 		  } & Breadcrumbs)
@@ -1775,7 +2179,13 @@ export type Page = {
 		  } & FlagList)
 		| ({
 				_key: string
+		  } & FormModule)
+		| ({
+				_key: string
 		  } & Hero)
+		| ({
+				_key: string
+		  } & HeroCover)
 		| ({
 				_key: string
 		  } & HeroSaas)
@@ -1791,6 +2201,12 @@ export type Page = {
 		| ({
 				_key: string
 		  } & PricingList)
+		| ({
+				_key: string
+		  } & Prose)
+		| ({
+				_key: string
+		  } & QuoteList)
 		| ({
 				_key: string
 		  } & RichtextModule)
@@ -1819,14 +2235,6 @@ export type Page = {
 	markdown?: Code
 	metadata?: Metadata
 	language?: string
-}
-
-export type Code = {
-	_type: 'code'
-	language?: string
-	filename?: string
-	code?: string
-	highlightedLines?: Array<number>
 }
 
 export type Reputation = {
@@ -2098,6 +2506,8 @@ export type AllSanitySchemaTypes =
 	| SanityImageAssetReference
 	| CardImage
 	| ResponsiveImage
+	| Mobile
+	| LinkCardImage
 	| TestimonialReference
 	| TestimonialList
 	| TestimonialFeatured
@@ -2107,6 +2517,9 @@ export type AllSanitySchemaTypes =
 	| SearchModule
 	| ScheduleModule
 	| RichtextModule
+	| QuoteReference
+	| QuoteList
+	| Prose
 	| PricingReference
 	| PricingList
 	| PersonReference
@@ -2116,20 +2529,27 @@ export type AllSanitySchemaTypes =
 	| ReputationReference
 	| HeroSplit
 	| HeroSaas
+	| HeroCover
 	| Hero
+	| FormReference
+	| FormModule
 	| FlagList
 	| CustomHtml
 	| CreativeModule
 	| CardList
 	| Callout
 	| Breadcrumbs
+	| BlogPostList
 	| BlogPostContent
 	| BlogCategoryReference
 	| BlogList
+	| BlogIndex
 	| BlogFrontpage
 	| AccordionList
+	| Sidebar
 	| ModuleAttributes
 	| Metadata
+	| Megamenu
 	| LinkList
 	| PageReference
 	| BlogPostReference
@@ -2148,6 +2568,10 @@ export type AllSanitySchemaTypes =
 	| Redirect
 	| Announcement
 	| BlogCategory
+	| Quote
+	| Skill
+	| Code
+	| Form
 	| Book
 	| GlobalModule
 	| AnnouncementReference
@@ -2159,7 +2583,6 @@ export type AllSanitySchemaTypes =
 	| InternationalizedArrayReferenceValue
 	| BlogPost
 	| Page
-	| Code
 	| Reputation
 	| SanityAssistInstructionTask
 	| SanityAssistTaskStatus

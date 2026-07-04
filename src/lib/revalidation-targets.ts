@@ -76,12 +76,15 @@ export function getSanityRevalidationTargets(
 		if (slug) {
 			add({ path: `/${BLOG_DIR}/${slug}` })
 			add({ path: `/${BLOG_DIR}/${slug}.md` })
+			add({ path: `/api/md/${BLOG_DIR}/${slug}` })
 
 			if (language && language !== DEFAULT_LANG) {
 				add({ path: `/${language}/${BLOG_DIR}/${slug}` })
 				add({ path: `/${language}/${BLOG_DIR}/${slug}.md` })
+				add({ path: `/api/md/${language}/${BLOG_DIR}/${slug}` })
 				add({ path: `/${BLOG_DIR}/${language}/${slug}` })
 				add({ path: `/${BLOG_DIR}/${language}/${slug}.md` })
+				add({ path: `/api/md/${BLOG_DIR}/${language}/${slug}` })
 			}
 		}
 
@@ -105,12 +108,16 @@ export function getSanityRevalidationTargets(
 		if (slug) {
 			add({ path: slug === 'index' ? '/' : `/${slug}` })
 			add({ path: slug === 'index' ? '/index.md' : `/${slug}.md` })
+			add({ path: `/api/md/${slug === 'index' ? 'index' : slug}` })
 
 			if (language && language !== DEFAULT_LANG) {
 				add({
 					path: slug === 'index' ? `/${language}` : `/${language}/${slug}`,
 				})
 				add({ path: `/${language}/${slug === 'index' ? 'index' : slug}.md` })
+				add({
+					path: `/api/md/${language}/${slug === 'index' ? 'index' : slug}`,
+				})
 			}
 		}
 	}

@@ -1,34 +1,44 @@
 import { urlFor } from '@/sanity/lib/image'
 import { getImageDimensions } from '@sanity/asset-utils'
+import type { ImageUrlBuilderOptionsWithAliases } from '@sanity/image-url'
 import { stegaClean } from 'next-sanity'
 import NextImage, { getImageProps, type ImageProps } from 'next/image'
 import type { ComponentProps } from 'react'
 import { preload } from 'react-dom'
 
-type ImgProps = { alt?: string } & Omit<ImageProps, 'src' | 'alt'>
+type ImgProps = {
+	alt?: string
+	imageOptions?: Partial<ImageUrlBuilderOptionsWithAliases>
+} & Omit<ImageProps, 'src' | 'alt'>
 
 export function Img({
 	image,
-	width: w,
-	height: h,
+	width,
+	height,
+	imageOptions,
 	...props
 }: { image?: Sanity.Image } & ImgProps) {
 	if (!image?.asset) return null
 
-	const { src, width, height } = generateSrc(image, w, h)
+	const dimensions = getFinalDimensions(image, width, height)
+	const src = generateUrl(image, dimensions.width, dimensions.height, imageOptions)
 
-	const loading = stegaClean(image.loading) || 'lazy'
+	const loading = stegaClean(props.loading || image.loading) || 'lazy'
+	const lqip = getLqip(image)
 
 	return (
 		<NextImage
 			src={src}
-			width={width}
-			height={height}
+			width={dimensions.width}
+			height={dimensions.height}
 			alt={props.alt || image.alt || ''}
 			loading={loading}
-			priority={loading === 'eager'}
-			placeholder={image.lqip ? 'blur' : undefined}
-			blurDataURL={image.lqip}
+			{...(loading === 'eager'
+				? { priority: true, fetchPriority: 'high' as const }
+				: {})}
+			sizes={props.sizes || `(min-width: 640px) ${dimensions.width}px, 100vw`}
+			placeholder={lqip ? 'blur' : undefined}
+			blurDataURL={lqip}
 			{...props}
 		/>
 	)
@@ -37,16 +47,24 @@ export function Img({
 export function Source({
 	image,
 	media = '(width < 48rem)',
-	width: w,
-	height: h,
+	width,
+	height,
+	options,
 	...props
 }: {
 	image?: Sanity.Image
+	options?: Partial<ImageUrlBuilderOptionsWithAliases>
 } & ComponentProps<'source'>) {
 	if (!image?.asset) return null
 
-	const { src, width, height } = generateSrc(image, w, h)
-	const { props: imageProps } = getImageProps({ src, width, height, alt: '' })
+	const dimensions = getFinalDimensions(image, width, height)
+	const src = generateUrl(image, dimensions.width, dimensions.height, options)
+	const { props: imageProps } = getImageProps({
+		src,
+		width: dimensions.width,
+		height: dimensions.height,
+		alt: '',
+	})
 
 	if (stegaClean(image.loading) === 'eager') {
 		preload(imageProps.src, { as: 'image' })
@@ -85,32 +103,58 @@ export function ResponsiveImg({
 	)
 }
 
-function generateSrc(
+function getFinalDimensions(
 	image: Sanity.Image,
-	w?: number | `${number}` | string,
-	h?: number | `${number}` | string,
+	width?: number | `${number}` | string,
+	height?: number | `${number}` | string,
 ) {
-	const { width: w_orig, height: h_orig } = getImageDimensions(image)
+	const dimensions = getImageDimensions(image)
+	const sourceWidth = (image.hotspot?.width ?? 1) * dimensions.width
+	const sourceHeight = (image.hotspot?.height ?? 1) * dimensions.height
 
-	const w_calc = !!w // if width is provided
-		? Number(w)
-		: // if height is provided, calculate width
-			!!h && Math.floor((Number(h) * w_orig) / h_orig)
+	const finalWidth = width
+		? Number(width)
+		: height
+			? Math.round((Number(height) * sourceWidth) / sourceHeight)
+			: Math.round(sourceWidth)
 
-	const h_calc = !!h // if height is provided
-		? Number(h)
-		: // if width is provided, calculate height
-			!!w && Math.floor((Number(w) * h_orig) / w_orig)
+	const finalHeight = height
+		? Number(height)
+		: width
+			? Math.round((Number(width) * sourceHeight) / sourceWidth)
+			: Math.round(sourceHeight)
 
 	return {
-		src: urlFor(image)
-			.withOptions({
-				width: !!w ? Number(w) : undefined,
-				height: !!h ? Number(h) : undefined,
-				auto: 'format',
-			})
-			.url(),
-		width: w_calc || w_orig,
-		height: h_calc || h_orig,
+		width: finalWidth,
+		height: finalHeight,
 	}
+}
+
+function generateUrl(
+	image: Sanity.Image,
+	width: number,
+	height: number,
+	options?: Partial<ImageUrlBuilderOptionsWithAliases>,
+) {
+	return urlFor(image)
+		.withOptions({
+			width,
+			height,
+			auto: 'format',
+			q: 75,
+			...options,
+		})
+		.url()
+}
+
+function getLqip(image: Sanity.Image) {
+	if (image.lqip) return image.lqip
+
+	const asset = image.asset as {
+		metadata?: {
+			lqip?: string
+		}
+	}
+
+	return asset.metadata?.lqip
 }

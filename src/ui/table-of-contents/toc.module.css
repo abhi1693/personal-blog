@@ -1,0 +1,12 @@
+.list {
+	position: relative;
+	border-left: 1px solid color-mix(in srgb, currentColor 18%, transparent);
+}
+
+@media (width >= 48rem) {
+	.inView > a {
+		font-weight: 600;
+		text-decoration: underline;
+		text-underline-offset: 0.18em;
+	}
+}

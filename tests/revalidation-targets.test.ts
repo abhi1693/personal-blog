@@ -21,6 +21,7 @@ assert.deepStrictEqual(postTargets, [
 	{ path: '/posts/category/[slug]', type: 'page' },
 	{ path: '/posts/new-post' },
 	{ path: '/posts/new-post.md' },
+	{ path: '/api/md/posts/new-post' },
 	{ path: '/posts/category/kubernetes' },
 	{ path: '/posts/category/infra' },
 ])
@@ -32,6 +33,7 @@ const pageTargets = getSanityRevalidationTargets({
 
 assert.ok(pageTargets.some((target) => target.path === '/'))
 assert.ok(pageTargets.some((target) => target.path === '/index.md'))
+assert.ok(pageTargets.some((target) => target.path === '/api/md/index'))
 assert.ok(!pageTargets.some((target) => target.path === '/index'))
 
 assert.deepStrictEqual(

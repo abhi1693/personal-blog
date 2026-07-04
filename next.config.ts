@@ -13,6 +13,7 @@ const client = createClient({
 
 export default {
 	reactCompiler: true,
+	allowedDevOrigins: ['192.168.1.101'],
 	output: 'standalone',
 	compiler: {
 		styledComponents: true,
@@ -53,9 +54,15 @@ export default {
 	},
 
 	async rewrites() {
-		if (!supportedLanguages?.length) return []
+		const rewrites = [
+			{ source: '/:slug.md', destination: '/api/md/:slug' },
+			{ source: '/:path*/:slug.md', destination: '/api/md/:path*/:slug' },
+		]
+
+		if (!supportedLanguages?.length) return rewrites
 
 		return [
+			...rewrites,
 			{
 				source: `/:lang/${BLOG_DIR}/:slug`,
 				destination: `/${BLOG_DIR}/:lang/:slug`,

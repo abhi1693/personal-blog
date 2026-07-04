@@ -12,18 +12,33 @@ export const LINK_QUERY = groq`
 	}
 `
 
+export const IMAGE_QUERY = groq`
+	...,
+	'lqip': @.asset->metadata.lqip
+`
+
 const NAVIGATION_QUERY = groq`
 	title,
 	items[]{
 		${LINK_QUERY},
 		link{ ${LINK_QUERY} },
-		links[]{ ${LINK_QUERY} }
+		links[]{ ${LINK_QUERY} },
+		_type == 'megamenu' => {
+			link{ ${LINK_QUERY} },
+			items[]{
+				...,
+				_type == 'link' => { ${LINK_QUERY} },
+				_type == 'link.list' => {
+					link{ ${LINK_QUERY} },
+					links[]{ ${LINK_QUERY} }
+				},
+				_type == 'link.card' => {
+					link{ ${LINK_QUERY} },
+					image{ ${IMAGE_QUERY} }
+				}
+			}
+		}
 	}
-`
-
-export const IMAGE_QUERY = groq`
-	...,
-	'lqip': @.asset->metadata.lqip
 `
 
 const ASSET_IMG_QUERY = groq`
@@ -40,12 +55,27 @@ export const REPUTATION_QUERY = groq`
 	_type == 'reputation-block' => { reputation-> }
 `
 
+const SIDEBAR_QUERY = groq`
+	...,
+	modules[]{
+		...,
+		_type == 'callout' => {
+			content[]{
+				...,
+				${REPUTATION_QUERY}
+			},
+			ctas[]{ ${CTA_QUERY} }
+		}
+	}
+`
+
 export const MODULES_QUERY = groq`
 	...,
 	ctas[]{
 		...,
 		link{ ${LINK_QUERY} }
 	},
+	sidebar{ ${SIDEBAR_QUERY} },
 	_type == 'blog-list' => { filteredCategory-> },
 	_type == 'breadcrumbs' => { crumbs[]{ ${LINK_QUERY} } },
 	_type == 'callout' => {
@@ -69,6 +99,9 @@ export const MODULES_QUERY = groq`
 			}
 		}
 	},
+	_type == 'form-module' => {
+		form->
+	},
 	_type == 'hero' => {
 		content[]{
 			...,
@@ -77,6 +110,12 @@ export const MODULES_QUERY = groq`
 		assets[]{
 			...,
 			_type == 'img' => { ${ASSET_IMG_QUERY} }
+		}
+	},
+	_type == 'hero.cover' => {
+		image{
+			${IMAGE_QUERY},
+			mobile{ ${IMAGE_QUERY} }
 		}
 	},
 	_type == 'hero.saas' => {
@@ -107,10 +146,33 @@ export const MODULES_QUERY = groq`
 			ctas[]{ ${CTA_QUERY} }
 		}
 	},
+	_type == 'prose' => {
+		content[]{
+			...,
+			_type == 'image' => { ${IMAGE_QUERY} }
+		},
+		'headings': content[style in ['h2', 'h3', 'h4', 'h5', 'h6']]{
+			style,
+			'text': pt::text(@)
+		}
+	},
+	_type == 'quote-list' => {
+		quotes[]->{
+			...,
+			author{
+				...,
+				image{ ${IMAGE_QUERY} }
+			}
+		}
+	},
 	_type == 'richtext-module' => {
 		content[]{
 			...,
 			_type == 'image' => { ${IMAGE_QUERY} }
+		},
+		'headings': content[style in ['h2', 'h3', 'h4', 'h5', 'h6']]{
+			style,
+			'text': pt::text(@)
 		}
 	},
 	_type == 'tabbed-content' => {

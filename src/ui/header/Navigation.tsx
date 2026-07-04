@@ -1,4 +1,5 @@
-import LinkList from './LinkList'
+import Dropdown from './Dropdown'
+import Megamenu from './Megamenu'
 import { cn } from '@/lib/utils'
 import { getSite } from '@/sanity/lib/queries'
 import CTA from '@/ui/CTA'
@@ -6,7 +7,9 @@ import CTA from '@/ui/CTA'
 export default async function Menu() {
 	const { headerMenu } = await getSite()
 
-	const parentClassName = cn('md:px-3 md:text-center md:leading-tight')
+	const topLevelClassName = cn(
+		'grid py-1 leading-tight md:place-content-center md:px-3 md:py-2 md:text-center md:text-balance',
+	)
 
 	return (
 		<nav
@@ -19,20 +22,29 @@ export default async function Menu() {
 						return (
 							<CTA
 								className={cn(
-									parentClassName,
-									'hover:link md:grid md:place-content-center',
+									topLevelClassName,
+									'hover:link text-current',
 								)}
 								link={item}
-								key={key}
+								key={item._key || key}
 							/>
 						)
 
 					case 'link.list':
 						return (
-							<LinkList
-								summaryClassName={parentClassName}
+							<Dropdown
+								summaryClassName={topLevelClassName}
 								{...item}
-								key={key}
+								key={item._key || key}
+							/>
+						)
+
+					case 'megamenu':
+						return (
+							<Megamenu
+								summaryClassName={topLevelClassName}
+								{...item}
+								key={item._key || key}
 							/>
 						)
 

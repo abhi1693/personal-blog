@@ -2,7 +2,7 @@
 
 import pkg from './package.json'
 import { presentation } from './src/sanity/presentation'
-import { schemaTypes } from './src/sanity/schemaTypes'
+import { schema } from './src/sanity/schemaTypes'
 import { structure } from './src/sanity/structure'
 import { supportedLanguages } from '@/lib/i18n'
 import resolveUrl from '@/lib/resolveUrl'
@@ -51,13 +51,7 @@ export default defineConfig({
 		}),
 	],
 
-	schema: {
-		types: schemaTypes,
-		templates: (templates) =>
-			templates.filter(
-				({ schemaType }) => !singletonTypes.includes(schemaType),
-			),
-	},
+	schema,
 	document: {
 		productionUrl: async (prev, { document }) => {
 			if (['page', 'blog.post'].includes(document?._type)) {

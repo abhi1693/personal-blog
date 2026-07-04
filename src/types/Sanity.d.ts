@@ -35,13 +35,36 @@ declare global {
 		}
 
 		type Link = Omit<Generated.Link, 'label' | 'type' | 'internal'> & {
+			_key?: string
 			label: string
 			type: 'internal' | 'external'
 			internal?: Page | BlogPost | BlogCategory
 		}
 		type LinkList = Omit<Generated.LinkList, 'link' | 'links'> & {
+			_key?: string
 			link?: Link
 			links?: Link[]
+		}
+		type LinkCard = {
+			_type: 'link.card'
+			_key: string
+			image?: Image
+			link?: Link
+			content?: any
+		}
+		type Megamenu = Omit<Generated.Megamenu, 'link' | 'items'> & {
+			_key?: string
+			link?: Link
+			items?: (Link | LinkList | LinkCard)[]
+		}
+		type SidebarTableOfContents = {
+			_type: 'tableOfContents'
+			_key: string
+			summary?: string
+			maxHeadingDepth?: number
+		}
+		type Sidebar = Omit<Generated.Sidebar, 'modules'> & {
+			modules?: (Callout | CustomHTML | SidebarTableOfContents)[]
 		}
 		type CTA = Omit<Generated.Cta, '_type' | 'link'> & {
 			_type?: 'cta'
@@ -71,10 +94,14 @@ declare global {
 			ModuleBase<'accordion-list'> & {
 				items: AccordionItem[]
 			}
+		type Callout = Omit<Generated.Callout, 'ctas'> &
+			ModuleBase<'callout'> & {
+				ctas?: CTA[]
+			}
 
 		type Navigation = Omit<Generated.Navigation, 'title' | 'items'> & {
 			title: string
-			items?: (Link | LinkList)[]
+			items?: (Link | LinkList | Megamenu)[]
 		}
 		type Announcement = Omit<Generated.Announcement, 'cta'> & {
 			cta?: Link

@@ -13,6 +13,7 @@ export default async function processMetadata(
 ): Promise<Metadata> {
 	const url = resolveUrl(page)
 	const { title, description, ogimage, noIndex, slug } = page.metadata
+	const markdownUrl = getMarkdownUrl(page, url)
 
 	// If slug is index, use description in images for title
 	const ogTitle = slug.current === 'index' ? description : title
@@ -55,6 +56,7 @@ export default async function processMetadata(
 			),
 			types: {
 				'application/rss+xml': `/${BLOG_DIR}/rss.xml`,
+				...(markdownUrl ? { 'text/markdown': markdownUrl } : {}),
 			},
 		},
 		verification: {
@@ -63,4 +65,15 @@ export default async function processMetadata(
 			},
 		},
 	}
+}
+
+function getMarkdownUrl(page: Sanity.Page | Sanity.BlogPost, url: string) {
+	if (page._type === 'page' && !page.markdown?.code) return undefined
+
+	const normalizedUrl = url.replace(/\/+$/, '')
+	const baseUrl = BASE_URL.replace(/\/+$/, '')
+
+	if (normalizedUrl === baseUrl) return `${baseUrl}/index.md`
+
+	return `${normalizedUrl}.md`
 }

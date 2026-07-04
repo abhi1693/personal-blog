@@ -1,25 +1,19 @@
 import { VscEdit } from 'react-icons/vsc'
-import { defineField, defineType } from 'sanity'
+import { defineField } from 'sanity'
 import { getBlockText } from 'sanitypress-utils'
+import defineModule from '../fragments/define-module'
 
-export default defineType({
+export default defineModule({
 	name: 'blog-list',
 	title: 'Blog list',
 	icon: VscEdit,
 	type: 'object',
 	groups: [
 		{ name: 'content', default: true },
-		{ name: 'attributes' },
 		{ name: 'filtering' },
 		{ name: 'options' },
 	],
 	fields: [
-		defineField({
-			name: 'attributes',
-			title: 'Module attributes',
-			type: 'module-attributes',
-			group: 'attributes',
-		}),
 		defineField({
 			name: 'pretitle',
 			type: 'string',

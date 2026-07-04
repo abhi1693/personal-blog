@@ -10,6 +10,10 @@ export default defineType({
 	icon: VscSymbolField,
 	fields: [
 		defineField({
+			name: 'identifier',
+			type: 'string',
+		}),
+		defineField({
 			name: 'path',
 			type: 'string',
 			description:
@@ -43,14 +47,19 @@ export default defineType({
 	],
 	preview: {
 		select: {
+			identifier: 'identifier',
 			path: 'path',
 			before: 'before',
 			after: 'after',
 		},
-		prepare: ({ path, before, after }) => ({
-			title: count([...(before ?? []), ...(after ?? [])], 'module'),
-			subtitle: path === '*' ? '* (All pages)' : path,
-			media: path === '*' ? VscSymbolVariable : VscSymbolField,
-		}),
+		prepare: ({ identifier, path, before, after }) => {
+			const modules = count([...(before ?? []), ...(after ?? [])], 'module')
+
+			return {
+				title: identifier ? `${identifier} (${modules})` : modules,
+				subtitle: path === '*' ? '* (All pages)' : path,
+				media: path === '*' ? VscSymbolVariable : VscSymbolField,
+			}
+		},
 	},
 })

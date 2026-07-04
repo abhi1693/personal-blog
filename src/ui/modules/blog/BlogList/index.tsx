@@ -1,5 +1,5 @@
 import PostPreview from '../PostPreview'
-import List from './List'
+import List, { FilteredList } from './List'
 import { DEFAULT_LANG, langCookieName } from '@/lib/i18n'
 import moduleProps, { ModuleScopedCss } from '@/lib/moduleProps'
 import { cn } from '@/lib/utils'
@@ -106,7 +106,11 @@ export default async function BlogList({
 					</ul>
 				}
 			>
-				<List posts={posts} className={listClassName} />
+				{displayFilters ? (
+					<FilteredList posts={posts} className={listClassName} />
+				) : (
+					<List posts={posts} className={listClassName} />
+				)}
 			</Suspense>
 			<ModuleScopedCss {...props} />
 		</section>

@@ -31,7 +31,7 @@ export type LlmsIndex = {
 
 export function formatRobotsTxt({
 	baseUrl,
-	disallow = ['/admin/', '/pages-md/', '/posts-md/'],
+	disallow = ['/admin/', '/api/md/'],
 }: {
 	baseUrl: string
 	disallow?: string[]

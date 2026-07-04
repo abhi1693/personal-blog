@@ -1,9 +1,10 @@
 import { reputationBlock } from '../misc/reputation'
 import { TfiLayoutCtaCenter } from 'react-icons/tfi'
-import { defineArrayMember, defineField, defineType } from 'sanity'
+import { defineArrayMember, defineField } from 'sanity'
 import { getBlockText } from 'sanitypress-utils'
+import defineModule from '../fragments/define-module'
 
-export default defineType({
+export default defineModule({
 	name: 'hero.saas',
 	title: 'Hero (SaaS)',
 	icon: TfiLayoutCtaCenter,
@@ -11,16 +12,9 @@ export default defineType({
 	groups: [
 		{ name: 'content', default: true },
 		{ name: 'asset' },
-		{ name: 'attributes' },
 		{ name: 'options' },
 	],
 	fields: [
-		defineField({
-			name: 'attributes',
-			title: 'Module attributes',
-			type: 'module-attributes',
-			group: 'attributes',
-		}),
 		defineField({
 			name: 'pretitle',
 			type: 'string',

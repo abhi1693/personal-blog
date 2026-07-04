@@ -38,7 +38,7 @@ export default defineType({
 						{
 							name: 'grid',
 							previewImageUrl: (schemaType) =>
-								`/admin/thumbnails/${schemaType}.webp`,
+								`/module-thumbnails/${schemaType}.webp`,
 						},
 						{ name: 'list' },
 					],

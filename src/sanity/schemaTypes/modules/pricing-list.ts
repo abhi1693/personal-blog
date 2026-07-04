@@ -1,25 +1,19 @@
 import { count } from '@/lib/utils'
 import { LuDollarSign } from 'react-icons/lu'
-import { defineField, defineType } from 'sanity'
+import { defineField } from 'sanity'
 import { getBlockText } from 'sanitypress-utils'
+import defineModule from '../fragments/define-module'
 
-export default defineType({
+export default defineModule({
 	name: 'pricing-list',
 	title: 'Pricing list',
 	icon: LuDollarSign,
 	type: 'object',
 	groups: [
 		{ name: 'content', default: true },
-		{ name: 'attributes' },
 		{ name: 'options' },
 	],
 	fields: [
-		defineField({
-			name: 'attributes',
-			title: 'Module attributes',
-			type: 'module-attributes',
-			group: 'attributes',
-		}),
 		defineField({
 			name: 'pretitle',
 			type: 'string',

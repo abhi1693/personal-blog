@@ -3,28 +3,22 @@ import creativeImage from './image.creative'
 import creativeRichtext from './richtext.creative'
 import { count } from '@/lib/utils'
 import { VscExtensions } from 'react-icons/vsc'
-import { defineArrayMember, defineField, defineType } from 'sanity'
+import { defineArrayMember, defineField } from 'sanity'
 import { alignItems, textAlign } from 'sanitypress-utils'
 import { getBlockText } from 'sanitypress-utils'
+import defineModule from '../../fragments/define-module'
 
-export default defineType({
+export default defineModule({
 	name: 'creative-module',
 	title: 'Creative module',
 	icon: VscExtensions,
 	type: 'object',
 	groups: [
 		{ name: 'content', default: true },
-		{ name: 'attributes' },
 		{ name: 'options' },
 	],
 	fieldsets: [{ name: 'alignment', options: { columns: 2 } }],
 	fields: [
-		defineField({
-			name: 'attributes',
-			title: 'Module attributes',
-			type: 'module-attributes',
-			group: 'attributes',
-		}),
 		defineField({
 			name: 'intro',
 			type: 'array',

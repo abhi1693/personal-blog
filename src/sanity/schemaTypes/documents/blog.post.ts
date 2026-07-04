@@ -9,6 +9,7 @@ export default defineType({
 	type: 'document',
 	groups: [
 		{ name: 'content', default: true },
+		{ name: 'markdown' },
 		{ name: 'options' },
 		{ name: 'metadata' },
 	],
@@ -71,6 +72,17 @@ export default defineType({
 			type: 'date',
 			validation: (Rule) => Rule.required(),
 			group: 'content',
+		}),
+		defineField({
+			name: 'markdown',
+			type: 'code',
+			description:
+				'Optional override served at <slug>.md. Leave empty to generate Markdown from the post body.',
+			options: {
+				language: 'markdown',
+				languageAlternatives: [{ title: 'Markdown', value: 'markdown' }],
+			},
+			group: 'markdown',
 		}),
 		defineField({
 			name: 'featured',

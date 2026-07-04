@@ -60,6 +60,10 @@ async function getPost(params: Params) {
 					asset->
 				}
 			},
+			'headings': body[style in ['h2', 'h3', 'h4', 'h5', 'h6']]{
+				style,
+				'text': pt::text(@)
+			},
 			categories[]->,
 			authors[]->,
 			metadata {

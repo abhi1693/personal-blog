@@ -4,19 +4,26 @@ import moduleProps, { ModuleScopedCss } from '@/lib/moduleProps'
 import { articleJsonLd } from '@/lib/processJsonLd'
 import { cn } from '@/lib/utils'
 import Date from '@/ui/Date'
+import Sidebar from '@/ui/Sidebar'
 import YouTubeEmbed from '@/ui/YouTubeEmbed'
 import AccordionList from '@/ui/modules/AccordionList'
 import Content from '@/ui/modules/RichtextModule/Content'
 import PostSidebar from '@/ui/modules/blog/PostSidebar'
+import type { ToCHeadings } from '@/ui/table-of-contents'
 
 export default function PostContent({
 	post,
+	sidebar,
 	...props
-}: { post?: Sanity.BlogPost } & Sanity.Module) {
+}: {
+	post?: Sanity.BlogPost & { headings?: ToCHeadings }
+	sidebar?: Sanity.Sidebar
+} & Sanity.Module) {
 	if (!post) return null
 
 	const showYouTube = post.youtubeEmbed?.videoID
 	const jsonLdArticle = articleJsonLd(post)
+	const hasSanitySidebar = !!sidebar?.position && !!sidebar.modules?.length
 
 	return (
 		<>
@@ -56,7 +63,11 @@ export default function PostContent({
 				</header>
 
 				<div className={cn('section grid gap-8', 'lg:grid-cols-[1fr_auto]')}>
-					<PostSidebar post={post} />
+					{hasSanitySidebar ? (
+						<Sidebar headings={post.headings ?? null} {...sidebar} />
+					) : (
+						<PostSidebar post={post} />
+					)}
 
 					<div className="grid gap-8 max-w-screen-md">
 						{showYouTube && (

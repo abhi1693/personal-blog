@@ -17,6 +17,7 @@ type SanityLlmsPost = SanityLlmsEntry & {
 	publishedAt?: string
 	authors?: string[]
 	categories?: string[]
+	manualMarkdown?: string
 	body?: any[]
 	youtubeEmbed?: {
 		videoID?: string
@@ -253,7 +254,7 @@ function normalizePosts(posts: SanityLlmsPost[] = []): LlmsPostEntry[] {
 			publishedAt: post.publishedAt,
 			authors: post.authors?.filter(Boolean),
 			categories: post.categories?.filter(Boolean),
-			content: blogPostToMarkdown(post),
+			content: post.manualMarkdown || blogPostToMarkdown(post),
 		}))
 }
 
@@ -267,6 +268,7 @@ const POST_MARKDOWN_FIELDS = groq`
 `
 
 const POST_MARKDOWN_CONTENT_FIELDS = groq`
+	'manualMarkdown': markdown.code,
 	youtubeEmbed,
 	body[]{
 		...,

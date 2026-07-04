@@ -1,7 +1,10 @@
 import { BLOG_DIR } from './lib/env'
-import { DEFAULT_LANG, langCookieName } from './lib/i18n'
+import { DEFAULT_LANG, langCookieName, languages } from './lib/i18n'
 import { getTranslations } from './sanity/lib/queries'
 import { NextResponse, type NextRequest, type ProxyConfig } from 'next/server'
+
+const AI_CRAWLER =
+	/bot|crawl|spider|gptbot|claudebot|claude-web|anthropic|chatgpt|oai-searchbot|perplexity|ccbot|google-extended/i
 
 export default async function proxy(request: NextRequest) {
 	const { pathname } = request.nextUrl
@@ -10,6 +13,7 @@ export default async function proxy(request: NextRequest) {
 	const markdownPath = resolveMarkdownPath(
 		pathname,
 		request.headers.get('accept'),
+		request.headers.get('user-agent'),
 	)
 	if (markdownPath) {
 		const url = request.nextUrl.clone()
@@ -64,86 +68,43 @@ export default async function proxy(request: NextRequest) {
 }
 
 export const config: ProxyConfig = {
-	matcher: ['/((?!favicon.ico|_next|api|admin).*)'],
+	matcher: ['/((?!api|admin|_next|.*\\..*).*)'],
 }
 
-function resolvePostMarkdownPath(pathname: string) {
-	const match = pathname.match(/^\/(.+)\.md$/)
-	if (!match) return undefined
+function resolveMarkdownPath(
+	pathname: string,
+	acceptHeader: string | null,
+	userAgentHeader: string | null,
+) {
+	const wantsMarkdown =
+		acceptHeader?.includes('text/markdown') ||
+		AI_CRAWLER.test(userAgentHeader ?? '')
+	if (!wantsMarkdown) return undefined
 
-	const path = match[1]
-	const postPrefix = `${BLOG_DIR}/`
-	const postIndex = path.indexOf(postPrefix)
-	if (postIndex === -1) return undefined
+	const path = trimPath(pathname)
+	if (hasFileExtension(path)) return undefined
+	if (isBlogCategoryPath(path)) return undefined
 
-	const beforePostPrefix = path.slice(0, postIndex)
-	if (beforePostPrefix && !beforePostPrefix.endsWith('/')) return undefined
-
-	const slug = path.slice(postIndex + postPrefix.length)
-	if (!slug || slug.startsWith('category/')) return undefined
-
-	const languagePrefix = beforePostPrefix.replace(/\/$/, '')
-	const markdownSlug = [languagePrefix, slug].filter(Boolean).join('/')
-
-	return `/posts-md/${markdownSlug}`
+	return {
+		pathname: `/api/md/${path || 'index'}`,
+		vary: 'Accept, User-Agent',
+	}
 }
 
-function resolveMarkdownPath(pathname: string, acceptHeader: string | null) {
-	const postMarkdownPath = resolvePostMarkdownPath(pathname)
-	if (postMarkdownPath) return { pathname: postMarkdownPath }
+function isBlogCategoryPath(path: string) {
+	if (!path) return false
+	const parts = path.split('/')
+	const blogDirIndex = getBlogDirIndex(parts)
+	if (blogDirIndex === undefined) return false
 
-	const pageMarkdownPath = resolvePageMarkdownPath(pathname)
-	if (pageMarkdownPath) return { pathname: pageMarkdownPath }
+	return parts[blogDirIndex + 1] === 'category'
+}
 
-	if (!acceptHeader?.includes('text/markdown')) return undefined
-
-	const postPath = resolvePostPath(pathname)
-	if (postPath) return { pathname: postPath, vary: 'Accept' }
-
-	const pagePath = resolvePagePath(pathname)
-	if (pagePath) return { pathname: pagePath, vary: 'Accept' }
+function getBlogDirIndex(parts: string[]) {
+	if (parts[0] === BLOG_DIR) return 0
+	if (parts[1] === BLOG_DIR && languages.includes(parts[0])) return 1
 
 	return undefined
-}
-
-function resolvePageMarkdownPath(pathname: string) {
-	const match = pathname.match(/^\/(.+)\.md$/)
-	if (!match) return undefined
-
-	const path = match[1]
-	if (!path || hasFileExtension(path)) return undefined
-
-	return `/pages-md/${path}`
-}
-
-function resolvePostPath(pathname: string) {
-	const path = trimPath(pathname)
-	const postPrefix = `${BLOG_DIR}/`
-	const postIndex = path.indexOf(postPrefix)
-
-	if (postIndex === -1) return undefined
-
-	const beforePostPrefix = path.slice(0, postIndex)
-	if (beforePostPrefix && !beforePostPrefix.endsWith('/')) return undefined
-
-	const slug = path.slice(postIndex + postPrefix.length)
-	if (!slug || slug.startsWith('category/')) return undefined
-
-	const languagePrefix = beforePostPrefix.replace(/\/$/, '')
-	const markdownSlug = [languagePrefix, slug].filter(Boolean).join('/')
-
-	return `/posts-md/${markdownSlug}`
-}
-
-function resolvePagePath(pathname: string) {
-	const path = trimPath(pathname)
-	if (!path) return '/pages-md/index'
-	if (path.startsWith(`${BLOG_DIR}/`) || path.includes(`/${BLOG_DIR}/`)) {
-		return undefined
-	}
-	if (hasFileExtension(path)) return undefined
-
-	return `/pages-md/${path}`
 }
 
 function trimPath(pathname: string) {
@@ -151,5 +112,6 @@ function trimPath(pathname: string) {
 }
 
 function hasFileExtension(path: string) {
+	if (!path) return false
 	return /\.[^/]+$/.test(path)
 }
