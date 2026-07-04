@@ -9,14 +9,15 @@ export default defineType({
 	groups: [
 		{ name: 'html', title: 'HTML', default: true },
 		{ name: 'css', title: 'CSS' },
+		{ name: 'attributes' },
 		{ name: 'options' },
 	],
 	fields: [
 		defineField({
-			name: 'options',
-			title: 'Module options',
-			type: 'module-options',
-			group: 'options',
+			name: 'attributes',
+			title: 'Module attributes',
+			type: 'module-attributes',
+			group: 'attributes',
 		}),
 		defineField({
 			name: 'className',

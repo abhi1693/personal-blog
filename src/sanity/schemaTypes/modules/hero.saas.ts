@@ -11,14 +11,15 @@ export default defineType({
 	groups: [
 		{ name: 'content', default: true },
 		{ name: 'asset' },
+		{ name: 'attributes' },
 		{ name: 'options' },
 	],
 	fields: [
 		defineField({
-			name: 'options',
-			title: 'Module options',
-			type: 'module-options',
-			group: 'options',
+			name: 'attributes',
+			title: 'Module attributes',
+			type: 'module-attributes',
+			group: 'attributes',
 		}),
 		defineField({
 			name: 'pretitle',

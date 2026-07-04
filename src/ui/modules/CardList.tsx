@@ -1,4 +1,4 @@
-import moduleProps from '@/lib/moduleProps'
+import moduleProps, { ModuleScopedCss } from '@/lib/moduleProps'
 import { cn } from '@/lib/utils'
 import CTAList from '@/ui/CTAList'
 import { Img } from '@/ui/Img'
@@ -85,6 +85,8 @@ export default function CardList({
 					</article>
 				))}
 			</div>
+
+			<ModuleScopedCss {...props} />
 		</section>
 	)
 }

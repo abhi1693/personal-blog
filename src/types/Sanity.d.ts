@@ -15,7 +15,7 @@ type ImageValue = SanityImageSource & {
 type ModuleBase<T extends string = string> = {
 	_type: T
 	_key: string
-	options?: Generated.ModuleOptions
+	attributes?: Generated.ModuleAttributes
 }
 
 declare global {

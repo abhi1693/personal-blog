@@ -9,14 +9,16 @@ export default defineType({
 	type: 'object',
 	groups: [
 		{ name: 'content', default: true },
+		{ name: 'attributes' },
 		{ name: 'filtering' },
 		{ name: 'options' },
 	],
 	fields: [
 		defineField({
-			name: 'options',
-			type: 'module-options',
-			group: 'options',
+			name: 'attributes',
+			title: 'Module attributes',
+			type: 'module-attributes',
+			group: 'attributes',
 		}),
 		defineField({
 			name: 'pretitle',

@@ -1,6 +1,6 @@
 import CustomHTML from './CustomHTML'
 import Code from './RichtextModule/Code'
-import moduleProps from '@/lib/moduleProps'
+import moduleProps, { ModuleScopedCss } from '@/lib/moduleProps'
 import { cn } from '@/lib/utils'
 import CTAList from '@/ui/CTAList'
 import { ResponsiveImg } from '@/ui/Img'
@@ -74,6 +74,8 @@ export default function HeroSaaS({
 						return null
 				}
 			})()}
+
+			<ModuleScopedCss {...props} />
 		</section>
 	)
 }

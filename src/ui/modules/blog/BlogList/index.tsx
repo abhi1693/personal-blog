@@ -1,7 +1,7 @@
 import PostPreview from '../PostPreview'
 import List from './List'
 import { DEFAULT_LANG, langCookieName } from '@/lib/i18n'
-import moduleProps from '@/lib/moduleProps'
+import moduleProps, { ModuleScopedCss } from '@/lib/moduleProps'
 import { cn } from '@/lib/utils'
 import { fetchSanityLive } from '@/sanity/lib/fetch'
 import { IMAGE_QUERY } from '@/sanity/lib/queries'
@@ -108,6 +108,7 @@ export default async function BlogList({
 			>
 				<List posts={posts} className={listClassName} />
 			</Suspense>
+			<ModuleScopedCss {...props} />
 		</section>
 	)
 }

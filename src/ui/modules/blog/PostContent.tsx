@@ -1,6 +1,6 @@
 import Authors from './Authors'
 import css from './PostContent.module.css'
-import moduleProps from '@/lib/moduleProps'
+import moduleProps, { ModuleScopedCss } from '@/lib/moduleProps'
 import { articleJsonLd } from '@/lib/processJsonLd'
 import { cn } from '@/lib/utils'
 import Date from '@/ui/Date'
@@ -67,11 +67,12 @@ export default function PostContent({
 						)}
 
 						<Content value={post.body} className={cn(css.body)} />
-						{!post.faq?.options?.hidden && post.faq?.items && (
+						{!post.faq?.attributes?.hidden && post.faq?.items && (
 							<AccordionList {...post.faq} />
 						)}
 					</div>
 				</div>
+				<ModuleScopedCss {...props} />
 			</article>
 		</>
 	)

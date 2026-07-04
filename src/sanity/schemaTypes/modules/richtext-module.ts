@@ -10,14 +10,15 @@ export default defineType({
 	type: 'object',
 	groups: [
 		{ name: 'content', title: 'Content', default: true },
+		{ name: 'attributes' },
 		{ name: 'options', title: 'Options' },
 	],
 	fields: [
 		defineField({
-			name: 'options',
-			title: 'Module options',
-			type: 'module-options',
-			group: 'options',
+			name: 'attributes',
+			title: 'Module attributes',
+			type: 'module-attributes',
+			group: 'attributes',
 		}),
 		defineField({
 			name: 'content',

@@ -1,4 +1,4 @@
-import moduleProps from '@/lib/moduleProps'
+import moduleProps, { ModuleScopedCss } from '@/lib/moduleProps'
 import { cn, formatCurrency } from '@/lib/utils'
 import CTAList from '@/ui/CTAList'
 import Pretitle from '@/ui/Pretitle'
@@ -73,6 +73,8 @@ export default function PricingList({
 						),
 				)}
 			</div>
+
+			<ModuleScopedCss {...props} />
 		</section>
 	)
 }

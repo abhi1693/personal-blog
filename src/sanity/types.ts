@@ -280,7 +280,7 @@ export type ScheduleModule = {
 
 export type RichtextModule = {
 	_type: 'richtext-module'
-	options?: ModuleOptions
+	attributes?: ModuleAttributes
 	content?: Array<
 		| {
 				children?: Array<{
@@ -357,7 +357,7 @@ export type PricingReference = {
 
 export type PricingList = {
 	_type: 'pricing-list'
-	options?: ModuleOptions
+	attributes?: ModuleAttributes
 	pretitle?: string
 	intro?: Array<{
 		children?: Array<{
@@ -519,7 +519,7 @@ export type HeroSplit = {
 
 export type HeroSaas = {
 	_type: 'hero.saas'
-	options?: ModuleOptions
+	attributes?: ModuleAttributes
 	pretitle?: string
 	content?: Array<
 		| {
@@ -568,7 +568,7 @@ export type HeroSaas = {
 
 export type Hero = {
 	_type: 'hero'
-	options?: ModuleOptions
+	attributes?: ModuleAttributes
 	pretitle?: string
 	content?: Array<
 		| {
@@ -662,7 +662,7 @@ export type FlagList = {
 
 export type CustomHtml = {
 	_type: 'custom-html'
-	options?: ModuleOptions
+	attributes?: ModuleAttributes
 	className?: string
 	html?: Code
 	css?: Code
@@ -670,7 +670,7 @@ export type CustomHtml = {
 
 export type CreativeModule = {
 	_type: 'creative-module'
-	options?: ModuleOptions
+	attributes?: ModuleAttributes
 	intro?: Array<{
 		children?: Array<{
 			marks?: Array<string>
@@ -753,7 +753,7 @@ export type CreativeModule = {
 
 export type CardList = {
 	_type: 'card-list'
-	options?: ModuleOptions
+	attributes?: ModuleAttributes
 	pretitle?: string
 	intro?: Array<{
 		children?: Array<{
@@ -861,7 +861,7 @@ export type Breadcrumbs = {
 
 export type BlogPostContent = {
 	_type: 'blog-post-content'
-	options?: ModuleOptions
+	attributes?: ModuleAttributes
 }
 
 export type BlogCategoryReference = {
@@ -873,7 +873,7 @@ export type BlogCategoryReference = {
 
 export type BlogList = {
 	_type: 'blog-list'
-	options?: ModuleOptions
+	attributes?: ModuleAttributes
 	pretitle?: string
 	intro?: Array<{
 		children?: Array<{
@@ -910,7 +910,7 @@ export type BlogFrontpage = {
 
 export type AccordionList = {
 	_type: 'accordion-list'
-	options?: ModuleOptions
+	attributes?: ModuleAttributes
 	pretitle?: string
 	intro?: Array<{
 		children?: Array<{
@@ -980,10 +980,11 @@ export type AccordionList = {
 	generateSchema?: boolean
 }
 
-export type ModuleOptions = {
-	_type: 'module-options'
-	hidden?: boolean
+export type ModuleAttributes = {
+	_type: 'module-attributes'
 	uid?: string
+	hidden?: boolean
+	scopedCss?: Code
 }
 
 export type Metadata = {
@@ -2127,7 +2128,7 @@ export type AllSanitySchemaTypes =
 	| BlogList
 	| BlogFrontpage
 	| AccordionList
-	| ModuleOptions
+	| ModuleAttributes
 	| Metadata
 	| LinkList
 	| PageReference

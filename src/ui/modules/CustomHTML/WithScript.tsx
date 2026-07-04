@@ -1,6 +1,6 @@
 'use client'
 
-import moduleProps from '@/lib/moduleProps'
+import moduleProps, { ModuleScopedCss } from '@/lib/moduleProps'
 import { ComponentProps, useEffect, useRef, useState } from 'react'
 
 /**
@@ -25,5 +25,10 @@ export default function WithScript({
 		}
 	}, [ref.current, code])
 
-	return <section ref={ref} className={className} {...moduleProps(props)} />
+	return (
+		<>
+			<section ref={ref} className={className} {...moduleProps(props)} />
+			<ModuleScopedCss {...props} />
+		</>
+	)
 }

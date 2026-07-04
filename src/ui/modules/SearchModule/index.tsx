@@ -1,6 +1,6 @@
 import SearchForm from './SearchForm'
 import type { SearchScope } from './store'
-import moduleProps from '@/lib/moduleProps'
+import moduleProps, { ModuleScopedCss } from '@/lib/moduleProps'
 import CTAList from '@/ui/CTAList'
 import Pretitle from '@/ui/Pretitle'
 import { PortableText, stegaClean } from 'next-sanity'
@@ -36,6 +36,7 @@ export default function SearchModule({
 			</div>
 
 			<CTAList className="justify-center" ctas={ctas} />
+			<ModuleScopedCss {...props} />
 		</section>
 	)
 }

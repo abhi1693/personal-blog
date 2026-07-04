@@ -1,5 +1,5 @@
 import CustomHTML from './CustomHTML'
-import moduleProps from '@/lib/moduleProps'
+import moduleProps, { ModuleScopedCss } from '@/lib/moduleProps'
 import { cn } from '@/lib/utils'
 import CTAList from '@/ui/CTAList'
 import { ResponsiveImg } from '@/ui/Img'
@@ -104,6 +104,8 @@ export default function Hero({
 					</div>
 				</div>
 			)}
+
+			<ModuleScopedCss {...props} />
 		</section>
 	)
 }

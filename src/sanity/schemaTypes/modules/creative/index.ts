@@ -12,14 +12,18 @@ export default defineType({
 	title: 'Creative module',
 	icon: VscExtensions,
 	type: 'object',
-	groups: [{ name: 'content', default: true }, { name: 'options' }],
+	groups: [
+		{ name: 'content', default: true },
+		{ name: 'attributes' },
+		{ name: 'options' },
+	],
 	fieldsets: [{ name: 'alignment', options: { columns: 2 } }],
 	fields: [
 		defineField({
-			name: 'options',
-			title: 'Module options',
-			type: 'module-options',
-			group: 'options',
+			name: 'attributes',
+			title: 'Module attributes',
+			type: 'module-attributes',
+			group: 'attributes',
 		}),
 		defineField({
 			name: 'intro',

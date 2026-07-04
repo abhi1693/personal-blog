@@ -8,13 +8,17 @@ export default defineType({
 	title: 'Pricing list',
 	icon: LuDollarSign,
 	type: 'object',
-	groups: [{ name: 'content', default: true }, { name: 'options' }],
+	groups: [
+		{ name: 'content', default: true },
+		{ name: 'attributes' },
+		{ name: 'options' },
+	],
 	fields: [
 		defineField({
-			name: 'options',
-			title: 'Module options',
-			type: 'module-options',
-			group: 'options',
+			name: 'attributes',
+			title: 'Module attributes',
+			type: 'module-attributes',
+			group: 'attributes',
 		}),
 		defineField({
 			name: 'pretitle',

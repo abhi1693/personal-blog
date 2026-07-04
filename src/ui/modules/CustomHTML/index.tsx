@@ -1,6 +1,6 @@
 import CSS from './CSS'
 import WithScript from './WithScript'
-import moduleProps from '@/lib/moduleProps'
+import moduleProps, { ModuleScopedCss } from '@/lib/moduleProps'
 import { stegaClean } from 'next-sanity'
 import type { ComponentProps } from 'react'
 
@@ -14,7 +14,7 @@ export default function CustomHTML({
 	css?: { code: string }
 } & Sanity.Module &
 	ComponentProps<'section' | 'script'>) {
-	if ((!html?.code && !css?.code) || props?.options?.hidden) return null
+	if ((!html?.code && !css?.code) || props?.attributes?.hidden) return null
 
 	return (
 		<>
@@ -28,11 +28,14 @@ export default function CustomHTML({
 						{...props}
 					/>
 				) : (
-					<section
-						className={stegaClean(className)}
-						dangerouslySetInnerHTML={{ __html: stegaClean(html.code) }}
-						{...moduleProps(props)}
-					/>
+					<>
+						<section
+							className={stegaClean(className)}
+							dangerouslySetInnerHTML={{ __html: stegaClean(html.code) }}
+							{...moduleProps(props)}
+						/>
+						<ModuleScopedCss {...props} />
+					</>
 				))}
 		</>
 	)

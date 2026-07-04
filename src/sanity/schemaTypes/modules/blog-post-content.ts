@@ -8,14 +8,14 @@ export default defineType({
 	type: 'object',
 	fields: [
 		defineField({
-			name: 'options',
-			title: 'Module options',
-			type: 'module-options',
+			name: 'attributes',
+			title: 'Module attributes',
+			type: 'module-attributes',
 		}),
 	],
 	preview: {
 		select: {
-			uid: 'options.uid',
+			uid: 'attributes.uid',
 		},
 		prepare: ({ uid }) => ({
 			title: 'Blog post content',

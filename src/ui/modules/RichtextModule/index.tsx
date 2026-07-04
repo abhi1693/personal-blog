@@ -1,5 +1,5 @@
 import Content from './Content'
-import moduleProps from '@/lib/moduleProps'
+import moduleProps, { ModuleScopedCss } from '@/lib/moduleProps'
 import { cn } from '@/lib/utils'
 
 export default function RichtextModule({
@@ -17,6 +17,7 @@ export default function RichtextModule({
 				value={content}
 				className={cn(stretch ? 'max-w-screen-lg' : 'max-w-screen-md')}
 			/>
+			<ModuleScopedCss {...props} />
 		</section>
 	)
 }

@@ -1,7 +1,7 @@
 import CustomHTML from './CustomHTML'
 import Code from './RichtextModule/Code'
 import Image from './RichtextModule/Image'
-import moduleProps from '@/lib/moduleProps'
+import moduleProps, { ModuleScopedCss } from '@/lib/moduleProps'
 import { cn } from '@/lib/utils'
 import Pretitle from '@/ui/Pretitle'
 import { PortableText } from 'next-sanity'
@@ -107,6 +107,8 @@ export default function AccordionList({
 					</details>
 				))}
 			</div>
+
+			<ModuleScopedCss {...props} />
 		</section>
 	)
 }

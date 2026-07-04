@@ -2034,11 +2034,11 @@
             "value": "richtext-module"
           }
         },
-        "options": {
+        "attributes": {
           "type": "objectAttribute",
           "value": {
             "type": "inline",
-            "name": "module-options"
+            "name": "module-attributes"
           },
           "optional": true
         },
@@ -2639,11 +2639,11 @@
             "value": "pricing-list"
           }
         },
-        "options": {
+        "attributes": {
           "type": "objectAttribute",
           "value": {
             "type": "inline",
-            "name": "module-options"
+            "name": "module-attributes"
           },
           "optional": true
         },
@@ -3807,11 +3807,11 @@
             "value": "hero.saas"
           }
         },
-        "options": {
+        "attributes": {
           "type": "objectAttribute",
           "value": {
             "type": "inline",
-            "name": "module-options"
+            "name": "module-attributes"
           },
           "optional": true
         },
@@ -4134,11 +4134,11 @@
             "value": "hero"
           }
         },
-        "options": {
+        "attributes": {
           "type": "objectAttribute",
           "value": {
             "type": "inline",
-            "name": "module-options"
+            "name": "module-attributes"
           },
           "optional": true
         },
@@ -4889,11 +4889,11 @@
             "value": "custom-html"
           }
         },
-        "options": {
+        "attributes": {
           "type": "objectAttribute",
           "value": {
             "type": "inline",
-            "name": "module-options"
+            "name": "module-attributes"
           },
           "optional": true
         },
@@ -4936,11 +4936,11 @@
             "value": "creative-module"
           }
         },
-        "options": {
+        "attributes": {
           "type": "objectAttribute",
           "value": {
             "type": "inline",
-            "name": "module-options"
+            "name": "module-attributes"
           },
           "optional": true
         },
@@ -5568,11 +5568,11 @@
             "value": "card-list"
           }
         },
-        "options": {
+        "attributes": {
           "type": "objectAttribute",
           "value": {
             "type": "inline",
-            "name": "module-options"
+            "name": "module-attributes"
           },
           "optional": true
         },
@@ -6383,11 +6383,11 @@
             "value": "blog-post-content"
           }
         },
-        "options": {
+        "attributes": {
           "type": "objectAttribute",
           "value": {
             "type": "inline",
-            "name": "module-options"
+            "name": "module-attributes"
           },
           "optional": true
         }
@@ -6437,11 +6437,11 @@
             "value": "blog-list"
           }
         },
-        "options": {
+        "attributes": {
           "type": "objectAttribute",
           "value": {
             "type": "inline",
-            "name": "module-options"
+            "name": "module-attributes"
           },
           "optional": true
         },
@@ -6747,11 +6747,11 @@
             "value": "accordion-list"
           }
         },
-        "options": {
+        "attributes": {
           "type": "objectAttribute",
           "value": {
             "type": "inline",
-            "name": "module-options"
+            "name": "module-attributes"
           },
           "optional": true
         },
@@ -7326,7 +7326,7 @@
     }
   },
   {
-    "name": "module-options",
+    "name": "module-attributes",
     "type": "type",
     "value": {
       "type": "object",
@@ -7335,8 +7335,15 @@
           "type": "objectAttribute",
           "value": {
             "type": "string",
-            "value": "module-options"
+            "value": "module-attributes"
           }
+        },
+        "uid": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
+          },
+          "optional": true
         },
         "hidden": {
           "type": "objectAttribute",
@@ -7345,10 +7352,11 @@
           },
           "optional": true
         },
-        "uid": {
+        "scopedCss": {
           "type": "objectAttribute",
           "value": {
-            "type": "string"
+            "type": "inline",
+            "name": "code"
           },
           "optional": true
         }

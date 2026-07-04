@@ -45,7 +45,7 @@ import img from './objects/img'
 import link from './objects/link'
 import linkList from './objects/link.list'
 import metadata from './objects/metadata'
-import moduleOptions from './objects/module-options'
+import moduleAttributes from './objects/module-attributes'
 import { type SchemaTypeDefinition } from 'sanity'
 
 export const schemaTypes: SchemaTypeDefinition[] = [
@@ -74,7 +74,7 @@ export const schemaTypes: SchemaTypeDefinition[] = [
 	link,
 	linkList,
 	metadata,
-	moduleOptions,
+	moduleAttributes,
 
 	// modules
 	accordionList,
