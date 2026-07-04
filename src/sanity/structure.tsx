@@ -1,9 +1,10 @@
+import { pageDirectoriesListItem } from './lib/page-directories'
 import { VscFiles, VscServerProcess } from 'react-icons/vsc'
 import { structureTool } from 'sanity/structure'
 import type { StructureResolver } from 'sanity/structure'
-import { singleton, group, directory } from 'sanitypress-utils'
+import { singleton, group } from 'sanitypress-utils'
 
-const structureResolver: StructureResolver = (S) =>
+const structureResolver: StructureResolver = (S, context) =>
 	S.list()
 		.title('Content')
 		.items([
@@ -11,11 +12,7 @@ const structureResolver: StructureResolver = (S) =>
 			S.divider(),
 
 			S.documentTypeListItem('page').title('All pages').icon(VscFiles),
-			// customize page directories
-			group(S, 'Directories', [
-				directory(S, 'docs', { maxLevel: 1 }).title('Docs'),
-				directory(S, 'docs/modules').title('Docs › Modules'),
-			]),
+			pageDirectoriesListItem(S, context).icon(VscFiles),
 
 			S.documentTypeListItem('global-module').title('Global modules'),
 			S.divider(),

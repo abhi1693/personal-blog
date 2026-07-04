@@ -1,5 +1,9 @@
 'use client'
 
+import {
+	locationResolvers,
+	referenceLocations,
+} from './presentation/reference-locations'
 import { BLOG_DIR } from '@/lib/env'
 import { groq } from 'next-sanity'
 import { defineLocations, presentationTool } from 'sanity/presentation'
@@ -27,7 +31,7 @@ export const presentation = presentationTool({
 				filter: groq`_type == 'blog.post' && metadata.slug.current == $slug`,
 			},
 		],
-		locations: {
+		locations: locationResolvers({
 			site: defineLocations({
 				message: 'This document is used on all pages',
 				locations: [
@@ -36,6 +40,10 @@ export const presentation = presentationTool({
 						href: '/',
 					},
 				],
+			}),
+			'global-module': defineLocations({
+				message: 'Modules are added to all pages in the target path',
+				tone: 'positive',
 			}),
 			page: defineLocations({
 				select: {
@@ -86,6 +94,13 @@ export const presentation = presentationTool({
 					],
 				}),
 			}),
-		},
+			announcement: referenceLocations('announcement'),
+			book: referenceLocations('book'),
+			logo: referenceLocations('logo'),
+			person: referenceLocations('person'),
+			pricing: referenceLocations('pricing'),
+			reputation: referenceLocations('reputation'),
+			testimonial: referenceLocations('testimonial'),
+		}),
 	},
 })
