@@ -1,6 +1,6 @@
 import PreviewOG from '@/sanity/ui/PreviewOG'
+import CharacterCount from '@/sanity/ui/character-count'
 import { defineField, defineType } from 'sanity'
-import { CharacterCount } from 'sanitypress-utils'
 
 export default defineType({
 	name: 'metadata',

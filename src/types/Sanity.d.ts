@@ -1,221 +1,31 @@
-import type { SanityAssetDocument, SanityDocument } from 'next-sanity'
+import type * as Generated from '@/sanity/types'
+import type { SanityImageSource } from '@sanity/image-url/src/types'
+
+type ImageValue = SanityImageSource & {
+	_type?: 'image'
+	asset?: Generated.SanityImageAssetReference | Generated.SanityImageAsset
+	media?: unknown
+	hotspot?: Generated.SanityImageHotspot
+	crop?: Generated.SanityImageCrop
+	alt?: string
+	loading?: 'lazy' | 'eager'
+	lqip?: string
+}
+
+type ModuleBase<T extends string = string> = {
+	_type: T
+	_key: string
+	options?: Generated.ModuleOptions
+}
 
 declare global {
 	namespace Sanity {
-		// documents
-
-		interface Site extends SanityDocument {
-			// branding
-			title: string
-			blurb?: any
-			logo?: Logo
-			// info
-			announcements?: Announcement[]
-			copyright?: any
-			ogimage?: string
-			// navigation
-			ctas?: CTA[]
-			headerMenu?: Navigation
-			footerMenu?: Navigation
-			social?: Navigation
-		}
-
-		interface Navigation extends SanityDocument {
-			title: string
-			items?: (Link | LinkList)[]
-		}
-
-		// pages
-
-		interface PageBase extends SanityDocument {
-			title?: string
-			metadata: Metadata
-			readonly language?: string
-		}
-
-		interface Page extends PageBase {
-			readonly _type: 'page'
-			modules?: Module[]
-		}
-
-		interface Translation {
-			slug: string
-			translations?: {
-				slug: string
-				slugBlogAlt?: string
-				language: string
-			}[]
-		}
-
-		interface GlobalModule extends SanityDocument {
-			path: string
-			excludePaths?: string[]
-			modules?: Module[]
-		}
-
-		interface YouTubeEmbed {
-			videoId: string
-			title: string
-		}
-
-		interface BlogPost extends PageBase {
-			readonly _type: 'blog.post'
-			body: any
-			categories: BlogCategory[]
-			authors: Person[]
-			youTubeEmbed?: YouTubeEmbed
-			featured: boolean
-			publishDate: string
-			faq?: AccordionList
-		}
-
-		interface BlogCategory extends SanityDocument {
-			title: string
-			slug: { current: string }
-		}
-
-		// miscellaneous
-
-		interface Announcement extends SanityDocument {
-			content: any
-			cta?: Link
-			start?: string
-			end?: string
-		}
-
-		interface Logo extends SanityDocument {
-			name: string
-			image?: Partial<{
-				default: Image
-				light: Image
-				dark: Image
-			}>
-		}
-
-		interface Person extends SanityDocument {
-			name: string
-			slug?: { current: string }
-			image?: Image
-			// profile
-			title?: string
-			tagline?: string
-			location?: string
-			company?: string
-			socials?: Link[]
-			// content
-			bio?: any
-			coverImage?: Image
-			featuredPosts?: BlogPost[]
-			featuredBooks?: Book[]
-			// seo
-		}
-
-		interface Book extends SanityDocument {
-			title: string
-			defaultLink: string
-			countryLinks?: {
-				country: string // ISO 3166-1 alpha-2
-				link: string
-			}[]
-			image?: Image
-			authors: Person[]
-			active?: boolean
-		}
-
-		interface Pricing extends SanityDocument {
-			title: string
-			highlight?: string
-			price: {
-				base?: number
-				strikethrough?: number
-				suffix?: string
-			}
-			ctas?: CTA[]
-			content?: any
-		}
-
-		interface Reputation extends SanityDocument {
-			title?: string
-			subtitle?: string
-			repo?: string
-			showForks?: boolean
-			limit?: number
-			avatars?: Image[]
-		}
-
-		interface Testimonial extends SanityDocument {
-			content: any
-			source?: string
-			author?: {
-				name: string
-				title?: string
-				image?: Image
-			}
-		}
-
-		// objects
-
-		interface Code {
-			readonly _type: 'code'
+		type Image = ImageValue
+		type Code = Omit<Generated.Code, 'language' | 'code'> & {
 			language: string
 			code: string
-			filename?: string
-			highlightedLines?: number[]
 		}
-
-		interface CTA {
-			readonly _type?: 'cta'
-			_key?: string
-			link?: Link
-			style?: string
-		}
-
-		interface CustomHTML extends Module<'custom-html'> {
-			className?: string
-			html?: {
-				code: string
-			}
-		}
-
-		interface Icon {
-			readonly _type: 'icon'
-			image?: Image
-			ic0n?: string
-			size?: string
-		}
-
-		interface Img {
-			readonly _type: 'img'
-			image: Image
-			responsive?: {
-				image: Image
-				media: string
-			}[]
-			alt?: string
-			loading?: 'lazy' | 'eager'
-		}
-
-		interface Image extends SanityAssetDocument {
-			alt: string
-			loading: 'lazy' | 'eager'
-		}
-
-		interface Link {
-			readonly _type: 'link'
-			label: string
-			type: 'internal' | 'external'
-			internal?: Page | BlogPost
-			external?: string
-			params?: string
-		}
-
-		interface LinkList {
-			readonly _type: 'link.list'
-			link?: Link
-			links?: Link[]
-		}
-
-		interface Metadata {
+		type Metadata = Omit<Generated.Metadata, 'slug' | 'image'> & {
 			slug: { current: string }
 			title: string
 			description: string
@@ -224,28 +34,153 @@ declare global {
 			noIndex: boolean
 		}
 
-		interface AccordionList extends Module<'accordion-list'> {
-			pretitle?: string
-			intro?: any
-			items: AccordionItem[]
-			layout?: 'vertical' | 'horizontal'
-			connect?: boolean
-			generateSchema?: boolean
+		type Link = Omit<Generated.Link, 'label' | 'type' | 'internal'> & {
+			label: string
+			type: 'internal' | 'external'
+			internal?: Page | BlogPost | BlogCategory
+		}
+		type LinkList = Omit<Generated.LinkList, 'link' | 'links'> & {
+			link?: Link
+			links?: Link[]
+		}
+		type CTA = Omit<Generated.Cta, '_type' | 'link'> & {
+			_type?: 'cta'
+			_key?: string
+			link?: Link
+		}
+		type CustomHTML = Omit<Generated.CustomHtml, 'html' | 'css'> &
+			ModuleBase<'custom-html'> & {
+				className?: string
+				html?: { code: string }
+				css?: { code: string }
+			}
+		type Icon = Omit<Generated.Icon, 'image'> & { image?: Image }
+		type Img = Omit<Generated.Img, 'image' | 'responsive'> & {
+			image: Image
+			responsive?: { image: Image; media: string }[]
 		}
 
-		interface AccordionItem {
+		type Module<T extends string = string> = ModuleBase<T>
+
+		type AccordionItem = {
 			summary: string
 			content: any
 			open?: boolean
 		}
-
-		interface Module<T = string> {
-			_type: T
-			_key: string
-			options?: {
-				hidden?: boolean
-				uid?: string
+		type AccordionList = Omit<Generated.AccordionList, 'items'> &
+			ModuleBase<'accordion-list'> & {
+				items: AccordionItem[]
 			}
+
+		type Navigation = Omit<Generated.Navigation, 'title' | 'items'> & {
+			title: string
+			items?: (Link | LinkList)[]
+		}
+		type Announcement = Omit<Generated.Announcement, 'cta'> & {
+			cta?: Link
+		}
+		type Logo = Omit<Generated.Logo, 'image'> & {
+			image?: Partial<{
+				default: Image
+				light: Image
+				dark: Image
+			}>
+		}
+		type BlogCategory = Omit<Generated.BlogCategory, 'title' | 'slug'> & {
+			title: string
+			slug: { current: string }
+		}
+		type Person = Omit<
+			Generated.Person,
+			'image' | 'coverImage' | 'socials' | 'featuredPosts' | 'featuredBooks'
+		> & {
+			image?: Image
+			coverImage?: Image
+			socials?: Link[]
+			featuredPosts?: BlogPost[]
+			featuredBooks?: Book[]
+		}
+		type Book = Omit<Generated.Book, 'image' | 'authors'> & {
+			image?: Image
+			authors: Person[]
+		}
+		type Pricing = Omit<Generated.Pricing, 'ctas'> & {
+			ctas?: CTA[]
+		}
+		type Reputation = Omit<Generated.Reputation, 'avatars'> & {
+			avatars?: Image[]
+		}
+		type Testimonial = Omit<Generated.Testimonial, 'author'> & {
+			author?: {
+				name: string
+				title?: string
+				image?: Image
+			}
+		}
+
+		type Site = Omit<
+			Generated.Site,
+			'logo' | 'announcements' | 'ctas' | 'headerMenu' | 'footerMenu' | 'social'
+		> & {
+			title: string
+			logo?: Logo
+			announcements?: Announcement[]
+			ctas?: CTA[]
+			headerMenu?: Navigation
+			footerMenu?: Navigation
+			social?: Navigation
+			ogimage?: string
+		}
+
+		type PageBase = {
+			_id: string
+			_type: string
+			title?: string
+			metadata: Metadata
+			readonly language?: string
+			categories?: BlogCategory[]
+		}
+		type Page = Omit<Generated.Page, 'metadata' | 'modules' | 'title'> &
+			PageBase & {
+				readonly _type: 'page'
+				modules?: Module[]
+			}
+		type BlogPost = Omit<
+			Generated.BlogPost,
+			'metadata' | 'categories' | 'authors' | 'faq' | 'title' | 'body'
+		> &
+			PageBase & {
+				readonly _type: 'blog.post'
+				body: any
+				categories: BlogCategory[]
+				authors: Person[]
+				publishDate: string
+				youTubeEmbed?: {
+					videoId: string
+					title: string
+				}
+				youtubeEmbed: {
+					videoID: string
+				}
+				faq?: AccordionList
+			}
+		type GlobalModule = Omit<
+			Generated.GlobalModule,
+			'path' | 'excludePaths' | 'before' | 'after'
+		> & {
+			path: string
+			excludePaths?: string[]
+			modules?: Module[]
+			before?: Module[]
+			after?: Module[]
+		}
+		type Translation = {
+			slug: string
+			translations?: {
+				slug: string
+				slugBlogAlt?: string
+				language: string
+			}[]
 		}
 	}
 }

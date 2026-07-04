@@ -3,7 +3,7 @@ import { DEFAULT_LANG } from './i18n'
 import { stegaClean } from 'next-sanity'
 
 export default function resolveUrl(
-	page?: Sanity.PageBase,
+	page?: Sanity.PageBase | Sanity.BlogCategory,
 	{
 		base = true,
 		params,
@@ -14,9 +14,19 @@ export default function resolveUrl(
 		language?: string
 	} = {},
 ) {
-	const segment = page?._type === 'blog.post' ? `/${BLOG_DIR}/` : '/'
+	const isCategory = page?._type === 'blog.category' && 'slug' in page
+	const segment =
+		page?._type === 'blog.post'
+			? `/${BLOG_DIR}/`
+			: isCategory
+				? `/${BLOG_DIR}/category/`
+				: '/'
 	const lang = language && language !== DEFAULT_LANG ? `/${language}` : ''
-	const slug = page?.metadata?.slug?.current
+	const slug = isCategory
+		? page.slug.current
+		: page && 'metadata' in page
+			? page.metadata?.slug?.current
+			: undefined
 	const path = slug === 'index' ? null : slug
 
 	return [base && BASE_URL, lang, segment, path, stegaClean(params)]

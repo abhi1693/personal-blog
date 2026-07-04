@@ -1,8 +1,8 @@
-import { createClient, groq } from 'next-sanity'
-import { projectId, dataset, apiVersion } from '@/sanity/lib/env'
 import { BLOG_DIR } from '@/lib/env'
 import { supportedLanguages } from '@/lib/i18n'
+import { projectId, dataset, apiVersion } from '@/sanity/lib/env'
 import type { NextConfig } from 'next'
+import { createClient, groq } from 'next-sanity'
 
 const client = createClient({
 	projectId,
@@ -12,17 +12,19 @@ const client = createClient({
 })
 
 export default {
+	reactCompiler: true,
 	output: 'standalone',
-	compiler:{
+	compiler: {
 		styledComponents: true,
 		removeConsole: process.env.NODE_ENV === 'production',
 	},
 	experimental: {
-		webpackMemoryOptimizations: true
+		webpackMemoryOptimizations: true,
 	},
 	productionBrowserSourceMaps: true,
 	images: {
 		dangerouslyAllowSVG: true,
+		localPatterns: [{ pathname: '/api/og' }],
 		remotePatterns: [
 			{
 				protocol: 'https',

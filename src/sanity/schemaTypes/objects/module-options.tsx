@@ -29,6 +29,7 @@ export default defineType({
 				input: ({ elementProps, path }) => {
 					const indexOfModule = path.indexOf('modules')
 					const moduleKey = (path[indexOfModule + 1] as any)?._key
+					const placeholder = moduleKey ? `module-${moduleKey}` : undefined
 					const [checked, setChecked] = useState(false)
 
 					return (
@@ -36,7 +37,7 @@ export default defineType({
 							<Text muted>#</Text>
 
 							<Box flex={1}>
-								<TextInput {...elementProps} placeholder={moduleKey} />
+								<TextInput {...elementProps} placeholder={placeholder} />
 							</Box>
 
 							<Button
@@ -46,7 +47,7 @@ export default defineType({
 								disabled={checked}
 								onClick={() => {
 									navigator.clipboard.writeText(
-										'#' + (elementProps.value || moduleKey),
+										'#' + (elementProps.value || placeholder || ''),
 									)
 
 									setChecked(true)

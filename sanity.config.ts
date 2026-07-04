@@ -1,22 +1,24 @@
 'use client'
 
 import pkg from './package.json'
-import { defineConfig } from 'sanity'
-import { projectId, dataset, apiVersion } from '@/sanity/lib/env'
-import { structure } from './src/sanity/structure'
 import { presentation } from './src/sanity/presentation'
-import { icon, infoWidget } from 'sanitypress-utils'
+import { schemaTypes } from './src/sanity/schemaTypes'
+import { structure } from './src/sanity/structure'
+import { supportedLanguages } from '@/lib/i18n'
+import resolveUrl from '@/lib/resolveUrl'
+import { projectId, dataset, apiVersion } from '@/sanity/lib/env'
+import { assist } from '@sanity/assist'
+import { codeInput } from '@sanity/code-input'
 import {
 	dashboardTool,
 	projectInfoWidget,
 	projectUsersWidget,
 } from '@sanity/dashboard'
-import { visionTool } from '@sanity/vision'
-import { codeInput } from '@sanity/code-input'
-import { supportedLanguages } from '@/lib/i18n'
 import { documentInternationalization } from '@sanity/document-internationalization'
-import { schemaTypes } from './src/sanity/schemaTypes'
-import resolveUrl from '@/lib/resolveUrl'
+import { visionTool } from '@sanity/vision'
+import { defineConfig } from 'sanity'
+import { media } from 'sanity-plugin-media'
+import { icon, infoWidget } from 'sanitypress-utils'
 
 const singletonTypes = ['site']
 
@@ -41,6 +43,8 @@ export default defineConfig({
 		}),
 		visionTool({ defaultApiVersion: apiVersion }),
 		codeInput(),
+		media(),
+		assist(),
 		documentInternationalization({
 			supportedLanguages,
 			schemaTypes: ['page', 'blog.post'],

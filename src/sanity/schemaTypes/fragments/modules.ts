@@ -32,6 +32,7 @@ export default defineField({
 	],
 	options: {
 		insertMenu: {
+			filter: true,
 			views: [
 				{
 					name: 'grid',

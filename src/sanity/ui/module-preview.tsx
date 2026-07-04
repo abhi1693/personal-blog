@@ -1,0 +1,23 @@
+import { Badge, Box, Flex } from '@sanity/ui'
+import { VscEyeClosed } from 'react-icons/vsc'
+import type { PreviewProps } from 'sanity'
+
+export default function ModulePreview(
+	props: PreviewProps & { hidden?: boolean; uid?: string },
+) {
+	const render = props.renderDefault(props)
+
+	return (
+		<Flex align="center">
+			<Box flex={1}>{render}</Box>
+
+			{props.hidden ? (
+				<Badge padding={2} marginRight={2}>
+					<VscEyeClosed />
+				</Badge>
+			) : (
+				props.uid && <Badge marginRight={2}>#{props.uid}</Badge>
+			)}
+		</Flex>
+	)
+}
