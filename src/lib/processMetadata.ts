@@ -56,6 +56,7 @@ export default async function processMetadata(
 			),
 			types: {
 				'application/rss+xml': `/${BLOG_DIR}/rss.xml`,
+				'application/atom+xml': `/${BLOG_DIR}/atom.xml`,
 				...(markdownUrl ? { 'text/markdown': markdownUrl } : {}),
 			},
 		},

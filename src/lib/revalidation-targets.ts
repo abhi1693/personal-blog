@@ -57,6 +57,7 @@ export function getSanityRevalidationTargets(
 	add({ path: '/' })
 	add({ path: `/${BLOG_DIR}` })
 	add({ path: `/${BLOG_DIR}/rss.xml` })
+	add({ path: `/${BLOG_DIR}/atom.xml` })
 	add({ path: '/llms.txt' })
 	add({ path: '/llms-full.txt' })
 	add({ path: '/sitemap.xml' })

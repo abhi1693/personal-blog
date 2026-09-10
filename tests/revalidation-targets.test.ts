@@ -14,6 +14,7 @@ assert.deepStrictEqual(postTargets, [
 	{ path: '/' },
 	{ path: '/posts' },
 	{ path: '/posts/rss.xml' },
+	{ path: '/posts/atom.xml' },
 	{ path: '/llms.txt' },
 	{ path: '/llms-full.txt' },
 	{ path: '/sitemap.xml' },
