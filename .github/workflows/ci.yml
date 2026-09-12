@@ -1,50 +1,36 @@
 name: CI
-
 on:
   push:
-    branches: [master]
-  pull_request:
+    branches:
+      - master
+  pull_request: null
   schedule:
-    - cron: '0 0 * * *' # Every day at midnight UTC
-
+    - cron: 0 0 * * *
 env:
   DO_NOT_TRACK: '1'
-
 jobs:
   build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-
-      - uses: actions/setup-node@v6
-        with:
-          node-version-file: '.nvmrc'
-          cache: 'npm'
-
-      - name: Write test environment
-        env:
-          CRON_SECRET: ${{ secrets.CRON_SECRET }}
-          GITHUB_TOKEN: ${{ github.token }}
-          NEXT_GOOGLE_ADSENSE_ID: ${{ vars.NEXT_GOOGLE_ADSENSE_ID }}
-          NEXT_GOOGLE_ANALYTICS_ID: ${{ vars.NEXT_GOOGLE_ANALYTICS_ID }}
-          NEXT_GOOGLE_TAG_MANAGER_ID: ${{ vars.NEXT_GOOGLE_TAG_MANAGER_ID }}
-          NEXT_PUBLIC_BASE_URL: ${{ vars.NEXT_PUBLIC_BASE_URL }}
-          NEXT_PUBLIC_SANITY_API_VERSION: ${{ vars.NEXT_PUBLIC_SANITY_API_VERSION }}
-          NEXT_PUBLIC_SANITY_DATASET: ${{ vars.NEXT_PUBLIC_SANITY_DATASET }}
-          NEXT_PUBLIC_SANITY_PROJECT_ID: ${{ vars.NEXT_PUBLIC_SANITY_PROJECT_ID }}
-          NEXT_RESEND_AUDIENCE_ID: ${{ vars.NEXT_RESEND_AUDIENCE_ID }}
-          RESEND_API_KEY_FULL: ${{ secrets.RESEND_API_KEY_FULL }}
-          SANITY_API_READ_TOKEN: ${{ secrets.SANITY_API_READ_TOKEN }}
-        run: .github/scripts/write-env.sh .env.local
-
-      - run: npm ci
-      - run: npm run lint
-      - run: npm run typecheck
-      - run: npm run test
-
+    uses: abhi1693/actions/.github/workflows/node-ci.yml@34e92ba1eee6a47e9b10f13e2180114fc01b6027
+    with:
+      checks: '["lint", "typecheck", "test"]'
+      scripts: '{"lint": "lint", "typecheck": "typecheck", "test": "test"}'
+      timeout-minutes: 20
+      runs-on: ubuntu-latest
+      node-version-file: .nvmrc
+      project-env: '{"DO_NOT_TRACK":"1","NEXT_GOOGLE_ADSENSE_ID":${{ toJSON(vars.NEXT_GOOGLE_ADSENSE_ID) }},"NEXT_GOOGLE_ANALYTICS_ID":${{
+        toJSON(vars.NEXT_GOOGLE_ANALYTICS_ID) }},"NEXT_GOOGLE_TAG_MANAGER_ID":${{ toJSON(vars.NEXT_GOOGLE_TAG_MANAGER_ID) }},"NEXT_PUBLIC_BASE_URL":${{
+        toJSON(vars.NEXT_PUBLIC_BASE_URL) }},"NEXT_PUBLIC_SANITY_API_VERSION":${{ toJSON(vars.NEXT_PUBLIC_SANITY_API_VERSION) }},"NEXT_PUBLIC_SANITY_DATASET":${{
+        toJSON(vars.NEXT_PUBLIC_SANITY_DATASET) }},"NEXT_PUBLIC_SANITY_PROJECT_ID":${{ toJSON(vars.NEXT_PUBLIC_SANITY_PROJECT_ID) }},"NEXT_RESEND_AUDIENCE_ID":${{
+        toJSON(vars.NEXT_RESEND_AUDIENCE_ID) }}}'
+      prepare-script: .github/scripts/ci-prepare.sh
+    secrets:
+      project-env: '{"CRON_SECRET":${{ toJSON(secrets.CRON_SECRET) }},"CI_BUILD_GITHUB_TOKEN":${{ toJSON(github.token) }},"RESEND_API_KEY_FULL":${{
+        toJSON(secrets.RESEND_API_KEY_FULL) }},"SANITY_API_READ_TOKEN":${{ toJSON(secrets.SANITY_API_READ_TOKEN) }}}'
+    if: github.event_name != 'schedule'
   submit_sitemap:
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master' || github.event_name == 'schedule'
+    if: ${{ !cancelled() && ((github.event_name == 'push' && github.ref == 'refs/heads/master' && needs.build.result == 'success') ||
+      github.event_name == 'schedule') }}
     needs:
       - build
     env:
@@ -52,22 +38,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
-
       - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
-          node-version-file: '.nvmrc'
-          cache: 'npm'
-
+          node-version-file: .nvmrc
+          cache: npm
       - name: Install dependencies
         run: npm ci
-
       - name: Decode and store Google Service Account JSON
         run: echo "${{ secrets.GOOGLE_SVC_ACCOUNT }}" | base64 -d > scripts/service-account.json
-
       - name: Submit Sitemap
         run: node scripts/sitemap-to-google
-
       - name: Submit to IndexNow
         env:
           LASTMOD_THRESHOLD_DAYS: 1
