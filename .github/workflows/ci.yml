@@ -10,7 +10,7 @@ env:
   DO_NOT_TRACK: '1'
 jobs:
   build:
-    uses: abhi1693/actions/.github/workflows/node-ci.yml@34e92ba1eee6a47e9b10f13e2180114fc01b6027
+    uses: abhi1693/actions/.github/workflows/node-ci.yml@8c3fe48dea1da826a1fcdf3166b93af669d6b629
     with:
       checks: '["lint", "typecheck", "test"]'
       scripts: '{"lint": "lint", "typecheck": "typecheck", "test": "test"}'
