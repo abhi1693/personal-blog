@@ -48,7 +48,7 @@ jobs:
   build:
     name: Build linux/arm64
     needs: prepare-build-secret
-    uses: abhi1693/actions/.github/workflows/docker-build-push.yml@34e92ba1eee6a47e9b10f13e2180114fc01b6027
+    uses: abhi1693/actions/.github/workflows/docker-build-push.yml@2e99f8c45aeb1df32579cf960c3f0faab8ce16a5
     with:
       runs-on: ubuntu-24.04-arm
       image: ghcr.io/abhi1693/personal-blog

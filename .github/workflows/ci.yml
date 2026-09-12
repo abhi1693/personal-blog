@@ -10,7 +10,7 @@ env:
   DO_NOT_TRACK: '1'
 jobs:
   build:
-    uses: abhi1693/actions/.github/workflows/node-ci.yml@8c3fe48dea1da826a1fcdf3166b93af669d6b629
+    uses: abhi1693/actions/.github/workflows/node-ci.yml@2e99f8c45aeb1df32579cf960c3f0faab8ce16a5
     with:
       checks: '["lint", "typecheck", "test"]'
       scripts: '{"lint": "lint", "typecheck": "typecheck", "test": "test"}'
@@ -24,7 +24,7 @@ jobs:
         toJSON(vars.NEXT_RESEND_AUDIENCE_ID) }}}'
       prepare-script: .github/scripts/ci-prepare.sh
     secrets:
-      project-env: '{"CRON_SECRET":${{ toJSON(secrets.CRON_SECRET) }},"CI_BUILD_GITHUB_TOKEN":${{ toJSON(github.token) }},"RESEND_API_KEY_FULL":${{
+      project-env: '{"CRON_SECRET":${{ toJSON(secrets.CRON_SECRET) }},"CI_BUILD_GITHUB_TOKEN":${{ toJSON(secrets.GITHUB_TOKEN) }},"RESEND_API_KEY_FULL":${{
         toJSON(secrets.RESEND_API_KEY_FULL) }},"SANITY_API_READ_TOKEN":${{ toJSON(secrets.SANITY_API_READ_TOKEN) }}}'
     if: github.event_name != 'schedule'
   submit_sitemap:
