@@ -7,6 +7,7 @@ import { structure } from './src/sanity/structure'
 import { supportedLanguages } from '@/lib/i18n'
 import resolveUrl from '@/lib/resolveUrl'
 import { projectId, dataset, apiVersion } from '@/sanity/lib/env'
+import { icon, infoWidget } from '@/sanity/starter-utils'
 import { assist } from '@sanity/assist'
 import { codeInput } from '@sanity/code-input'
 import {
@@ -15,10 +16,10 @@ import {
 	projectUsersWidget,
 } from '@sanity/dashboard'
 import { documentInternationalization } from '@sanity/document-internationalization'
+import '@sanity/ui/styles.css'
 import { visionTool } from '@sanity/vision'
 import { defineConfig } from 'sanity'
 import { media } from 'sanity-plugin-media'
-import { icon, infoWidget } from 'sanitypress-utils'
 
 const singletonTypes = ['site']
 

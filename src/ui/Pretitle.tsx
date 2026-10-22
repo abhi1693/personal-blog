@@ -9,7 +9,7 @@ export default function Pretitle({
 
 	return (
 		<h2 className={cn('technical text-ink/65', className)}>
-			{stegaClean(children)}
+			{typeof children === 'string' ? stegaClean(children) : children}
 		</h2>
 	)
 }

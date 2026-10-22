@@ -4,8 +4,8 @@ import creativeRichtext from './richtext.creative'
 import { count } from '@/lib/utils'
 import { VscExtensions } from 'react-icons/vsc'
 import { defineArrayMember, defineField } from 'sanity'
-import { alignItems, textAlign } from 'sanitypress-utils'
-import { getBlockText } from 'sanitypress-utils'
+import { alignItems, textAlign } from '@/sanity/starter-utils'
+import { getBlockText } from '@/sanity/starter-utils'
 import defineModule from '../../fragments/define-module'
 
 export default defineModule({

@@ -1,15 +1,16 @@
 # syntax=docker/dockerfile:1.7
 
-FROM node:22.18.0-bookworm-slim AS deps
+FROM node:26.12.1-bookworm-slim@sha256:28147155d47dc31abe0a46e0d12b59b2fb3d0a2dcc5dc65fce76a074180b16fe AS deps
 WORKDIR /app
 
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV DO_NOT_TRACK=1
 
 COPY .npmrc package.json package-lock.json ./
+COPY packages/braces ./packages/braces
 RUN npm ci --ignore-scripts --prefer-offline --no-audit --fund=false
 
-FROM node:22.18.0-bookworm-slim AS builder
+FROM node:26.12.1-bookworm-slim@sha256:28147155d47dc31abe0a46e0d12b59b2fb3d0a2dcc5dc65fce76a074180b16fe AS builder
 WORKDIR /app
 
 ENV NEXT_TELEMETRY_DISABLED=1
@@ -28,7 +29,7 @@ RUN --mount=type=secret,id=env,target=/app/.env.local \
 	NEXT_PUBLIC_FARO_ENVIRONMENT="${NEXT_PUBLIC_FARO_ENVIRONMENT:-production}" \
 	npm run build
 
-FROM node:22.18.0-bookworm-slim AS runner
+FROM node:26.12.1-bookworm-slim@sha256:28147155d47dc31abe0a46e0d12b59b2fb3d0a2dcc5dc65fce76a074180b16fe AS runner
 WORKDIR /app
 
 ENV HOSTNAME=0.0.0.0

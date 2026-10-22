@@ -1,8 +1,8 @@
 import { count } from '@/lib/utils'
 import { GoNumber } from 'react-icons/go'
 import { defineArrayMember, defineField, defineType } from 'sanity'
-import { textAlign } from 'sanitypress-utils'
-import { getBlockText } from 'sanitypress-utils'
+import { textAlign } from '@/sanity/starter-utils'
+import { getBlockText } from '@/sanity/starter-utils'
 
 export default defineType({
 	name: 'stat-list',

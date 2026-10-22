@@ -12,11 +12,12 @@ jobs:
   build:
     uses: abhi1693/actions/.github/workflows/node-ci.yml@v1
     with:
-      checks: '["lint", "typecheck", "test"]'
-      scripts: '{"lint": "lint", "typecheck": "typecheck", "test": "test"}'
+      checks: '["lint", "typecheck", "test", "build"]'
+      scripts: '{"lint": "lint", "typecheck": "typecheck", "test": "test", "build": "build"}'
       timeout-minutes: 20
       runs-on: ubuntu-latest
       node-version-file: .nvmrc
+      ignore-scripts: true
       project-env: '{"DO_NOT_TRACK":"1","NEXT_GOOGLE_ADSENSE_ID":${{ toJSON(vars.NEXT_GOOGLE_ADSENSE_ID) }},"NEXT_GOOGLE_ANALYTICS_ID":${{
         toJSON(vars.NEXT_GOOGLE_ANALYTICS_ID) }},"NEXT_GOOGLE_TAG_MANAGER_ID":${{ toJSON(vars.NEXT_GOOGLE_TAG_MANAGER_ID) }},"NEXT_PUBLIC_BASE_URL":${{
         toJSON(vars.NEXT_PUBLIC_BASE_URL) }},"NEXT_PUBLIC_SANITY_API_VERSION":${{ toJSON(vars.NEXT_PUBLIC_SANITY_API_VERSION) }},"NEXT_PUBLIC_SANITY_DATASET":${{
@@ -42,6 +43,7 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version-file: .nvmrc
+      ignore-scripts: true
           cache: npm
       - name: Install dependencies
         run: npm ci
