@@ -2,6 +2,13 @@ const fs = require('node:fs')
 const process = require('node:process')
 const { spawnSync } = require('node:child_process')
 
+const optionalPublic = new Set([
+	'NEXT_GOOGLE_ADSENSE_ID',
+	'NEXT_GOOGLE_ANALYTICS_ID',
+	'NEXT_GOOGLE_TAG_MANAGER_ID',
+	'NEXT_PUBLIC_SANITY_API_VERSION',
+])
+
 const allowed = new Set([
 	'NEXT_GOOGLE_ADSENSE_ID',
 	'NEXT_GOOGLE_ANALYTICS_ID',
@@ -10,7 +17,7 @@ const allowed = new Set([
 	'NEXT_PUBLIC_SANITY_API_VERSION',
 	'NEXT_PUBLIC_SANITY_DATASET',
 	'NEXT_PUBLIC_SANITY_PROJECT_ID',
-	'GITHUB_TOKEN',
+	'BLOG_GITHUB_TOKEN',
 	'SANITY_API_READ_TOKEN',
 ])
 
@@ -27,6 +34,12 @@ function parseBuildEnvironment(raw) {
 	for (const [name, value] of Object.entries(values)) {
 		if (!allowed.has(name))
 			throw new Error(`Unexpected build variable: ${name}`)
+		// GitHub toJSON represents unset vars as null. Preserve the app's
+		// existing optional defaults without accepting null CMS credentials.
+		if (value === null && optionalPublic.has(name)) {
+			delete values[name]
+			continue
+		}
 		if (typeof value !== 'string' || /[\r\n\0]/.test(value)) {
 			throw new Error(`Invalid build variable: ${name}`)
 		}

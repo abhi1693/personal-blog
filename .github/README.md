@@ -37,6 +37,13 @@ workflow's `environment` input applies to index assembly, not the build job.
 Regression tests exercise release/ref/commit rejection, the actual CLI's moving
 branch rejection, and quote/backtick/unicode round trips through the real
 workflow's nested configuration template without production secret values.
+The GitHub read token uses the app-scoped `BLOG_GITHUB_TOKEN` key in both CI
+callers because shared environment guards reserve `GITHUB_*`. Octokit prefers
+the app-scoped key and retains `GITHUB_TOKEN` as a runtime compatibility fallback.
+Unset optional public analytics IDs and Sanity API version arrive as JSON null
+and are omitted by the build loader, preserving existing app defaults. Required
+CMS project, dataset, base URL and read token still fail closed when missing or
+invalid; unknown keys, non-string values and CR/LF/NUL remain rejected.
 
 | Build input                                            | Why it is needed                                                                                                          |
 | ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------- |

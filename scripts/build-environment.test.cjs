@@ -12,8 +12,103 @@ const fixture = {
 }
 
 test('build configuration preserves literal characters without shell evaluation', () => {
-	const values = { ...fixture, GITHUB_TOKEN: 'literal-$()-`quotes`-"-value' }
+	const values = {
+		...fixture,
+		BLOG_GITHUB_TOKEN: 'literal-$()-`quotes`-"-value',
+	}
 	assert.deepEqual(parseBuildEnvironment(JSON.stringify(values)), values)
+})
+
+test('only unset optional public fields normalize to the existing app defaults', () => {
+	const optional = {
+		NEXT_GOOGLE_ADSENSE_ID: null,
+		NEXT_GOOGLE_ANALYTICS_ID: null,
+		NEXT_GOOGLE_TAG_MANAGER_ID: null,
+		NEXT_PUBLIC_SANITY_API_VERSION: null,
+	}
+	assert.deepEqual(
+		parseBuildEnvironment(JSON.stringify({ ...fixture, ...optional })),
+		fixture,
+	)
+	for (const name of Object.keys(fixture)) {
+		for (const value of [null, '', 123, {}, []]) {
+			assert.throws(
+				() =>
+					parseBuildEnvironment(JSON.stringify({ ...fixture, [name]: value })),
+				/Invalid build variable|Missing required/,
+			)
+		}
+	}
+	for (const value of [
+		123,
+		{},
+		[],
+		'line\nbreak',
+		'carriage\rreturn',
+		'nul\0byte',
+	]) {
+		assert.throws(
+			() =>
+				parseBuildEnvironment(
+					JSON.stringify({ ...fixture, NEXT_PUBLIC_SANITY_API_VERSION: value }),
+				),
+			/Invalid build variable/,
+		)
+	}
+	assert.throws(
+		() =>
+			parseBuildEnvironment(JSON.stringify({ ...fixture, GITHUB_TOKEN: null })),
+		/Unexpected build variable/,
+	)
+})
+
+test('actual Octokit module prefers app token and preserves production token fallback without API calls', () => {
+	const fs = require('node:fs')
+	const vm = require('node:vm')
+	const ts = require('typescript')
+	const source = fs.readFileSync('src/ui/Reputation/getRepoData.ts', 'utf8')
+	const compiled = ts.transpileModule(source, {
+		compilerOptions: {
+			module: ts.ModuleKind.CommonJS,
+			target: ts.ScriptTarget.ES2022,
+		},
+	}).outputText
+	for (const [env, expected] of [
+		[
+			{ BLOG_GITHUB_TOKEN: 'app-fixture', GITHUB_TOKEN: 'legacy-fixture' },
+			'app-fixture',
+		],
+		[{ GITHUB_TOKEN: 'legacy-fixture' }, 'legacy-fixture'],
+		[
+			{ BLOG_GITHUB_TOKEN: '', GITHUB_TOKEN: 'legacy-fixture' },
+			'legacy-fixture',
+		],
+		[{}, undefined],
+	]) {
+		let observed
+		vm.runInNewContext(
+			compiled,
+			{
+				exports: {},
+				process: { env },
+				require(name) {
+					if (name === 'next-sanity') return { stegaClean: (value) => value }
+					if (name === 'next/cache') return { unstable_cache: (fn) => fn }
+					if (name === 'octokit')
+						return {
+							Octokit: class {
+								constructor({ auth }) {
+									observed = auth
+								}
+							},
+						}
+					throw new Error('Unexpected module in isolated token regression')
+				},
+			},
+			{ timeout: 1000 },
+		)
+		assert.equal(observed, expected)
+	}
 })
 
 test('runtime-only credentials and malformed build files fail closed without values in errors', () => {
@@ -47,7 +142,7 @@ test('runtime-only credentials and malformed build files fail closed without val
 	assert.throws(
 		() =>
 			parseBuildEnvironment(
-				JSON.stringify({ ...fixture, GITHUB_TOKEN: 'line\nbreak' }),
+				JSON.stringify({ ...fixture, BLOG_GITHUB_TOKEN: 'line\nbreak' }),
 			),
 		/Invalid build variable/,
 	)
@@ -261,24 +356,85 @@ test('actual workflow secret wrapper forwards only the minimal opaque JSON witho
 		NEXT_GOOGLE_ANALYTICS_ID: '',
 		NEXT_GOOGLE_TAG_MANAGER_ID: '',
 		NEXT_PUBLIC_SANITY_API_VERSION: '2026-10-23',
-		GITHUB_TOKEN: 'literal-$()-`quotes`-"-unicode-λ',
+		BLOG_GITHUB_TOKEN: 'literal-$()-`quotes`-"-unicode-λ',
 	}
-	const argumentsJSON = names.map((name) =>
-		JSON.stringify(
-			values[
-				name.startsWith('vars.')
-					? name.slice(5)
-					: name === 'github.token'
-						? 'GITHUB_TOKEN'
-						: 'SANITY_API_READ_TOKEN'
-			],
+	function forwarded(input) {
+		const argumentsJSON = names.map((name) =>
+			JSON.stringify(
+				input[
+					name.startsWith('vars.')
+						? name.slice(5)
+						: name === 'github.token'
+							? 'BLOG_GITHUB_TOKEN'
+							: 'SANITY_API_READ_TOKEN'
+				],
+			),
+		)
+		// GitHub format substitutes indexed arguments once and escapes literal braces.
+		const opaque = match[1].replace(/\{\{|\}\}|\{(\d+)\}/g, (token, index) =>
+			index === undefined ? token[0] : argumentsJSON[Number(index)],
+		)
+		const wrapper = JSON.parse(`{"app":${JSON.stringify(opaque)}}`)
+		assert.equal(typeof wrapper.app, 'string')
+		return parseBuildEnvironment(wrapper.app)
+	}
+	assert.deepEqual(forwarded(values), values)
+	const unset = { ...values }
+	const expected = { ...values }
+	for (const name of [
+		'NEXT_GOOGLE_ADSENSE_ID',
+		'NEXT_GOOGLE_ANALYTICS_ID',
+		'NEXT_GOOGLE_TAG_MANAGER_ID',
+		'NEXT_PUBLIC_SANITY_API_VERSION',
+	]) {
+		unset[name] = null
+		delete expected[name]
+	}
+	assert.deepEqual(forwarded(unset), expected)
+})
+
+test('actual shared Node caller sends app-scoped credentials and unset public configuration as data', () => {
+	const fs = require('node:fs')
+	const workflow = fs.readFileSync('.github/workflows/ci.yml', 'utf8')
+	const payloads = [...workflow.matchAll(/^\s+project-env: '([^']+)'/gm)].map(
+		(match) => match[1],
+	)
+	assert.equal(payloads.length, 2)
+	const values = {
+		...fixture,
+		NEXT_GOOGLE_ADSENSE_ID: null,
+		NEXT_GOOGLE_ANALYTICS_ID: null,
+		NEXT_GOOGLE_TAG_MANAGER_ID: null,
+		NEXT_PUBLIC_SANITY_API_VERSION: null,
+		BLOG_GITHUB_TOKEN: 'literal-$()-`quotes`-"-unicode-λ',
+	}
+	const decoded = payloads.map((raw) =>
+		JSON.parse(
+			raw.replace(
+				/\$\{\{\s*toJSON\(((?:vars|github|secrets)\.[^)]+)\)\s*\}\}/g,
+				(_, name) => {
+					const key = name.startsWith('vars.')
+						? name.slice(5)
+						: name === 'github.token'
+							? 'BLOG_GITHUB_TOKEN'
+							: 'SANITY_API_READ_TOKEN'
+					assert.ok(Object.hasOwn(values, key))
+					return JSON.stringify(values[key])
+				},
+			),
 		),
 	)
-	// GitHub format substitutes indexed arguments once and escapes literal braces.
-	const opaque = match[1].replace(/\{\{|\}\}|\{(\d+)\}/g, (token, index) =>
-		index === undefined ? token[0] : argumentsJSON[Number(index)],
-	)
-	const wrapper = JSON.parse(`{"app":${JSON.stringify(opaque)}}`)
-	assert.equal(typeof wrapper.app, 'string')
-	assert.deepEqual(parseBuildEnvironment(wrapper.app), values)
+	assert.deepEqual(Object.keys(decoded[1]).sort(), [
+		'BLOG_GITHUB_TOKEN',
+		'SANITY_API_READ_TOKEN',
+	])
+	assert.equal(decoded[1].BLOG_GITHUB_TOKEN, values.BLOG_GITHUB_TOKEN)
+	assert.equal(decoded[0].NEXT_PUBLIC_SANITY_API_VERSION, null)
+	for (const input of decoded) {
+		assert.ok(
+			Object.keys(input).every(
+				(name) => !/^(?:GITHUB_|RUNNER_|ACTIONS_|INPUT_)/i.test(name),
+			),
+		)
+	}
 })
