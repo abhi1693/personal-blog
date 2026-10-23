@@ -21,6 +21,8 @@ async function main() {
 		require('/app/package.json').version,
 		process.env.EXPECTED_APP_VERSION,
 	)
+	assert.equal(process.env.APP_VERSION, process.env.EXPECTED_APP_VERSION)
+	assert.equal(process.env.FARO_APP_VERSION, process.env.EXPECTED_APP_VERSION)
 	assert.equal(
 		require('next/package.json').version,
 		process.env.EXPECTED_NEXT_VERSION,
@@ -61,7 +63,6 @@ async function main() {
 			FARO_ENABLED: 'false',
 			FARO_URL: '',
 			FARO_API_KEY: '',
-			FARO_APP_VERSION: process.env.EXPECTED_APP_VERSION,
 		},
 		stdio: ['ignore', 'inherit', 'inherit'],
 	})

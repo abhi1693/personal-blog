@@ -16,6 +16,7 @@
 - Remove plaintext build-secret artifact transport. Pass only required CMS/public build configuration and the repository-read token directly through the shared job's private BuildKit secret; keep newsletter credentials runtime-only with lazy Resend initialization.
 - Use an app-scoped GitHub read-token key from the reusable caller's secrets context while preserving the production token fallback; handle unset optional public build variables without relaxing required CMS validation or changing content generation.
 - Keep pre-install image guards dependency-free and verify them in an isolated scratch checkout; run compiler-dependent token compatibility checks in the installed application test suite.
+- Package the application and default Faro runtime version in the final image; verify the real API version without a smoke-only override while preserving explicit operator overrides.
 - Require native ARM64 pull-request SBOM, strict vulnerability/secret scans including unfixed high/critical findings, source/release version parity, and the same isolated HTTP/native-module smoke before release promotion. Production CMS generation and SEO remain intact; genuine CMS read configuration is required.
 - Publish only uniquely named candidates before image checks; attest verified digests with GitHub provenance before immutable version/latest promotion. Reject moving-branch manual publication and require matching version tag, peeled commit, checkout and workflow SHA, with release identity regression tests.
 

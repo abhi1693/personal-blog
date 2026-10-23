@@ -72,3 +72,9 @@ remain unchanged. CI's smoke disables external networking and verifies the
 actual standalone server, Studio HTML and assets, a runtime version response,
 native Sharp, and safe newsletter/auth guards without sending email or fetching
 CMS content. It does not substitute for live post-deployment CMS validation.
+
+The final image sets `APP_VERSION` and the default `FARO_APP_VERSION` from the
+same version build argument as its OCI label and installed package. The native
+smoke requires those packaged defaults and checks `/api/faro-config` without
+injecting a version override. Explicit operator-provided Faro version overrides
+retain their existing priority; the application suite verifies that behavior.
