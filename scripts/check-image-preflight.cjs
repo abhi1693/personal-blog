@@ -5,6 +5,7 @@ const os = require('node:os')
 const path = require('node:path')
 const process = require('node:process')
 const { execFileSync, spawnSync } = require('node:child_process')
+const { executableWorkflowFiles } = require('./workflow-artifact-policy.cjs')
 
 const source = path.dirname(require.resolve('../package.json'))
 const scratch = fs.mkdtempSync(path.join(os.tmpdir(), 'blog-image-preflight-'))
@@ -24,8 +25,8 @@ try {
 		'scripts/build-environment.test.cjs',
 		'scripts/build-with-env.cjs',
 		'scripts/image-version.cjs',
-		'.github/workflows/ci.yml',
-		'.github/workflows/runtime-image.yml',
+		'scripts/workflow-artifact-policy.cjs',
+		...executableWorkflowFiles(source),
 	]
 	for (const file of files) {
 		const destination = path.join(scratch, file)

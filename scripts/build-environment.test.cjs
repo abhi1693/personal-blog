@@ -3,6 +3,10 @@ const process = require('node:process')
 const { test } = require('node:test')
 const { parseBuildEnvironment } = require('./build-with-env.cjs')
 const { imageVersion } = require('./image-version.cjs')
+const {
+	checkWorkflowArtifactPolicy,
+	checkWorkflowSource,
+} = require('./workflow-artifact-policy.cjs')
 
 const fixture = {
 	NEXT_PUBLIC_BASE_URL: 'https://example.test',
@@ -406,5 +410,101 @@ test('reusable job caller payloads obtain the automatic token from the secrets c
 	for (const payload of [nodePayload, imagePayload]) {
 		assert.doesNotMatch(payload, /\bgithub\.token\b/)
 		assert.match(payload, /toJSON\(secrets\.GITHUB_TOKEN\)/)
+	}
+})
+
+test('all actual local workflows preserve the shared BuildKit path without artifact transport', () => {
+	const fs = require('node:fs')
+	const files = checkWorkflowArtifactPolicy(process.cwd())
+	for (const name of ['ci', 'container', 'runtime-image'])
+		assert.ok(files.includes(`.github/workflows/${name}.yml`))
+	const runtime = fs.readFileSync('.github/workflows/runtime-image.yml', 'utf8')
+	assert.match(
+		runtime,
+		/uses: abhi1693\/actions\/\.github\/workflows\/container-images\.yml@v1/,
+	)
+	assert.match(runtime, /build-env: >-/)
+})
+
+test('new artifact jobs fail regardless of job name, artifact name or YAML mapping style', () => {
+	for (const reference of [
+		'uses: actions/upload-artifact@v7',
+		"uses: 'actions/download-artifact@v7'",
+		'"uses": "actions/upload-artifact@0123456789abcdef"',
+		'uses: Actions/Download-Artifact@v7',
+	]) {
+		const source = `jobs:\n  unrelated-new-job:\n    steps:\n      - {${reference}, with: {name: ordinary-report, path: private.json}}\n`
+		assert.throws(
+			() => checkWorkflowSource(source, '.github/workflows/new-name.yaml'),
+			/Direct artifact actions are forbidden/,
+		)
+	}
+	assert.throws(
+		() =>
+			checkWorkflowSource(
+				'jobs:\n  new-job:\n    steps:\n      - uses: >-\n          actions/upload-artifact@v7\n',
+				'.github/workflows/new-name.yaml',
+			),
+		/Direct artifact actions are forbidden/,
+	)
+})
+
+test('retired secret file, job, artifact and script references fail in executable workflows', () => {
+	for (const marker of [
+		'personal-blog-build-secret',
+		'prepare-build-secret',
+		'build-secret.env',
+		'build-secret-artifact',
+		'build-secret-file',
+		'.github/scripts/write-env.sh',
+		'.github/scripts/ci-prepare.sh',
+	])
+		assert.throws(
+			() =>
+				checkWorkflowSource(
+					`jobs:\n  job:\n    run: echo ${marker}\n`,
+					'ci.yml',
+				),
+			/Retired secret artifact transport/,
+		)
+})
+
+test('policy discovers new local workflow and composite action manifests but ignores historical docs', () => {
+	const fs = require('node:fs')
+	const os = require('node:os')
+	const path = require('node:path')
+	const root = fs.mkdtempSync(path.join(os.tmpdir(), 'blog-artifact-policy-'))
+	const write = (name, text) => {
+		const destination = path.join(root, name)
+		fs.mkdirSync(path.dirname(destination), { recursive: true })
+		fs.writeFileSync(destination, text)
+	}
+	try {
+		assert.throws(() => checkWorkflowArtifactPolicy(root), /No executable/)
+		write(
+			'.github/workflows/ci.yml',
+			'jobs:\n  image:\n    uses: abhi1693/actions/.github/workflows/container-images.yml@v1\n    secrets:\n      build-env: minimal-BuildKit-JSON\n',
+		)
+		write(
+			'.github/README.md',
+			'Historical personal-blog-build-secret and build-secret.env used actions/upload-artifact.',
+		)
+		assert.equal(checkWorkflowArtifactPolicy(root).length, 1)
+		const bad =
+			'steps:\n  - uses: actions/upload-artifact@v7\n    with:\n      name: newly-named-report\n'
+		for (const name of [
+			'.github/workflows/new-release.yaml',
+			'.github/actions/new-helper/action.yml',
+		]) {
+			write(name, bad)
+			assert.throws(
+				() => checkWorkflowArtifactPolicy(root),
+				/Direct artifact actions are forbidden/,
+			)
+			fs.rmSync(path.join(root, name))
+		}
+		assert.equal(checkWorkflowArtifactPolicy(root).length, 1)
+	} finally {
+		fs.rmSync(root, { recursive: true, force: true })
 	}
 })

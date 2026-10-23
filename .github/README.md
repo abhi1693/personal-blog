@@ -34,6 +34,13 @@ artifact, workspace dotenv file, image layer, or build argument. The repository
 loader parses JSON without shell evaluation and rejects unknown/runtime-only
 credential names. Existing repository secrets are the boundary; the shared
 workflow's `environment` input applies to index assembly, not the build job.
+Repository-owned executable workflows and local composite actions cannot call
+`actions/upload-artifact` or `actions/download-artifact` directly. The builtins-only
+preflight scans every local YAML manifest, including newly added workflow/job
+names, and rejects the retired secret artifact/file/helper paths. Approved shared
+workflows continue publishing ordinary image plans, SBOMs and scan reports;
+ordinary artifacts must never carry credentials. Expiry or deletion of a historical
+secret artifact does not prove its credentials were revoked or rotated.
 Regression tests exercise release/ref/commit rejection, the actual CLI's moving
 branch rejection, and quote/backtick/unicode round trips through the real
 workflow's nested configuration template without production secret values.
