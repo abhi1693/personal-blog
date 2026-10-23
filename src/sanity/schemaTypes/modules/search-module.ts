@@ -1,6 +1,6 @@
 import { VscSearch } from 'react-icons/vsc'
 import { defineField, defineType } from 'sanity'
-import { getBlockText } from 'sanitypress-utils'
+import { getBlockText } from '@/sanity/starter-utils'
 
 export default defineType({
 	name: 'search-module',

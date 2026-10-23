@@ -1,7 +1,7 @@
 import { count } from '@/lib/utils'
 import { VscFileMedia } from 'react-icons/vsc'
 import { defineArrayMember, defineField, defineType } from 'sanity'
-import { getPreset, TextInputWithPresets, type Preset } from 'sanitypress-utils'
+import { getPreset, TextInputWithPresets, type Preset } from '@/sanity/starter-utils'
 
 const presets: Preset[] = [
 	{ title: 'Tablet and below', value: '(width < 48rem)' },

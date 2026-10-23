@@ -1,6 +1,6 @@
 import { VscSymbolKeyword } from 'react-icons/vsc'
 import { defineArrayMember, defineField } from 'sanity'
-import { getBlockText } from 'sanitypress-utils'
+import { getBlockText } from '@/sanity/starter-utils'
 
 export default defineArrayMember({
 	name: 'richtext',

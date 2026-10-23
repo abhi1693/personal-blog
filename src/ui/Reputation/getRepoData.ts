@@ -3,7 +3,7 @@ import { unstable_cache } from 'next/cache'
 import { Octokit } from 'octokit'
 
 const octokit = new Octokit({
-	auth: process.env.GITHUB_TOKEN,
+	auth: process.env.BLOG_GITHUB_TOKEN || process.env.GITHUB_TOKEN,
 })
 
 export async function getRepoData(reputation?: Sanity.Reputation) {

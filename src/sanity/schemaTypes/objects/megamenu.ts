@@ -2,7 +2,7 @@ import { count } from '@/lib/utils'
 import { VscFolderOpened } from 'react-icons/vsc'
 import { TfiLayoutMediaLeftAlt } from 'react-icons/tfi'
 import { defineArrayMember, defineField, defineType } from 'sanity'
-import { getBlockText } from 'sanitypress-utils'
+import { getBlockText } from '@/sanity/starter-utils'
 
 export default defineType({
 	name: 'megamenu',

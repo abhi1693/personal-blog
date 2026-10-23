@@ -1,8 +1,6 @@
 import { BASE_URL } from '@/lib/env'
+import { getResendClient } from '@/lib/resend'
 import { NextResponse } from 'next/server'
-import { Resend } from 'resend'
-
-const resend = new Resend(process.env.RESEND_API_KEY_FULL)
 
 export const GET = async (req: Request) => {
 	const url = new URL(req.url)
@@ -16,6 +14,7 @@ export const GET = async (req: Request) => {
 	}
 
 	try {
+		const resend = getResendClient()
 		await resend.contacts.remove({
 			email: email.toLowerCase(),
 			audienceId: process.env.NEXT_RESEND_AUDIENCE_ID!,

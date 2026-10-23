@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import { VscSymbolMisc } from 'react-icons/vsc'
 import { defineField, defineType } from 'sanity'
-import { getPreset, TextInputWithPresets, type Preset } from 'sanitypress-utils'
+import { getPreset, TextInputWithPresets, type Preset } from '@/sanity/starter-utils'
 
 const ic0nPresets: Preset[] =
 	'ai,bi,bs,cg,ci,di,fa,fa6,fc,fi,gi,go,gr,hi,hi2,im,io,io5,lia,lu,md,pi,ri,rx,si,sl,tb,tfi,ti,vsc,wi'

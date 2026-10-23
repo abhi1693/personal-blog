@@ -1,8 +1,8 @@
 import { reputationBlock } from '../misc/reputation'
 import { TfiLayoutCtaCenter } from 'react-icons/tfi'
 import { defineField } from 'sanity'
-import { alignItems, textAlign } from 'sanitypress-utils'
-import { getBlockText } from 'sanitypress-utils'
+import { alignItems, textAlign } from '@/sanity/starter-utils'
+import { getBlockText } from '@/sanity/starter-utils'
 import defineModule from '../fragments/define-module'
 
 export default defineModule({

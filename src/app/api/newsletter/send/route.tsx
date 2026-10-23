@@ -1,9 +1,8 @@
 import { BASE_URL } from '@/lib/env'
+import { getResendClient } from '@/lib/resend'
 import type { NextRequest } from 'next/server'
-import { Resend } from 'resend'
 import Parser from 'rss-parser'
 
-const resend = new Resend(process.env.RESEND_API_KEY_FULL)
 const parser = new Parser()
 
 export const runtime = 'nodejs'
@@ -19,6 +18,7 @@ export async function GET(request: NextRequest) {
 	}
 
 	try {
+		const resend = getResendClient()
 		const feed = await parser.parseURL(`${BASE_URL}/posts/rss.xml`)
 
 		const now = new Date()

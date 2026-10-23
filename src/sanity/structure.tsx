@@ -2,7 +2,7 @@ import { pageDirectoriesListItem } from './lib/page-directories'
 import { VscFiles, VscServerProcess } from 'react-icons/vsc'
 import { structureTool } from 'sanity/structure'
 import type { StructureResolver } from 'sanity/structure'
-import { singleton, group } from 'sanitypress-utils'
+import { singleton, group } from '@/sanity/starter-utils'
 
 const structureResolver: StructureResolver = (S, context) =>
 	S.list()

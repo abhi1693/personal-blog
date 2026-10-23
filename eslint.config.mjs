@@ -12,6 +12,7 @@ const eslintConfig = [
 	{
 		ignores: [
 			'node_modules/**',
+			'packages/braces/**',
 			'.next/**',
 			'out/**',
 			'build/**',
@@ -33,7 +34,7 @@ const eslintConfig = [
 		},
 	},
 	{
-		files: ['scripts/**/*.js', 'tests/**/*.js'],
+		files: ['scripts/**/*.{js,cjs}', 'tests/**/*.js'],
 		rules: {
 			'@typescript-eslint/no-require-imports': 'off',
 		},

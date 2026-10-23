@@ -72,12 +72,12 @@ function Crumb({
 	position: number
 	hide?: boolean
 } & React.ComponentProps<'li'>) {
+	const label =
+		children || link?.label || link?.internal?.title || link?.external
 	const content = (
 		<>
 			<span itemProp="name" hidden={hidden}>
-				{stegaClean(
-					children || link?.label || link?.internal?.title || link?.external,
-				)}
+				{typeof label === 'string' ? stegaClean(label) : label}
 			</span>
 			<meta itemProp="position" content={position.toString()} />
 		</>
