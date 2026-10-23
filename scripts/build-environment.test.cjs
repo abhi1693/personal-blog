@@ -62,55 +62,6 @@ test('only unset optional public fields normalize to the existing app defaults',
 	)
 })
 
-test('actual Octokit module prefers app token and preserves production token fallback without API calls', () => {
-	const fs = require('node:fs')
-	const vm = require('node:vm')
-	const ts = require('typescript')
-	const source = fs.readFileSync('src/ui/Reputation/getRepoData.ts', 'utf8')
-	const compiled = ts.transpileModule(source, {
-		compilerOptions: {
-			module: ts.ModuleKind.CommonJS,
-			target: ts.ScriptTarget.ES2022,
-		},
-	}).outputText
-	for (const [env, expected] of [
-		[
-			{ BLOG_GITHUB_TOKEN: 'app-fixture', GITHUB_TOKEN: 'legacy-fixture' },
-			'app-fixture',
-		],
-		[{ GITHUB_TOKEN: 'legacy-fixture' }, 'legacy-fixture'],
-		[
-			{ BLOG_GITHUB_TOKEN: '', GITHUB_TOKEN: 'legacy-fixture' },
-			'legacy-fixture',
-		],
-		[{}, undefined],
-	]) {
-		let observed
-		vm.runInNewContext(
-			compiled,
-			{
-				exports: {},
-				process: { env },
-				require(name) {
-					if (name === 'next-sanity') return { stegaClean: (value) => value }
-					if (name === 'next/cache') return { unstable_cache: (fn) => fn }
-					if (name === 'octokit')
-						return {
-							Octokit: class {
-								constructor({ auth }) {
-									observed = auth
-								}
-							},
-						}
-					throw new Error('Unexpected module in isolated token regression')
-				},
-			},
-			{ timeout: 1000 },
-		)
-		assert.equal(observed, expected)
-	}
-})
-
 test('runtime-only credentials and malformed build files fail closed without values in errors', () => {
 	for (const name of [
 		'CRON_SECRET',

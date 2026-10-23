@@ -40,7 +40,7 @@ jobs:
           PUBLISH_IMAGE: ${{ inputs.publish }}
         run: node scripts/image-version.cjs
       - name: Test release identity and build configuration guards
-        run: node --test scripts/build-environment.test.cjs
+        run: node scripts/check-image-preflight.cjs
 
   image:
     needs: version

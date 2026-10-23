@@ -44,6 +44,11 @@ Unset optional public analytics IDs and Sanity API version arrive as JSON null
 and are omitted by the build loader, preserving existing app defaults. Required
 CMS project, dataset, base URL and read token still fail closed when missing or
 invalid; unknown keys, non-string values and CR/LF/NUL remain rejected.
+The pre-install version job and `npm run test:runtime-build` run the same
+builtins-only guard suite from a fresh scratch Git fixture with no ancestor
+`node_modules` or `NODE_PATH`. The actual Octokit compatibility test belongs to
+the installed, compiled application suite; it cannot add dependencies to the
+preflight job.
 
 | Build input                                            | Why it is needed                                                                                                          |
 | ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------- |
