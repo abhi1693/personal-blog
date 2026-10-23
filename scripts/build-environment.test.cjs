@@ -298,7 +298,7 @@ test('actual workflow secret wrapper forwards only the minimal opaque JSON witho
 		'vars.NEXT_PUBLIC_SANITY_API_VERSION',
 		'vars.NEXT_PUBLIC_SANITY_DATASET',
 		'vars.NEXT_PUBLIC_SANITY_PROJECT_ID',
-		'github.token',
+		'secrets.GITHUB_TOKEN',
 		'secrets.sanity-read-token',
 	])
 	const values = {
@@ -315,7 +315,7 @@ test('actual workflow secret wrapper forwards only the minimal opaque JSON witho
 				input[
 					name.startsWith('vars.')
 						? name.slice(5)
-						: name === 'github.token'
+						: name === 'secrets.GITHUB_TOKEN'
 							? 'BLOG_GITHUB_TOKEN'
 							: 'SANITY_API_READ_TOKEN'
 				],
@@ -366,7 +366,7 @@ test('actual shared Node caller sends app-scoped credentials and unset public co
 				(_, name) => {
 					const key = name.startsWith('vars.')
 						? name.slice(5)
-						: name === 'github.token'
+						: name === 'secrets.GITHUB_TOKEN'
 							? 'BLOG_GITHUB_TOKEN'
 							: 'SANITY_API_READ_TOKEN'
 					assert.ok(Object.hasOwn(values, key))
@@ -387,5 +387,24 @@ test('actual shared Node caller sends app-scoped credentials and unset public co
 				(name) => !/^(?:GITHUB_|RUNNER_|ACTIONS_|INPUT_)/i.test(name),
 			),
 		)
+	}
+})
+
+test('reusable job caller payloads obtain the automatic token from the secrets context', () => {
+	const fs = require('node:fs')
+	const nodeCaller = fs.readFileSync('.github/workflows/ci.yml', 'utf8')
+	const imageCaller = fs.readFileSync(
+		'.github/workflows/runtime-image.yml',
+		'utf8',
+	)
+	const nodePayload = nodeCaller.match(
+		/project-env: '([^']*BLOG_GITHUB_TOKEN[^']*)'/,
+	)?.[1]
+	const imagePayload = imageCaller.match(/build-env: >-\n([\s\S]+)$/)?.[1]
+	assert.ok(nodePayload)
+	assert.ok(imagePayload)
+	for (const payload of [nodePayload, imagePayload]) {
+		assert.doesNotMatch(payload, /\bgithub\.token\b/)
+		assert.match(payload, /toJSON\(secrets\.GITHUB_TOKEN\)/)
 	}
 })

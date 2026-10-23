@@ -40,6 +40,10 @@ workflow's nested configuration template without production secret values.
 The GitHub read token uses the app-scoped `BLOG_GITHUB_TOKEN` key in both CI
 callers because shared environment guards reserve `GITHUB_*`. Octokit prefers
 the app-scoped key and retains `GITHUB_TOKEN` as a runtime compatibility fallback.
+Reusable job callsites read the automatic token through `secrets.GITHUB_TOKEN`;
+`github.token` is runner-populated only inside execution steps and is null at
+these callsites. The regression suite checks this boundary in both actual JSON
+payloads without reading real credentials.
 Unset optional public analytics IDs and Sanity API version arrive as JSON null
 and are omitted by the build loader, preserving existing app defaults. Required
 CMS project, dataset, base URL and read token still fail closed when missing or
@@ -50,12 +54,12 @@ builtins-only guard suite from a fresh scratch Git fixture with no ancestor
 the installed, compiled application suite; it cannot add dependencies to the
 preflight job.
 
-| Build input                                            | Why it is needed                                                                                                          |
-| ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------- |
-| Public Sanity project/dataset/API version and base URL | Studio manifest, static route generation, canonical URLs, redirects, and SEO metadata.                                    |
-| Public analytics/advertising IDs                       | Existing frontend metadata and analytics configuration.                                                                   |
-| `SANITY_API_READ_TOKEN`                                | `defineLive` server initialization and published CMS content used during the real production build.                       |
-| Ephemeral `github.token`                               | Existing `Reputation` static rendering reads repository/star metadata through Octokit. No build API writes are performed. |
+| Build input                                             | Why it is needed                                                                                                          |
+| ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| Public Sanity project/dataset/API version and base URL  | Studio manifest, static route generation, canonical URLs, redirects, and SEO metadata.                                    |
+| Public analytics/advertising IDs                        | Existing frontend metadata and analytics configuration.                                                                   |
+| `SANITY_API_READ_TOKEN`                                 | `defineLive` server initialization and published CMS content used during the real production build.                       |
+| Ephemeral `secrets.GITHUB_TOKEN` as `BLOG_GITHUB_TOKEN` | Existing `Reputation` static rendering reads repository/star metadata through Octokit. No build API writes are performed. |
 
 `CRON_SECRET`, `RESEND_API_KEY_FULL`, and the Resend audience ID are runtime
 configuration only. The Resend SDK is constructed lazily after request guards;
