@@ -1,8 +1,6 @@
+import { getResendClient } from '@/lib/resend'
 import { isValidEmail, sanitizeText } from '@/lib/validation'
 import { NextResponse } from 'next/server'
-import { Resend } from 'resend'
-
-const resend = new Resend(process.env.RESEND_API_KEY_FULL)
 
 const RATE_LIMIT_WINDOW_MS = 60_000
 const RATE_LIMIT_MAX = 5
@@ -73,6 +71,7 @@ export const POST = async (req: Request) => {
 	}
 
 	try {
+		const resend = getResendClient()
 		const { error } = await resend.contacts.create({
 			email,
 			audienceId: process.env.NEXT_RESEND_AUDIENCE_ID!,

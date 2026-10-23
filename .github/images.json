@@ -1,0 +1,16 @@
+{
+	"schema-version": 1,
+	"images": [
+		{
+			"id": "app",
+			"image": "ghcr.io/abhi1693/personal-blog",
+			"context": ".",
+			"file": "Dockerfile",
+			"smoke-script": "scripts/smoke-runtime.sh",
+			"build-args": {
+				"APP_VERSION": "{version}"
+			},
+			"platforms": ["linux/arm64"]
+		}
+	]
+}

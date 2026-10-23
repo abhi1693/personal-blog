@@ -1,0 +1,68 @@
+name: Runtime image
+
+on:
+  workflow_call:
+    inputs:
+      publish:
+        type: boolean
+        default: false
+      version:
+        type: string
+        default: ''
+    secrets:
+      sanity-read-token:
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: blog-image-${{ github.ref }}-${{ inputs.publish }}
+  cancel-in-progress: ${{ !inputs.publish }}
+
+jobs:
+  version:
+    runs-on: ubuntu-24.04
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+      - name: Verify source and requested release version
+        id: version
+        env:
+          REQUESTED_VERSION: ${{ inputs.version }}
+          PUBLISH_IMAGE: ${{ inputs.publish }}
+        run: node scripts/image-version.cjs
+      - name: Test release identity and build configuration guards
+        run: node --test scripts/build-environment.test.cjs
+
+  image:
+    needs: version
+    uses: abhi1693/actions/.github/workflows/container-images.yml@v1
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+      attestations: write
+    with:
+      manifest: .github/images.json
+      publish: ${{ inputs.publish }}
+      version: ${{ needs.version.outputs.version }}
+      version-file: package.json
+      trusted-branches: '[]'
+      changed-only: false
+      scan: true
+      scan-ignore-unfixed: false
+      attest: true
+      artifact-scope: blog-runtime
+    secrets:
+      # The upper workflow selects this opaque string by component id; only the
+      # lower build job decodes it into its private BuildKit-mounted JSON file.
+      build-env: >-
+        {"app":${{ toJSON(format('{{"NEXT_GOOGLE_ADSENSE_ID":{0},"NEXT_GOOGLE_ANALYTICS_ID":{1},"NEXT_GOOGLE_TAG_MANAGER_ID":{2},"NEXT_PUBLIC_BASE_URL":{3},"NEXT_PUBLIC_SANITY_API_VERSION":{4},"NEXT_PUBLIC_SANITY_DATASET":{5},"NEXT_PUBLIC_SANITY_PROJECT_ID":{6},"GITHUB_TOKEN":{7},"SANITY_API_READ_TOKEN":{8}}}', toJSON(vars.NEXT_GOOGLE_ADSENSE_ID), toJSON(vars.NEXT_GOOGLE_ANALYTICS_ID), toJSON(vars.NEXT_GOOGLE_TAG_MANAGER_ID), toJSON(vars.NEXT_PUBLIC_BASE_URL), toJSON(vars.NEXT_PUBLIC_SANITY_API_VERSION), toJSON(vars.NEXT_PUBLIC_SANITY_DATASET), toJSON(vars.NEXT_PUBLIC_SANITY_PROJECT_ID), toJSON(github.token), toJSON(secrets.sanity-read-token))) }}}

@@ -13,7 +13,8 @@
     "typegen": "sanity schema extract --path ./src/sanity/schema.json && sanity typegen generate",
     "typecheck": "tsc --noEmit",
     "build:test": "tsc -p tsconfig.test.json",
-    "test": "npm run build:test && node tests/run-tests.js && npm run test:dependency-security",
+    "test": "npm run build:test && node tests/run-tests.js && npm run test:dependency-security && npm run test:runtime-build",
+    "test:runtime-build": "node --test scripts/build-environment.test.cjs",
     "test:dependency-security": "node --test scripts/check-braces.cjs"
   },
   "dependencies": {
