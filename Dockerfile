@@ -30,8 +30,7 @@ WORKDIR /app
 
 ARG APP_VERSION=dev
 LABEL org.opencontainers.image.version="${APP_VERSION}"
-ENV APP_VERSION=${APP_VERSION} \
-	FARO_APP_VERSION=${APP_VERSION}
+ENV APP_VERSION=${APP_VERSION}
 
 ENV HOSTNAME=0.0.0.0
 ENV NEXT_TELEMETRY_DISABLED=1
@@ -47,7 +46,6 @@ RUN rm -rf /usr/local/lib/node_modules/npm /usr/local/lib/node_modules/corepack 
 COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-COPY --from=builder --chown=nextjs:nodejs /app/.next/faro-sourcemaps ./.next/faro-sourcemaps
 
 USER nextjs
 

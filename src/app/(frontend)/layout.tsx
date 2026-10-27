@@ -10,7 +10,6 @@ import Footer from '@/ui/footer'
 import Header from '@/ui/header'
 import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google'
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
-import FaroRum from './faro-rum'
 
 const gtmId = process.env.NEXT_GOOGLE_TAG_MANAGER_ID || ''
 const gaId = process.env.NEXT_GOOGLE_ANALYTICS_ID || ''
@@ -32,7 +31,6 @@ export default async function RootLayout({
 			</head>
 			{!dev && gtmId && <GoogleTagManager gtmId={gtmId} />}
 			<body className="bg-canvas text-ink antialiased">
-				<FaroRum />
 				<NuqsAdapter>
 					<SkipToContent />
 					<Announcement />

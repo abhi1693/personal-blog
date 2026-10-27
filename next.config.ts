@@ -22,7 +22,6 @@ export default {
 	experimental: {
 		webpackMemoryOptimizations: true,
 	},
-	productionBrowserSourceMaps: true,
 	images: {
 		dangerouslyAllowSVG: true,
 		localPatterns: [{ pathname: '/api/og' }],
