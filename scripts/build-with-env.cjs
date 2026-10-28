@@ -61,7 +61,6 @@ if (require.main === module) {
 	const env = {
 		...process.env,
 		...values,
-		NEXT_PUBLIC_FARO_APP_VERSION: require('../package.json').version,
 	}
 	for (const name of [
 		'CRON_SECRET',

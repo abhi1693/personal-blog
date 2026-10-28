@@ -22,7 +22,6 @@ async function main() {
 		process.env.EXPECTED_APP_VERSION,
 	)
 	assert.equal(process.env.APP_VERSION, process.env.EXPECTED_APP_VERSION)
-	assert.equal(process.env.FARO_APP_VERSION, process.env.EXPECTED_APP_VERSION)
 	assert.equal(
 		require('next/package.json').version,
 		process.env.EXPECTED_NEXT_VERSION,
@@ -60,9 +59,6 @@ async function main() {
 			// Only the isolated smoke receives a synthetic import-time token.
 			// No CMS route is requested and --network none prevents external traffic.
 			SANITY_API_READ_TOKEN: randomUUID(),
-			FARO_ENABLED: 'false',
-			FARO_URL: '',
-			FARO_API_KEY: '',
 		},
 		stdio: ['ignore', 'inherit', 'inherit'],
 	})
@@ -76,7 +72,7 @@ async function main() {
 		for (let attempt = 0; attempt < 60; attempt++) {
 			assert.equal(server.exitCode, null, 'Next.js exited during startup')
 			try {
-				ready = await get('/api/faro-config')
+				ready = await get('/admin')
 				if (ready.ok) break
 			} catch {
 				/* Startup. */
@@ -84,10 +80,6 @@ async function main() {
 			await new Promise((resolve) => setTimeout(resolve, 250))
 		}
 		assert.equal(ready?.status, 200, 'Runtime API did not become ready')
-		const config = await ready.json()
-		assert.equal(config.enabled, false)
-		assert.equal(config.appVersion, process.env.EXPECTED_APP_VERSION)
-		assert.match(ready.headers.get('cache-control'), /no-store/)
 		const studio = await get('/admin')
 		assert.equal(studio.status, 200, 'Built Studio HTML did not load')
 		const html = await studio.text()
