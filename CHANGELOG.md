@@ -1,5 +1,9 @@
 # Release notes
 
+## 0.3.19 — 2026-10-28
+
+- Remove retired Faro browser monitoring and private source-map collection.
+
 ## 0.3.18 (prepared, unreleased)
 
 - Refresh runtime and development dependencies and regenerate the npm lockfile.
